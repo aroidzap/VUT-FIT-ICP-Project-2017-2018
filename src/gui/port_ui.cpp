@@ -30,6 +30,7 @@ void PortUI::Move(int x, int y)
 
 void PortUI::paintEvent(QPaintEvent *event)
 {
+	(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
@@ -53,11 +54,12 @@ void PortUI::mouseMoveEvent(QMouseEvent *event)
 
 void PortUI::leaveEvent(QEvent *event)
 {
+	(event);
 	hover = false;
 	update();
 }
 
 void PortUI::mouseReleaseEvent(QMouseEvent *event)
 {
-
+	(event);
 }

@@ -12,8 +12,8 @@ class BlockUI : public QWidget
 	Q_OBJECT
 private:
 	QLabel name;
-	std::list<Port*> inputs;
-	std::list<Port*> outputs;
+	std::list<PortUI*> inputs;
+	std::list<PortUI*> outputs;
 	bool drag = false;
 	QPoint drag_p;
 	int height;

@@ -24,7 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    src/gui/icp_gui.cpp \
     src/gui/style.cpp \
     src/gui/tooltip.cpp \
     src/main.cpp \
@@ -36,10 +35,10 @@ SOURCES += \
     src/core/schematic.cpp \
     src/gui/block_ui.cpp \
     src/gui/connection_ui.cpp \
-    src/gui/port_ui.cpp
+    src/gui/port_ui.cpp \
+    src/gui/blockeditor.cpp
 
 HEADERS += \
-    src/gui/icp_gui.h \
     src/gui/style.h \
     src/gui/tooltip.h \
     src/core/type.h \
@@ -50,7 +49,8 @@ HEADERS += \
     src/core/schematic.h \
     src/gui/connection_ui.h \
     src/gui/block_ui.h \
-    src/gui/port_ui.h
+    src/gui/port_ui.h \
+    src/gui/blockeditor.h
 
 FORMS += \
-    src/gui/icp_gui.ui
+    src/gui/blockeditor.ui

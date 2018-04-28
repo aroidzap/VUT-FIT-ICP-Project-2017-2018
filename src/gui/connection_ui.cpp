@@ -42,6 +42,7 @@ void ConnectionUI::hideValue(){
 }
 void ConnectionUI::paintEvent(QPaintEvent *event)
 {
+	(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	QPen p(Style::ConnectionCol);
@@ -64,6 +65,7 @@ void ConnectionUI::mouseMoveEvent(QMouseEvent *event)
 
 void ConnectionUI::leaveEvent(QEvent *event)
 {
+	(event);
 	hover = false;
 	update();
 }

@@ -1,4 +1,4 @@
-#include "gui/icp_gui.h"
+#include "gui/blockeditor.h"
 #include <QApplication>
 
 #include "gui/connection_ui.h"
@@ -9,15 +9,15 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
-	ICP_GUI w;
+	BLOCKEDITOR w;
 
 	QWidget scheme;
 	w.setCentralWidget(&scheme);
 	w.show();
 
-	Connection c(&scheme);
+	ConnectionUI c(&scheme);
 
-	Node n("blok", QPoint(150, 100), &scheme);
+	BlockUI n("blok", QPoint(150, 100), &scheme);
 
 	return a.exec();
 

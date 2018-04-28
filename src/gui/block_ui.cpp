@@ -10,19 +10,19 @@
 BlockUI::BlockUI(std::string name, QPoint position, QWidget *parent) : QWidget(parent), name(name.c_str(), this)
 {
 	//input
-	inputs.push_back(new Port("vstup A", true, parent));
-	inputs.push_back(new Port("vstup B", true, parent));
-	inputs.push_back(new Port("vstup C", true, parent));
+	inputs.push_back(new PortUI("vstup A", true, parent));
+	inputs.push_back(new PortUI("vstup B", true, parent));
+	inputs.push_back(new PortUI("vstup C", true, parent));
 	//outputs
-	outputs.push_back(new Port("vystup A", false, parent));
-	outputs.push_back(new Port("vystup B", false, parent));
+	outputs.push_back(new PortUI("vystup A", false, parent));
+	outputs.push_back(new PortUI("vystup B", false, parent));
 
 	int input_w = (*std::max_element(inputs.begin(), inputs.end(),
-		[] (const Port *a, const Port *b) { return a->getWidth() < b->getWidth(); }))->getWidth();
+		[] (const PortUI *a, const PortUI *b) { return a->getWidth() < b->getWidth(); }))->getWidth();
 	int output_w = (*std::max_element(inputs.begin(), inputs.end(),
-		[] (const Port *a, const Port *b) { return a->getWidth() < b->getWidth(); }))->getWidth();
+		[] (const PortUI *a, const PortUI *b) { return a->getWidth() < b->getWidth(); }))->getWidth();
 
-	height = (std::max(inputs.size(), outputs.size())) * Style::PortMarginV +
+	height = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
 			 std::max(Style::PortMarginV, Style::NodeNameHeight);
 	width = std::max(input_w + output_w, Style::NodeMinWidth);
 	resize(width + 1, height + 1);
@@ -64,6 +64,7 @@ void BlockUI::Move(int x, int y){
 
 void BlockUI::paintEvent(QPaintEvent *event)
 {
+	(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
@@ -89,5 +90,6 @@ void BlockUI::mouseMoveEvent(QMouseEvent *event)
 
 void BlockUI::mouseReleaseEvent(QMouseEvent *event)
 {
+	(event);
 	drag = false;
 }
