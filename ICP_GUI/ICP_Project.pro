@@ -30,7 +30,8 @@ SOURCES += \
     src/gui/port.cpp \
     src/gui/style.cpp \
     src/gui/tooltip.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/core/type.cpp
 
 HEADERS += \
     src/gui/connection.h \
@@ -38,7 +39,8 @@ HEADERS += \
     src/gui/node.h \
     src/gui/port.h \
     src/gui/style.h \
-    src/gui/tooltip.h
+    src/gui/tooltip.h \
+    src/core/type.h
 
 FORMS += \
     src/gui/icp_gui.ui
