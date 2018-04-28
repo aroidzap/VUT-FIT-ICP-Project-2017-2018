@@ -62,20 +62,35 @@ void BlockUI::Move(int x, int y){
 	}
 }
 
+void BlockUI::Highlight(bool enable)
+{
+	this->highlight = enable;
+	update();
+}
+
 void BlockUI::paintEvent(QPaintEvent *event)
 {
 	(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
+
 	QPainterPath path;
 	path.addRoundedRect(QRectF(.5, .5, width, height), Style::NodeRoundSize, Style::NodeRoundSize);
 
-	painter.setPen(Style::NodeOutlineCol);
-	painter.setBrush(Style::NodeBackgroundCol);
+	painter.fillPath(path, QBrush(Style::NodeBackgroundCol));
 
-	painter.drawPath(path);
+	if (highlight) {
+		QPainterPath h;
+		h.addRoundedRect(QRectF(2.5, 2.5, width - 4, height - 4), Style::NodeRoundSize, Style::NodeRoundSize);
 
+		QPen p(Style::NodeOutlineHighlightCol);
+		p.setWidth(5);
+
+		painter.strokePath(h, p);
+	}
+
+	painter.strokePath(path, QPen(Style::NodeOutlineCol));
 }
 
 void BlockUI::mouseMoveEvent(QMouseEvent *event)

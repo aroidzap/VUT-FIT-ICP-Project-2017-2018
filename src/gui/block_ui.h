@@ -15,6 +15,7 @@ private:
 	std::list<PortUI*> inputs;
 	std::list<PortUI*> outputs;
 	bool drag = false;
+	bool highlight = false;
 	QPoint drag_p;
 	int height;
 	int width;
@@ -22,6 +23,7 @@ public:
 	explicit BlockUI(std::string name, QPoint position = QPoint(0, 0), QWidget *parent = nullptr);
 	~BlockUI();
 	void Move(int x, int y);
+	void Highlight(bool enable);
 
 protected:
 	void paintEvent(QPaintEvent *event) override;

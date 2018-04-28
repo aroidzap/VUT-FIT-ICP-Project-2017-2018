@@ -22,6 +22,7 @@ public:
 	static const int NodeMinWidth;
 	static const int NodeRoundSize;
 	static const QColor NodeOutlineCol;
+	static const QColor NodeOutlineHighlightCol;
 	static const QColor NodeBackgroundCol;
 
 	static const int TooltipRoundSize;

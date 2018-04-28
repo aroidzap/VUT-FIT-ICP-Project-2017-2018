@@ -16,6 +16,7 @@ const int Style::NodeNameHeight = 40;
 const int Style::NodeMinWidth = 64;
 const int Style::NodeRoundSize = 16;
 const QColor Style::NodeOutlineCol = QColor(0, 0, 0);
+const QColor Style::NodeOutlineHighlightCol = QColor(50, 100, 255);
 const QColor Style::NodeBackgroundCol = QColor(160, 160, 160);
 
 const int Style::TooltipRoundSize = 8;
