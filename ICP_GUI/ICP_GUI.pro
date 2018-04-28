@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ICP_GUI
+TARGET = ICP_Project
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -24,21 +24,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        icp_gui.cpp \
-    connection.cpp \
-    node.cpp \
-    port.cpp \
-    style.cpp \
-    tooltip.cpp
+    src/gui/connection.cpp \
+    src/gui/icp_gui.cpp \
+    src/gui/node.cpp \
+    src/gui/port.cpp \
+    src/gui/style.cpp \
+    src/gui/tooltip.cpp \
+    src/main.cpp
 
 HEADERS += \
-        icp_gui.h \
-    connection.h \
-    node.h \
-    port.h \
-    style.h \
-    tooltip.h
+    src/gui/connection.h \
+    src/gui/icp_gui.h \
+    src/gui/node.h \
+    src/gui/port.h \
+    src/gui/style.h \
+    src/gui/tooltip.h
 
 FORMS += \
-        icp_gui.ui
+    src/gui/icp_gui.ui
