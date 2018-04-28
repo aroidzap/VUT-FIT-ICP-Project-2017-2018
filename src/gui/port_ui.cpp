@@ -1,9 +1,9 @@
-#include "port.h"
+#include "port_ui.h"
 #include "style.h"
 #include <QPainter>
 #include <QPainterPath>
 
-Port::Port(std::string name, bool input, QWidget *parent) : QWidget(parent), label(name.c_str(), parent), input(input)
+PortUI::PortUI(std::string name, bool input, QWidget *parent) : QWidget(parent), label(name.c_str(), parent), input(input)
 {
 	resize(Style::PortSize + 2, Style::PortSize + 2);
 	Move(0, 0);
@@ -14,11 +14,11 @@ Port::Port(std::string name, bool input, QWidget *parent) : QWidget(parent), lab
 	setMouseTracking(true);
 }
 
-int Port::getWidth() const{
+int PortUI::getWidth() const{
 	return Style::PortNamePadding * 2 + label.width();
 }
 
-void Port::Move(int x, int y)
+void PortUI::Move(int x, int y)
 {
 	move(x - Style::PortSize/2 - 1, y - Style::PortSize/2 - 1);
 	if(input) {
@@ -28,7 +28,7 @@ void Port::Move(int x, int y)
 	}
 }
 
-void Port::paintEvent(QPaintEvent *event)
+void PortUI::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -43,7 +43,7 @@ void Port::paintEvent(QPaintEvent *event)
 						Style::PortDrawSize/2, Style::PortDrawSize/2);
 }
 
-void Port::mouseMoveEvent(QMouseEvent *event)
+void PortUI::mouseMoveEvent(QMouseEvent *event)
 {
 	QPoint diff = (event->pos() - QPoint(Style::PortSize/2, Style::PortSize/2));
 	int dist = sqrt(diff.x()*diff.x() + diff.y()*diff.y());
@@ -51,13 +51,13 @@ void Port::mouseMoveEvent(QMouseEvent *event)
 	update();
 }
 
-void Port::leaveEvent(QEvent *event)
+void PortUI::leaveEvent(QEvent *event)
 {
 	hover = false;
 	update();
 }
 
-void Port::mouseReleaseEvent(QMouseEvent *event)
+void PortUI::mouseReleaseEvent(QMouseEvent *event)
 {
 
 }

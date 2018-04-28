@@ -1,5 +1,5 @@
-#ifndef PORT_H
-#define PORT_H
+#ifndef PORT_UI_H
+#define PORT_UI_H
 
 #include <QPaintEvent>
 #include <QMouseEvent>
@@ -7,7 +7,7 @@
 #include <QLabel>
 #include <string>
 
-class Port : public QWidget
+class PortUI : public QWidget
 {
 	Q_OBJECT
 private:
@@ -16,7 +16,7 @@ private:
 	QLabel label;
 public:
 	void Move(int x, int y);
-	explicit Port(std::string name, bool input, QWidget *parent = nullptr);
+	explicit PortUI(std::string name, bool input, QWidget *parent = nullptr);
 
 	int getWidth() const;
 protected:
@@ -26,4 +26,4 @@ protected:
 	void leaveEvent(QEvent *event) override;
 };
 
-#endif // PORT_H
+#endif // PORT_UI_H

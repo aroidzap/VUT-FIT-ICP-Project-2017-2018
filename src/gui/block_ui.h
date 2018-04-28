@@ -1,13 +1,13 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef BLOCK_UI_H
+#define BLOCK_UI_H
 
 #include <QPaintEvent>
 #include <QWidget>
 #include <list>
 
-#include "port.h"
+#include "port_ui.h"
 
-class Node : public QWidget
+class BlockUI : public QWidget
 {
 	Q_OBJECT
 private:
@@ -19,8 +19,8 @@ private:
 	int height;
 	int width;
 public:
-	explicit Node(std::string name, QPoint position = QPoint(0, 0), QWidget *parent = nullptr);
-	~Node();
+	explicit BlockUI(std::string name, QPoint position = QPoint(0, 0), QWidget *parent = nullptr);
+	~BlockUI();
 	void Move(int x, int y);
 
 protected:
@@ -29,4 +29,4 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
-#endif // NODE_H
+#endif // BLOCK_UI_H

@@ -17,8 +17,8 @@ double &Type::operator[](const std::string &component)
 // check type compatibility
 bool Type::type_of(const Type &other)
 {
-	for (const auto &element : a.data) {
-		if (b.data.count(element.first) == 0) {
+	for (const auto &element : this->data) {
+		if (other.data.count(element.first) == 0) {
 			return false;
 		}
 	}

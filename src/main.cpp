@@ -1,15 +1,13 @@
 #include "gui/icp_gui.h"
 #include <QApplication>
 
-#include "gui/connection.h"
-#include "gui/node.h"
-#include "gui/port.h"
-
-#include "core/type.h"
+#include "gui/connection_ui.h"
+#include "gui/block_ui.h"
+#include "gui/port_ui.h"
 
 int main(int argc, char *argv[])
 {
-	/*QApplication a(argc, argv);
+	QApplication a(argc, argv);
 
 	ICP_GUI w;
 
@@ -21,10 +19,7 @@ int main(int argc, char *argv[])
 
 	Node n("blok", QPoint(150, 100), &scheme);
 
-	return a.exec();*/
+	return a.exec();
 
-	Type t{"x", "y", "zz"};
-	Type b{"z", "y", "x"};
-	bool x = t == b;
 	return 0;
 }

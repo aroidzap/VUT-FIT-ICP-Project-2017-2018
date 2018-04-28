@@ -1,13 +1,13 @@
-#include "node.h"
+#include "block_ui.h"
 #include "style.h"
-#include "port.h"
+#include "port_ui.h"
 
 #include <QPainter>
 #include <QPainterPath>
 
 #include <algorithm>
 
-Node::Node(std::string name, QPoint position, QWidget *parent) : QWidget(parent), name(name.c_str(), this)
+BlockUI::BlockUI(std::string name, QPoint position, QWidget *parent) : QWidget(parent), name(name.c_str(), this)
 {
 	//input
 	inputs.push_back(new Port("vstup A", true, parent));
@@ -33,7 +33,7 @@ Node::Node(std::string name, QPoint position, QWidget *parent) : QWidget(parent)
 	this->name.show();
 }
 
-Node::~Node()
+BlockUI::~BlockUI()
 {
 	for(auto const &in : inputs) {
 		delete in;
@@ -43,7 +43,7 @@ Node::~Node()
 	}
 }
 
-void Node::Move(int x, int y){
+void BlockUI::Move(int x, int y){
 	move(x, y);
 
 	name.move(0, Style::NodeNamePadding);
@@ -62,7 +62,7 @@ void Node::Move(int x, int y){
 	}
 }
 
-void Node::paintEvent(QPaintEvent *event)
+void BlockUI::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -77,7 +77,7 @@ void Node::paintEvent(QPaintEvent *event)
 
 }
 
-void Node::mouseMoveEvent(QMouseEvent *event)
+void BlockUI::mouseMoveEvent(QMouseEvent *event)
 {
 	if (!drag) {
 		drag = true;
@@ -87,7 +87,7 @@ void Node::mouseMoveEvent(QMouseEvent *event)
 	Move(tmp.x(), tmp.y());
 }
 
-void Node::mouseReleaseEvent(QMouseEvent *event)
+void BlockUI::mouseReleaseEvent(QMouseEvent *event)
 {
 	drag = false;
 }

@@ -24,10 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    src/gui/connection.cpp \
     src/gui/icp_gui.cpp \
-    src/gui/node.cpp \
-    src/gui/port.cpp \
     src/gui/style.cpp \
     src/gui/tooltip.cpp \
     src/main.cpp \
@@ -36,13 +33,13 @@ SOURCES += \
     src/core/blockbase.cpp \
     src/core/blocks/vectoraddblock.cpp \
     src/core/connection.cpp \
-    src/core/schematic.cpp
+    src/core/schematic.cpp \
+    src/gui/block_ui.cpp \
+    src/gui/connection_ui.cpp \
+    src/gui/port_ui.cpp
 
 HEADERS += \
-    src/gui/connection.h \
     src/gui/icp_gui.h \
-    src/gui/node.h \
-    src/gui/port.h \
     src/gui/style.h \
     src/gui/tooltip.h \
     src/core/type.h \
@@ -50,7 +47,10 @@ HEADERS += \
     src/core/blockbase.h \
     src/core/blocks/vectoraddblock.h \
     src/core/connection.h \
-    src/core/schematic.h
+    src/core/schematic.h \
+    src/gui/connection_ui.h \
+    src/gui/block_ui.h \
+    src/gui/port_ui.h
 
 FORMS += \
     src/gui/icp_gui.ui

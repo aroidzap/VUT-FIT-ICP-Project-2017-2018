@@ -1,6 +1,8 @@
 #ifndef BLOCKBASE_H
 #define BLOCKBASE_H
 
+#include <string>
+#include <vector>
 #include "port.h"
 
 enum BlockType {
@@ -14,9 +16,10 @@ enum BlockType {
 class BlockBase {
 protected:
 	const BlockType type;
+	const std::string name;
 	const std::vector<InPort> inputs;
 	const std::vector<OutPort> outputs;
-	BlockBase(BlockType type);
+	BlockBase(BlockType type, std::string name);
 public:
 	virtual void Compute() = 0;
 };

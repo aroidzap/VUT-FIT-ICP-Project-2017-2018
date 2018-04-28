@@ -1,4 +1,4 @@
-#include "connection.h"
+#include "connection_ui.h"
 #include "style.h"
 
 #include <QPen>
@@ -6,7 +6,7 @@
 #include <QPainterPath>
 #include <algorithm>
 
-Connection::Connection(QWidget *parent) : QWidget(parent), t(parent)
+ConnectionUI::ConnectionUI(QWidget *parent) : QWidget(parent), t(parent)
 {
 	this->a = QPoint(0,0);
 	this->b = QPoint(100,100);
@@ -15,7 +15,7 @@ Connection::Connection(QWidget *parent) : QWidget(parent), t(parent)
 	setMouseTracking(true);
 }
 
-QPainterPath Connection::computePath()
+QPainterPath ConnectionUI::computePath()
 {
 	QPoint left = this->a;
 	QPoint right = this->b;
@@ -28,19 +28,19 @@ QPainterPath Connection::computePath()
 	return path;
 }
 
-double Connection::getValue(){
+double ConnectionUI::getValue(){
 	return 0.0;
 }
-void Connection::showValue(){
+void ConnectionUI::showValue(){
 	t.move(mapFromGlobal(QCursor::pos()));
 	t.Text("value = " + std::to_string(getValue()));
 	t.show();
 	t.raise();
 }
-void Connection::hideValue(){
+void ConnectionUI::hideValue(){
 	t.hide();
 }
-void Connection::paintEvent(QPaintEvent *event)
+void ConnectionUI::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -55,14 +55,14 @@ void Connection::paintEvent(QPaintEvent *event)
 	painter.drawPath(computePath());
 }
 
-void Connection::mouseMoveEvent(QMouseEvent *event)
+void ConnectionUI::mouseMoveEvent(QMouseEvent *event)
 {
 	QPoint off = QPoint(Style::ConnectionHoverSize / 2, Style::ConnectionHoverSize / 2);
 	hover = computePath().intersects(QRectF(event->pos() - off, event->pos() + off));
 	update();
 }
 
-void Connection::leaveEvent(QEvent *event)
+void ConnectionUI::leaveEvent(QEvent *event)
 {
 	hover = false;
 	update();

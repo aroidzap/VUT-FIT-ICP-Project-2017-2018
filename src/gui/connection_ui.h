@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef CONNECTION_UI_H
+#define CONNECTION_UI_H
 
 #include <QWidget>
 #include <QPoint>
@@ -8,7 +8,7 @@
 
 #include "tooltip.h"
 
-class Connection : public QWidget
+class ConnectionUI : public QWidget
 {
 	Q_OBJECT
 private:
@@ -20,7 +20,7 @@ private:
 	void showValue();
 	void hideValue();
 public:
-	explicit Connection(QWidget *parent = nullptr);
+	explicit ConnectionUI(QWidget *parent = nullptr);
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
@@ -28,4 +28,4 @@ protected:
 	void leaveEvent(QEvent *event) override;
 };
 
-#endif // CONNECTION_H
+#endif // CONNECTION_UI_H

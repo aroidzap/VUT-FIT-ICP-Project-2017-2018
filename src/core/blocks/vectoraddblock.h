@@ -7,6 +7,7 @@ class VectorAddBlock : public BlockBase
 {
 public:
 	VectorAddBlock();
+	void Compute() override;
 };
 
 #endif // VECTORADDBLOCK_H
