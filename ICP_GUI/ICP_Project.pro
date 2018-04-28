@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ICP_Project
+TARGET = blockeditor
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -31,7 +31,12 @@ SOURCES += \
     src/gui/style.cpp \
     src/gui/tooltip.cpp \
     src/main.cpp \
-    src/core/type.cpp
+    src/core/type.cpp \
+    src/core/port.cpp \
+    src/core/blockbase.cpp \
+    src/core/blocks/vectoraddblock.cpp \
+    src/core/connection.cpp \
+    src/core/schematic.cpp
 
 HEADERS += \
     src/gui/connection.h \
@@ -40,7 +45,12 @@ HEADERS += \
     src/gui/port.h \
     src/gui/style.h \
     src/gui/tooltip.h \
-    src/core/type.h
+    src/core/type.h \
+    src/core/port.h \
+    src/core/blockbase.h \
+    src/core/blocks/vectoraddblock.h \
+    src/core/connection.h \
+    src/core/schematic.h
 
 FORMS += \
     src/gui/icp_gui.ui
