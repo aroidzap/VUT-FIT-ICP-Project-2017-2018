@@ -1,12 +1,29 @@
 #include "type.h"
 #include <utility>
 #include <sstream>
+#include <stdexcept>
 
 Type::Type(std::initializer_list<std::string> components) : null_data(true)
 {
 	for (const auto &component : components) {
 		this->data.insert(std::pair<std::string, TypeValue>(component, TypeValue(*this, 0.0)));
 	}
+}
+
+Type::Type(const Type &other) : null_data(other.null_data) {
+	for (const auto &elem : other.data) {
+		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second)));
+	}
+}
+
+Type &Type::operator=(const Type &other)
+{
+	this->data.clear();
+	null_data = other.null_data;
+	for (const auto &elem : other.data) {
+		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second)));
+	}
+	return *this;
 }
 
 // access component of type
@@ -26,7 +43,7 @@ void Type::setNull()
 }
 
 // check type compatibility
-bool Type::type_of(const Type &other)
+bool Type::type_of(const Type &other) const
 {
 	for (const auto &element : this->data) {
 		if (other.data.count(element.first) == 0) {
@@ -55,6 +72,16 @@ Type::operator std::string()
 // 'a' values equals 'b' values
 bool operator==(const Type &a, const Type &b)
 {
+	if(!a.type_of(b)){
+		return false;
+	}
+	if(a.isNull() || b.isNull()){
+		if(a.isNull() && b.isNull()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	for (const auto &element : a.data) {
 		if (b.data.at(element.first) != element.second) {
 			return false;
@@ -63,10 +90,7 @@ bool operator==(const Type &a, const Type &b)
 	return true;
 }
 
-TypeValue::TypeValue(Type &type) : type(type), data(0.0)
-{
-	this->type = type;
-}
+TypeValue::TypeValue(Type &type) : type(type), data(0.0) { }
 
 TypeValue::TypeValue(Type &type, double value) : TypeValue(type)
 {
@@ -75,9 +99,13 @@ TypeValue::TypeValue(Type &type, double value) : TypeValue(type)
 
 TypeValue::operator const double &() const
 {
+	if(this->type.isNull()){
+		throw std::runtime_error("Trying to access null TypeValue!");
+	}
 	return this->data;
 }
 
+// after setting any component to some value, other components are not null anymore and are set to default value '0.0'
 TypeValue &TypeValue::operator=(const double &value)
 {
 	this->data = value;

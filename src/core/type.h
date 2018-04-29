@@ -15,6 +15,7 @@ private:
 public:
 	TypeValue(Type &type);
 	TypeValue(Type &type, double value);
+
 	operator const double &() const;
 	TypeValue & operator=(const double &value);
 	friend bool operator== (const TypeValue &a, const TypeValue &b);
@@ -28,10 +29,13 @@ private:
 	std::map<std::string, TypeValue> data;
 public:
 	Type(std::initializer_list<std::string> components);
+	Type(const Type &other);
+	Type & operator=(const Type &other);
+	Type(Type &&other) = delete;
 	TypeValue & operator[](const std::string &s);
 	bool isNull() const;
 	void setNull();
-	bool type_of(const Type &other); // type comparison
+	bool type_of(const Type &other) const; // type comparison
 	friend bool operator== (const Type &a, const Type &b); // value comparison
 	operator std::string();
 };
