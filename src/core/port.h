@@ -1,30 +1,39 @@
 #ifndef PORT_H
 #define PORT_H
 
+#include <string>
 #include "type.h"
+
+class BlockBase;
 
 class Port
 {
+private:
+	std::string name;
+	Type data;
 public:
-	Port();
+	const BlockBase &block;
+	Port(const BlockBase & b, const Type &t, std::string name);
 	virtual bool HasValue() const = 0;
-	virtual const Type & GetValue() const = 0;
+	virtual Type & Value() = 0;
+	operator Type &();
+	TypeValue & operator[](const std::string &s);
 };
 
 class InPort : public Port
 {
 public:
-	InPort();
+	InPort(const BlockBase & b, const Type &t, std::string name);
 	bool HasValue() const override;
-	const Type & GetValue() const override;
+	Type & Value() override;
 };
 
 class OutPort : public Port
 {
 public:
-	OutPort();
+	OutPort(const BlockBase & b, const Type &t, std::string name);
 	bool HasValue() const override;
-	const Type & GetValue() const override;
+	Type & Value() override;
 };
 
 

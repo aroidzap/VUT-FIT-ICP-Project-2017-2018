@@ -1,6 +1,9 @@
 #include "blockbase.h"
 
-BlockBase::BlockBase(BlockType type, std::string name) : type(type), name(name) { }
+BlockBase::BlockBase(BlockType type, std::string name,
+					 std::initializer_list<InPort> inputs,
+					 std::initializer_list<OutPort> outputs)
+ : type(type), name(name), inputs(inputs), outputs(outputs) { }
 
 bool BlockBase::HasAllValues() const
 {
@@ -11,3 +14,5 @@ bool BlockBase::HasAllValues() const
 	}
 	return true;
 }
+
+BlockBaseID::BlockBaseID(BlockBase &b, int id) : BlockBase(b), id(id) { }

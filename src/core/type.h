@@ -13,6 +13,7 @@ private:
 	Type &type;
 public:
 	TypeValue(Type &type);
+	TypeValue(Type &type, double value);
 	operator const double &() const;
 	TypeValue & operator=(const double &value);
 	friend bool operator== (const TypeValue &a, const TypeValue &b);
@@ -20,6 +21,7 @@ public:
 
 class Type
 {
+	friend class TypeValue;
 private:
 	bool null_data;
 	std::map<std::string, TypeValue> data;
