@@ -9,13 +9,12 @@
 class Type;
 
 class TypeValue {
+	friend class Type;
 private:
 	double data;
 	Type &type;
+	TypeValue(Type &type, double value = 0.0);
 public:
-	TypeValue(Type &type);
-	TypeValue(Type &type, double value);
-
 	operator const double &() const;
 	TypeValue & operator=(const double &value);
 	friend bool operator== (const TypeValue &a, const TypeValue &b);

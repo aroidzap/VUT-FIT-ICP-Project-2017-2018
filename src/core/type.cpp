@@ -6,22 +6,22 @@
 Type::Type(std::initializer_list<std::string> components) : null_data(true)
 {
 	for (const auto &component : components) {
-		this->data.insert(std::pair<std::string, TypeValue>(component, TypeValue(*this, 0.0)));
+		this->data.insert(std::pair<std::string, TypeValue>(component, TypeValue(*this)));
 	}
 }
 
 Type::Type(const Type &other) : null_data(other.null_data) {
 	for (const auto &elem : other.data) {
-		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second)));
+		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second.data)));
 	}
 }
 
 Type &Type::operator=(const Type &other)
 {
-	this->data.clear();
 	null_data = other.null_data;
+	this->data.clear();
 	for (const auto &elem : other.data) {
-		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second)));
+		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second.data)));
 	}
 	return *this;
 }
@@ -90,12 +90,7 @@ bool operator==(const Type &a, const Type &b)
 	return true;
 }
 
-TypeValue::TypeValue(Type &type) : type(type), data(0.0) { }
-
-TypeValue::TypeValue(Type &type, double value) : TypeValue(type)
-{
-	this->operator=(value);
-}
+TypeValue::TypeValue(Type &type, double value) : type(type), data(value) { }
 
 TypeValue::operator const double &() const
 {
