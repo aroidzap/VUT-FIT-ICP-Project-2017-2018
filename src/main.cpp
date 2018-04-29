@@ -27,25 +27,26 @@ int main(int argc, char *argv[])
 
 #include "core/types/types.h"
 #include "core/graph.h"
-#include "core/blocks/vectoraddblock.h"
+#include "core/blocks.h"
 
 int main() {
 
-	VectorAddBlock a;
-	VectorAddBlock b;
+	Graph schema("schema", {VECTOR_ADD, VECTOR_ADD});
 
-	a.inputs[0].Value() = vec2(0, 1);
-	a.inputs[1].Value() = vec2(1, 0);
-	a.Compute();
+	BlockBase *a = schema.blocks[0];
+	BlockBase *b = schema.blocks[1];
 
-	b.inputs[1].Value() = vec2(1, 1);
+	a->inputs[0].Value() = vec2(0, 1);
+	a->inputs[1].Value() = vec2(1, 0);
+	a->Compute();
 
-	Graph schema("schema", {&a, &b});
-	schema.addConnection(a.outputs[0], b.inputs[1]);
+	b->inputs[1].Value() = vec2(1, 1);
 
-	b.Compute();
+	schema.addConnection(a->outputs[0], b->inputs[1]);
 
-	Type out = b.outputs[0].Value();
+	b->Compute();
+
+	Type out = b->outputs[0].Value();
 
 	return 0;
 }

@@ -2,11 +2,12 @@
 #define VECTORADDBLOCK_H
 
 #include "../blockbase.h"
+#include "../graph.h"
 
 class VectorAddBlock : public BlockBase
 {
 public:
-	VectorAddBlock();
+	VectorAddBlock(Graph &g);
 	void Compute() override;
 };
 

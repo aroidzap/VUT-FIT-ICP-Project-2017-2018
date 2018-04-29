@@ -1,8 +1,8 @@
 #include "vectoraddblock.h"
 #include "../types/types.h"
 
-VectorAddBlock::VectorAddBlock()
-	: BlockBase(VECTOR_ADD, "Vector Add",
+VectorAddBlock::VectorAddBlock(Graph &g)
+	: BlockBase(g, VECTOR_ADD, "Vector Add",
 	{
 		InPort(*this, vec2(), "A"),
 		InPort(*this, vec2(), "B")
