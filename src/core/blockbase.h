@@ -21,6 +21,7 @@ protected:
 	const std::vector<OutPort> outputs;
 	BlockBase(BlockType type, std::string name);
 public:
+	bool HasAllValues() const;
 	virtual void Compute() = 0;
 };
 
