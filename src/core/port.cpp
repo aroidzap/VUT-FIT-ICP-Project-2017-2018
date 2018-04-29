@@ -1,4 +1,5 @@
 #include "port.h"
+#include "blockbase.h"
 
 Port::Port(const BlockBase &b, const Type &t, std::string name)
 	: block(b), data(t), name(name) { }
@@ -10,23 +11,22 @@ TypeValue &Port::operator[](const std::string &s)
 
 InPort::InPort(const BlockBase &b, const Type &t, std::string name) : Port(b, t, name) { }
 
-bool InPort::HasValue() const
-{
-	return true; //TODO
-}
 
 Type &InPort::Value()
 {
-	return this->data; //TODO
+	const auto &conn = this->block.graph.connections;
+	if (conn.find(this) != conn.end()) {
+		OutPort *port = this->block.graph.connections.at(this);
+		if(port != nullptr){
+			return port->Value(); // return value from connected port
+		}
+	}
+	return this->data;
 }
-OutPort::OutPort(const BlockBase &b, const Type &t, std::string name) : Port(b, t, name) { }
 
-bool OutPort::HasValue() const
-{
-	return true; //TODO
-}
+OutPort::OutPort(const BlockBase &b, const Type &t, std::string name) : Port(b, t, name) { }
 
 Type &OutPort::Value()
 {
-	return this->data; //TODO
+	return this->data;
 }

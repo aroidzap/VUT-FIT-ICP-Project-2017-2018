@@ -21,7 +21,7 @@ public:
 	Graph &graph;
 	std::vector<InPort> inputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
 	std::vector<OutPort> outputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
-	bool HasAllValues() const;
+	bool HasAllValues();
 	virtual void Compute() = 0;
 };
 

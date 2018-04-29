@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <initializer_list>
+#include <iostream>
 
 class Type;
 
@@ -29,8 +30,10 @@ public:
 	Type(std::initializer_list<std::string> components);
 	TypeValue & operator[](const std::string &s);
 	bool isNull() const;
-	bool type_of(const Type &other);
-	friend bool operator== (const Type &a, const Type &b);
+	void setNull();
+	bool type_of(const Type &other); // type comparison
+	friend bool operator== (const Type &a, const Type &b); // value comparison
+	operator std::string();
 };
 
 #endif // TYPE_H

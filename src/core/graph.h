@@ -17,7 +17,7 @@ public: //TODO: private
 	BlockFactory bf;
 	std::string name;
 	std::vector<BlockBase*> blocks;
-	std::map<const InPort *, const OutPort *> connections;
+	std::map<InPort *, OutPort *> connections;
 public:
 	Graph(const XML & xml);
 	Graph(std::string name);
@@ -26,8 +26,8 @@ public:
 
 	void addBlock(BlockType);
 	void removeBlock(BlockBase *b);
-	void addConnection(const OutPort &a, const InPort &b);
-	void removeConnection(const OutPort &a, const InPort &b);
+	void addConnection(OutPort &a, InPort &b);
+	void removeConnection(OutPort &a, InPort &b);
 	void computeReset();
 	void computeStep();
 	void computeAll();

@@ -21,12 +21,12 @@ void Graph::removeBlock(BlockBase *b)
 	//bf.FreeBlock(b);
 }
 
-void Graph::addConnection(const OutPort &a, const InPort &b)
+void Graph::addConnection(OutPort &a, InPort &b)
 {
-	connections.insert(std::pair<const InPort *, const OutPort *>(&b, &a));
+	connections.insert(std::pair<InPort *, OutPort *>(&b, &a));
 }
 
-void Graph::removeConnection(const OutPort &a, const InPort &b)
+void Graph::removeConnection(OutPort &a, InPort &b)
 {
 	//connections.erase(std::pair<const InPort *, const OutPort *>(&b, &a));
 }

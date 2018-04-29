@@ -1,5 +1,6 @@
 #include "type.h"
 #include <utility>
+#include <sstream>
 
 Type::Type(std::initializer_list<std::string> components) : null_data(true)
 {
@@ -19,6 +20,11 @@ bool Type::isNull() const
 	return null_data;
 }
 
+void Type::setNull()
+{
+	null_data = true;
+}
+
 // check type compatibility
 bool Type::type_of(const Type &other)
 {
@@ -28,6 +34,22 @@ bool Type::type_of(const Type &other)
 		}
 	}
 	return true;
+}
+
+Type::operator std::string()
+{
+	std::stringstream ss;
+	for(const auto &elem : data)
+	{
+		ss << elem.first << ": ";
+		if (isNull()) {
+			ss << "Null";
+		} else {
+			ss << elem.second;
+		}
+		ss << "\n";
+	}
+	return ss.str();
 }
 
 // 'a' values equals 'b' values

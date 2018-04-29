@@ -42,11 +42,11 @@ int main() {
 
 	b->inputs[1].Value() = vec2(1, 1);
 
-	schema.addConnection(a->outputs[0], b->inputs[1]);
+	schema.addConnection(a->outputs[0], b->inputs[0]);
 
 	b->Compute();
 
-	Type out = b->outputs[0].Value();
+	std::string out = b->outputs[0].Value();
 
 	return 0;
 }
