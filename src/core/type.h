@@ -5,13 +5,28 @@
 #include <string>
 #include <initializer_list>
 
+class Type;
+
+class TypeValue {
+private:
+	double data;
+	Type &type;
+public:
+	TypeValue(Type &type);
+	operator const double &() const;
+	TypeValue & operator=(const double &value);
+	friend bool operator== (const TypeValue &a, const TypeValue &b);
+};
+
 class Type
 {
 private:
-	std::map<std::string, double> data;
+	bool null_data;
+	std::map<std::string, TypeValue> data;
 public:
 	Type(std::initializer_list<std::string> components);
-	double & operator[](const std::string &s);
+	TypeValue & operator[](const std::string &s);
+	bool isNull() const;
 	bool type_of(const Type &other);
 	friend bool operator== (const Type &a, const Type &b);
 };

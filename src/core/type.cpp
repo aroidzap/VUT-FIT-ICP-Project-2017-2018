@@ -1,17 +1,22 @@
 #include "type.h"
 #include <utility>
 
-Type::Type(std::initializer_list<std::string> components)
+Type::Type(std::initializer_list<std::string> components) : null_data(true)
 {
 	for (const auto &component : components) {
-		this->data.insert(std::pair<std::string, double>(component, 0.0));
+		this->data.insert(std::pair<std::string, TypeValue>(component, TypeValue(this, 0.0)));
 	}
 }
 
 // access component of type
-double &Type::operator[](const std::string &component)
+TypeValue &Type::operator[](const std::string &component)
 {
 	return this->data.at(component);
+}
+
+bool Type::isNull() const
+{
+	return null_data;
 }
 
 // check type compatibility
@@ -34,4 +39,26 @@ bool operator==(const Type &a, const Type &b)
 		}
 	}
 	return true;
+}
+
+TypeValue::TypeValue(Type &type) : data(0.0)
+{
+	this->type = type;
+}
+
+TypeValue::operator const double &() const
+{
+	return this->data;
+}
+
+TypeValue &TypeValue::operator=(const double &value)
+{
+	this->data = value;
+	this->type.null_data = false;
+	return *this;
+}
+
+bool TypeValue::operator==(const TypeValue &a, const TypeValue &b)
+{
+	return a.data == b.data;
 }
