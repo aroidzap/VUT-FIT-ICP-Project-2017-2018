@@ -8,7 +8,7 @@ class BlockBase;
 
 class Port
 {
-private:
+protected:
 	std::string name;
 	Type data;
 public:
@@ -16,7 +16,6 @@ public:
 	Port(const BlockBase & b, const Type &t, std::string name);
 	virtual bool HasValue() const = 0;
 	virtual Type & Value() = 0;
-	operator Type &();
 	TypeValue & operator[](const std::string &s);
 };
 

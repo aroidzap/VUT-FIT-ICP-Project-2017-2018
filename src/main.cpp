@@ -34,18 +34,18 @@ int main() {
 	VectorAddBlock a;
 	VectorAddBlock b;
 
-	/*a.inputs[0] = vec2(0, 1);
-	a.inputs[1] = vec2(1, 0);
+	a.inputs[0].Value() = vec2(0, 1);
+	a.inputs[1].Value() = vec2(1, 0);
 	a.Compute();
 
-	b.inputs[1] = vec2(1, 1);
+	b.inputs[1].Value() = vec2(1, 1);
 
-	Graph schema {a, b};
+	Graph schema("schema", {&a, &b});
 	schema.addConnection(a.outputs[0], b.inputs[1]);
 
 	b.Compute();
 
-	vec2 out = b.outputs[0];*/
+	Type out = b.outputs[0].Value();
 
 	return 0;
 }

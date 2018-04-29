@@ -8,11 +8,6 @@ TypeValue &Port::operator[](const std::string &s)
 	return Value()[s];
 }
 
-Port::operator Type &()
-{
-	return Value();
-}
-
 InPort::InPort(const BlockBase &b, const Type &t, std::string name) : Port(b, t, name) { }
 
 bool InPort::HasValue() const
@@ -22,7 +17,7 @@ bool InPort::HasValue() const
 
 Type &InPort::Value()
 {
-	return this->Value(); //TODO
+	return this->data; //TODO
 }
 OutPort::OutPort(const BlockBase &b, const Type &t, std::string name) : Port(b, t, name) { }
 
@@ -33,5 +28,5 @@ bool OutPort::HasValue() const
 
 Type &OutPort::Value()
 {
-	return this->Value(); //TODO
+	return this->data; //TODO
 }
