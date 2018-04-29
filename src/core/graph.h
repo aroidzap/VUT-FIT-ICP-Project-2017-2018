@@ -28,6 +28,7 @@ public:
 	void removeBlock(BlockBase *b);
 	void addConnection(OutPort &a, InPort &b);
 	void removeConnection(OutPort &a, InPort &b);
+	void removeConnection(InPort &p);
 	void computeReset();
 	void computeStep();
 	void computeAll();

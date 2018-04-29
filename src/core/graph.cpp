@@ -28,5 +28,13 @@ void Graph::addConnection(OutPort &a, InPort &b)
 
 void Graph::removeConnection(OutPort &a, InPort &b)
 {
-	//connections.erase(std::pair<const InPort *, const OutPort *>(&b, &a));
+	if ((connections.find(&b) != connections.end()) &&
+		(connections.at(&b) == &a)) {
+		connections.erase(&b);
+	}
+}
+
+void Graph::removeConnection(InPort &p)
+{
+	connections.erase(&p);
 }
