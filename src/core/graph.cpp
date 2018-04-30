@@ -1,3 +1,11 @@
+/**
+ * @file graph.cpp
+ * @brief Graph class
+ * @details Implemenation of methods that can be performed on a Graph object.
+ * @author Tomáš Pazdiora
+ * @author Michal Pospíšil
+ */
+
 #include "graph.h"
 #include <utility>
 

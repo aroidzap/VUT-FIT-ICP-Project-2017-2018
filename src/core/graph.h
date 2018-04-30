@@ -1,3 +1,10 @@
+/**
+ * @file graph.h
+ * @brief Graph class header
+ * @author Tomáš Pazdiora
+ * @author Michal Pospíšil
+ */
+
 #ifndef GRAPH_H
 #define GRAPH_H
 
