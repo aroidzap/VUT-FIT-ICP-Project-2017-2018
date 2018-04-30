@@ -33,6 +33,13 @@ public:
 	void computeStep();
 	void computeAll();
 
+    /**
+     * @brief Checks if proposed connection creates a cycle
+     * @param startPort Port where the connection starts
+     * @param endPort Port where the connection should end
+     * @return True when cycle is detected after adding the proposed connection, else false
+     */
+    bool formsCycle(OutPort &startPort, InPort &endPort);
 };
 
 #endif // GRAPH_H

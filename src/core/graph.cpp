@@ -38,3 +38,13 @@ void Graph::removeConnection(InPort &p)
 {
 	connections.erase(&p);
 }
+
+
+/**
+ * Function iterates through subgraphs starting at the proposed edge of the current block
+ * to determine if they reach the starting block.
+ * @todo Implement using algorithm from src/core/graphCycles.cpp
+ */
+bool Graph::formsCycle(OutPort &startPort, InPort &endPort) {
+
+}
