@@ -21,6 +21,7 @@ public:
 class InPort : public Port
 {
 public:
+	InPort(const InPort & other, const BlockBase & b);
 	InPort(const BlockBase & b, const Type &t, std::string name);
 	Type & Value() override;
 };
@@ -28,6 +29,7 @@ public:
 class OutPort : public Port
 {
 public:
+	OutPort(const OutPort & other, const BlockBase & b);
 	OutPort(const BlockBase & b, const Type &t, std::string name);
 	Type & Value() override;
 };

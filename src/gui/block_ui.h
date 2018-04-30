@@ -33,10 +33,10 @@ public:
 		: BlockBaseT(b), QWidget(parent), label(b.name.c_str(), this)
 	{
 		for(size_t i = 0; i < BlockBaseT::InputCount(); i++) {
-			inputs.push_back(InPortUI(BlockBaseT::Input(i), parent));
+			inputs.push_back(InPortUI(InPort(BlockBaseT::Input(i), *this), parent));
 		}
 		for(size_t i = 0; i < BlockBaseT::OutputCount(); i++) {
-			outputs.push_back(OutPortUI(BlockBaseT::Output(i), parent));
+			outputs.push_back(OutPortUI(OutPort(BlockBaseT::Output(i), *this), parent));
 		}
 
 		int input_w = (*std::max_element(inputs.begin(), inputs.end(),
