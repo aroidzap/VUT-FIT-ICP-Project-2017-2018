@@ -6,7 +6,6 @@
 
 class Tooltip : public QWidget
 {
-	Q_OBJECT
 private:
 	std::string text;
 public:

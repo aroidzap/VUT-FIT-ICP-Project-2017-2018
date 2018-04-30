@@ -10,7 +10,6 @@
 
 class ConnectionUI : public QWidget
 {
-	Q_OBJECT
 private:
 	Tooltip t;
 	InPortUI *in;

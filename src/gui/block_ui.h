@@ -10,7 +10,6 @@
 
 class BlockUI : public QWidget, public BlockBase
 {
-	Q_OBJECT
 private:
 	QLabel label;
 	bool drag = false;

@@ -10,7 +10,6 @@
 
 class PortBaseUI : public QWidget
 {
-	Q_OBJECT
 protected:
 	bool hover = false;
 	QLabel label;

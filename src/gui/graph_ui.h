@@ -7,7 +7,6 @@
 
 class GraphUI : public QWidget, public Graph
 {
-	Q_OBJECT
 private:
 	BlockFactoryUI bf;
 	BlockFactory & GetBlockFactory() override;
