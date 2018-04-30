@@ -1,11 +1,14 @@
 #include "blockbase.h"
 
-BlockBase::BlockBase(BlockType type, std::string name) : type(type), name(name) { }
+BlockBase::BlockBase(Graph &g, BlockType type, std::string name,
+					 std::initializer_list<InPort> inputs,
+					 std::initializer_list<OutPort> outputs)
+ : graph(g), type(type), name(name), inputs(inputs), outputs(outputs) { }
 
-bool BlockBase::HasAllValues() const
+bool BlockBase::HasAllValues()
 {
-	for (const auto &p : this->inputs) {
-		if(!p.HasValue()){
+	for (InPort &p : this->inputs) {
+		if(p.Value().isNull()){
 			return false;
 		}
 	}

@@ -32,11 +32,14 @@ SOURCES += \
     src/core/blockbase.cpp \
     src/core/blocks/vectoraddblock.cpp \
     src/core/connection.cpp \
-    src/core/schematic.cpp \
     src/gui/block_ui.cpp \
     src/gui/connection_ui.cpp \
     src/gui/port_ui.cpp \
-    src/gui/blockeditor.cpp
+    src/gui/blockeditor.cpp \
+    src/core/graph.cpp \
+    src/core/xml.cpp \
+    src/core/types/types.cpp \
+    src/core/blockfactory.cpp
 
 HEADERS += \
     src/gui/style.h \
@@ -46,11 +49,17 @@ HEADERS += \
     src/core/blockbase.h \
     src/core/blocks/vectoraddblock.h \
     src/core/connection.h \
-    src/core/schematic.h \
     src/gui/connection_ui.h \
     src/gui/block_ui.h \
     src/gui/port_ui.h \
-    src/gui/blockeditor.h
+    src/gui/blockeditor.h \
+    src/core/graph.h \
+    src/core/xml.h \
+    src/core/types/types.h \
+    src/core/blockfactory.h \
+    src/core/blocks.h
 
 FORMS += \
     src/gui/blockeditor.ui
+
+QMAKE_CXXFLAGS += -std=c++14
