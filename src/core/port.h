@@ -9,10 +9,10 @@ class BlockBase;
 class Port
 {
 protected:
-	std::string name;
 	Type data;
 public:
 	const BlockBase &block;
+	const std::string name;
 	Port(const BlockBase & b, const Type &t, std::string name);
 	virtual Type & Value() = 0;
 	TypeValue & operator[](const std::string &s);

@@ -1,24 +1,27 @@
 #include "graph.h"
 #include <utility>
 
-Graph::Graph(std::string name) : name(name), bf(*this) { }
+Graph::Graph() : bf(*this) { }
 
-Graph::Graph(std::string name, std::initializer_list<BlockType> blocks) : Graph(name)
+void Graph::SetName(const std::string name)
 {
-	for(auto b : blocks){
-		addBlock(b);
-	}
+	this->name = name;
+}
+
+BlockFactory &Graph::GetBlockFactory()
+{
+	return bf;
 }
 
 void Graph::addBlock(BlockType t)
 {
-	this->blocks.push_back(bf.AllocBlock(t));
+	this->blocks.push_back(GetBlockFactory().AllocBlock(t));
 }
 
 void Graph::removeBlock(BlockBase *b)
 {
-	//this->blocks.remove(b);
-	//bf.FreeBlock(b);
+	this->blocks.remove(b);
+	GetBlockFactory().FreeBlock(b);
 }
 
 void Graph::addConnection(OutPort &a, InPort &b)

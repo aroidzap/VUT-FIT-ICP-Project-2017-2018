@@ -7,57 +7,48 @@
 
 #include <algorithm>
 
-BlockUI::BlockUI(std::string name, QPoint position, QWidget *parent) : QWidget(parent), name(name.c_str(), this)
+BlockUI::BlockUI(const BlockBase &b, QWidget *parent)
+	: BlockBase(b), QWidget(parent), label(b.name.c_str(), this)
 {
-	//input
-	inputs.push_back(new PortUI("vstup A", true, parent));
-	inputs.push_back(new PortUI("vstup B", true, parent));
-	inputs.push_back(new PortUI("vstup C", true, parent));
-	//outputs
-	outputs.push_back(new PortUI("vystup A", false, parent));
-	outputs.push_back(new PortUI("vystup B", false, parent));
-
-	int input_w = (*std::max_element(inputs.begin(), inputs.end(),
-		[] (const PortUI *a, const PortUI *b) { return a->getWidth() < b->getWidth(); }))->getWidth();
-	int output_w = (*std::max_element(inputs.begin(), inputs.end(),
-		[] (const PortUI *a, const PortUI *b) { return a->getWidth() < b->getWidth(); }))->getWidth();
+	int input_w = static_cast<const InPortUI*>(&(*std::max_element(inputs.begin(), inputs.end(),
+		[] (const InPort &a, const InPort &b) {
+		// dynamic_cast ??
+		return static_cast<const InPortUI*>(&a)->getWidth() < static_cast<const InPortUI*>(&b)->getWidth();
+	})))->getWidth();
+	int output_w = static_cast<const OutPortUI*>(&(*std::max_element(outputs.begin(), outputs.end(),
+		[] (const OutPort &a, const OutPort &b) {
+		// dynamic_cast ??
+		return static_cast<const OutPortUI*>(&a)->getWidth() < static_cast<const OutPortUI*>(&b)->getWidth();
+	})))->getWidth();
 
 	height = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
 			 std::max(Style::PortMarginV, Style::NodeNameHeight);
 	width = std::max(input_w + output_w, Style::NodeMinWidth);
 	resize(width + 1, height + 1);
 
-	Move(position.x(), position.y());
+	Move(0, 0);
 
 	show();
-	this->name.show();
-}
-
-BlockUI::~BlockUI()
-{
-	for(auto const &in : inputs) {
-		delete in;
-	}
-	for(auto const &out : outputs) {
-		delete out;
-	}
+	this->label.show();
 }
 
 void BlockUI::Move(int x, int y){
 	move(x, y);
 
-	name.move(0, Style::NodeNamePadding);
-	name.setFixedWidth(width);
-	name.setAlignment(Qt::AlignCenter);
+	label.move(0, Style::NodeNamePadding);
+	label.setFixedWidth(width);
+	label.setAlignment(Qt::AlignCenter);
 
 	int offset = std::max(Style::PortMarginV, Style::NodeNameHeight);
-	for(auto const &in : inputs) {
-		in->Move(x, y + offset);
+	for(auto &in : inputs) {
+		// dynamic_cast ??
+		static_cast<InPortUI*>(&in)->Move(x, y + offset);
 		offset += Style::PortMarginV;
 	}
 	offset = std::max(Style::PortMarginV, Style::NodeNameHeight);
-	for(auto const &out : outputs) {
-		out->Move(x + width, y + offset);
+	for(auto &out : outputs) {
+		// dynamic_cast ??
+		static_cast<OutPortUI*>(&out)->Move(x + width, y + offset);
 		offset += Style::PortMarginV;
 	}
 }

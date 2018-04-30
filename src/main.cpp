@@ -28,13 +28,27 @@ int main(int argc, char *argv[])
 #include "core/types/types.h"
 #include "core/graph.h"
 #include "core/blocks.h"
+#include "core/blockfactory.h"
 
-int main() {
+#include "gui/graph_ui.h"
 
-	Graph schema("schema", {VECTOR_ADD, VECTOR_ADD});
+int main(int argc, char *argv[]) {
 
-	BlockBase *a = schema.blocks[0];
-	BlockBase *b = schema.blocks[1];
+	QApplication app(argc, argv);
+
+	BLOCKEDITOR win;
+
+	GraphUI schema;
+
+	win.setCentralWidget(&schema);
+	win.show();
+
+	schema.SetName("schema");
+	schema.addBlock(VECTOR_ADD);
+	schema.addBlock(VECTOR_ADD);
+
+	BlockBase *a = schema.blocks.front();
+	BlockBase *b = schema.blocks.back();
 
 	a->inputs[0].Value() = vec2(0, 1);
 	a->inputs[1].Value() = vec2(1, 0);
@@ -48,5 +62,5 @@ int main() {
 
 	std::string out = b->outputs[0].Value();
 
-	return 0;
+	return app.exec();
 }

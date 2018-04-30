@@ -5,23 +5,21 @@
 #include <QWidget>
 #include <list>
 
+#include "../core/blockbase.h"
 #include "port_ui.h"
 
-class BlockUI : public QWidget
+class BlockUI : public QWidget, public BlockBase
 {
 	Q_OBJECT
 private:
-	QLabel name;
-	std::list<PortUI*> inputs;
-	std::list<PortUI*> outputs;
+	QLabel label;
 	bool drag = false;
 	bool highlight = false;
 	QPoint drag_p;
 	int height;
 	int width;
 public:
-	explicit BlockUI(std::string name, QPoint position = QPoint(0, 0), QWidget *parent = nullptr);
-	~BlockUI();
+	explicit BlockUI(const BlockBase &b, QWidget *parent = nullptr);
 	void Move(int x, int y);
 	void Highlight(bool enable);
 

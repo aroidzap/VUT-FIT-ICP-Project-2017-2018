@@ -9,13 +9,14 @@ class BlockBase;
 
 class BlockFactory {
 private:
-	Graph &g;
 	std::list<BlockBase*> blocks;
+protected:
+	Graph &g;
 public:
-	BlockBase* AllocBlock(BlockType t);
-	void FreeBlock(BlockBase*);
+	virtual BlockBase* AllocBlock(BlockType t);
+	virtual void FreeBlock(BlockBase *b);
 	BlockFactory(Graph &g);
-	~BlockFactory();
+	virtual ~BlockFactory();
 };
 
 #endif // BLOCKFACTORY_H
