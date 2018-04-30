@@ -18,6 +18,7 @@ public:
 class mat2 : public Type {
 public:
 	mat2();
+	mat2(double m11, double m12, double m21, double m22);
 };
 
 #endif // TYPES_H

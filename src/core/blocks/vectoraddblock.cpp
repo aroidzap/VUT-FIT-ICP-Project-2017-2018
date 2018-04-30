@@ -14,6 +14,6 @@ VectorAddBlock::VectorAddBlock(Graph &g)
 
 void VectorAddBlock::Compute()
 {
-	this->outputs[0]["x"] = this->inputs[0]["x"] + this->inputs[1]["x"];
-	this->outputs[0]["y"] = this->inputs[0]["y"] + this->inputs[1]["y"];
+	this->Output(0)["x"] = this->Input(0)["x"] + this->Input(1)["x"];
+	this->Output(0)["y"] = this->Input(0)["y"] + this->Input(1)["y"];
 }

@@ -11,6 +11,7 @@
 class PortBaseUI : public QWidget
 {
 protected:
+	QWidget *p;
 	bool hover = false;
 	QLabel label;
 	PortBaseUI(const std::string name, QWidget *parent = nullptr);
@@ -27,6 +28,7 @@ public:
 class InPortUI : public PortBaseUI, public InPort
 {
 public:
+	InPortUI(const InPortUI &other);
 	explicit InPortUI(const InPort &p, QWidget *parent = nullptr);
 	void Move(int x, int y) override;
 };
@@ -34,6 +36,7 @@ public:
 class OutPortUI : public PortBaseUI, public OutPort
 {
 public:
+	OutPortUI(const OutPortUI &other);
 	explicit OutPortUI(const OutPort &p, QWidget *parent = nullptr);
 	void Move(int x, int y) override;
 };

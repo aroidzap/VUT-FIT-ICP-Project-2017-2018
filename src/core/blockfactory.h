@@ -8,10 +8,9 @@ class Graph;
 class BlockBase;
 
 class BlockFactory {
-private:
-	std::list<BlockBase*> blocks;
 protected:
 	Graph &g;
+	std::list<BlockBase*> blocks;
 public:
 	virtual BlockBase* AllocBlock(BlockType t);
 	virtual void FreeBlock(BlockBase *b);

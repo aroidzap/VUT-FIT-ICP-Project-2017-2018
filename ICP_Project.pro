@@ -32,7 +32,6 @@ SOURCES += \
     src/core/blockbase.cpp \
     src/core/blocks/vectoraddblock.cpp \
     src/core/connection.cpp \
-    src/gui/block_ui.cpp \
     src/gui/connection_ui.cpp \
     src/gui/port_ui.cpp \
     src/gui/blockeditor.cpp \

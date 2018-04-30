@@ -3,7 +3,8 @@
 #include <QPainter>
 #include <QPainterPath>
 
-PortBaseUI::PortBaseUI(const std::string name, QWidget *parent) : QWidget(parent), label(name.c_str(), parent)
+PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
+	: QWidget(parent), label(name.c_str(), parent), p(parent)
 {
 	resize(Style::PortSize + 2, Style::PortSize + 2);
 
@@ -13,10 +14,14 @@ PortBaseUI::PortBaseUI(const std::string name, QWidget *parent) : QWidget(parent
 	setMouseTracking(true);
 }
 
+InPortUI::InPortUI(const InPortUI &other) : InPortUI(other, other.p) { }
+
 InPortUI::InPortUI(const InPort &p, QWidget *parent)
 	: InPort(p), PortBaseUI(p.name, parent) {
 	Move(0, 0);
 }
+
+OutPortUI::OutPortUI(const OutPortUI &other) : OutPortUI(other, other.p) { }
 
 OutPortUI::OutPortUI(const OutPort &p, QWidget *parent)
 	: OutPort(p), PortBaseUI(p.name, parent) {
