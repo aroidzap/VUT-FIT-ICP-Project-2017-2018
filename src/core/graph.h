@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <list>
 #include <map>
 #include <initializer_list>
 #include "xml.h"
@@ -13,15 +13,20 @@
 
 class Graph
 {
-public: //TODO: private
+private:
 	BlockFactory bf;
+protected:
 	std::string name;
-	std::vector<BlockBase*> blocks;
-	std::map<InPort *, OutPort *> connections;
+	virtual BlockFactory & GetBlockFactory();
 public:
-	Graph(const XML & xml);
-	Graph(std::string name);
-	Graph(std::string name, std::initializer_list<BlockType> blocks);
+	std::list<BlockBase*> blocks;
+	std::map<InPort *, OutPort *> connections;
+
+	Graph();
+
+	virtual void SetName(const std::string name);
+
+	void loadGraph(const XML & xml);
 	const XML & saveGraph();
 
 	void addBlock(BlockType);

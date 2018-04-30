@@ -3,10 +3,10 @@
 #include <QPainter>
 #include <QPainterPath>
 
-PortUI::PortUI(std::string name, bool input, QWidget *parent) : QWidget(parent), label(name.c_str(), parent), input(input)
+PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
+	: QWidget(parent), label(name.c_str(), parent), p(parent)
 {
 	resize(Style::PortSize + 2, Style::PortSize + 2);
-	Move(0, 0);
 
 	show();
 	label.show();
@@ -14,21 +14,37 @@ PortUI::PortUI(std::string name, bool input, QWidget *parent) : QWidget(parent),
 	setMouseTracking(true);
 }
 
-int PortUI::getWidth() const{
+InPortUI::InPortUI(const InPortUI &other) : InPortUI(other, other.p) { }
+
+InPortUI::InPortUI(const InPort &p, QWidget *parent)
+	: InPort(p), PortBaseUI(p.name, parent) {
+	Move(0, 0);
+}
+
+OutPortUI::OutPortUI(const OutPortUI &other) : OutPortUI(other, other.p) { }
+
+OutPortUI::OutPortUI(const OutPort &p, QWidget *parent)
+	: OutPort(p), PortBaseUI(p.name, parent) {
+	Move(0, 0);
+}
+
+int PortBaseUI::getWidth() const{
 	return Style::PortNamePadding * 2 + label.width();
 }
 
-void PortUI::Move(int x, int y)
+void InPortUI::Move(int x, int y)
 {
 	move(x - Style::PortSize/2 - 1, y - Style::PortSize/2 - 1);
-	if(input) {
-		label.move(x + Style::PortNamePadding, y - label.height() / 2);
-	} else {
-		label.move(x - Style::PortNamePadding - label.width(), y - label.height() / 2);
-	}
+	label.move(x + Style::PortNamePadding, y - label.height() / 2);
 }
 
-void PortUI::paintEvent(QPaintEvent *event)
+void OutPortUI::Move(int x, int y)
+{
+	move(x - Style::PortSize/2 - 1, y - Style::PortSize/2 - 1);
+	label.move(x - Style::PortNamePadding - label.width(), y - label.height() / 2);
+}
+
+void PortBaseUI::paintEvent(QPaintEvent *event)
 {
 	(event);
 	QPainter painter(this);
@@ -44,7 +60,7 @@ void PortUI::paintEvent(QPaintEvent *event)
 						Style::PortDrawSize/2, Style::PortDrawSize/2);
 }
 
-void PortUI::mouseMoveEvent(QMouseEvent *event)
+void PortBaseUI::mouseMoveEvent(QMouseEvent *event)
 {
 	QPoint diff = (event->pos() - QPoint(Style::PortSize/2, Style::PortSize/2));
 	int dist = sqrt(diff.x()*diff.x() + diff.y()*diff.y());
@@ -52,14 +68,14 @@ void PortUI::mouseMoveEvent(QMouseEvent *event)
 	update();
 }
 
-void PortUI::leaveEvent(QEvent *event)
+void PortBaseUI::leaveEvent(QEvent *event)
 {
 	(event);
 	hover = false;
 	update();
 }
 
-void PortUI::mouseReleaseEvent(QMouseEvent *event)
+void PortBaseUI::mouseReleaseEvent(QMouseEvent *event)
 {
 	(event);
 }

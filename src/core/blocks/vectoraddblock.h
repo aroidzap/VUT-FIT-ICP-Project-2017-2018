@@ -9,6 +9,7 @@ class VectorAddBlock : public BlockBase
 public:
 	VectorAddBlock(Graph &g);
 	void Compute() override;
+	virtual ~VectorAddBlock() = default;
 };
 
 #endif // VECTORADDBLOCK_H

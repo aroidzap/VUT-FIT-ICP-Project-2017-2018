@@ -6,10 +6,9 @@
 #include <QPainterPath>
 #include <algorithm>
 
-ConnectionUI::ConnectionUI(QWidget *parent) : QWidget(parent), t(parent)
+ConnectionUI::ConnectionUI(InPortUI *in, OutPortUI *out, QWidget *parent)
+	: QWidget(parent), t(parent), in(in), out(out)
 {
-	this->a = QPoint(0,0);
-	this->b = QPoint(100,100);
 	resize(parent->size());
 	show();
 	setMouseTracking(true);
@@ -17,8 +16,8 @@ ConnectionUI::ConnectionUI(QWidget *parent) : QWidget(parent), t(parent)
 
 QPainterPath ConnectionUI::computePath()
 {
-	QPoint left = this->a;
-	QPoint right = this->b;
+	QPoint left = this->in->pos();
+	QPoint right = this->out->pos();
 
 	QPainterPath path;
 	path.moveTo(left);
@@ -28,18 +27,16 @@ QPainterPath ConnectionUI::computePath()
 	return path;
 }
 
-double ConnectionUI::getValue(){
-	return 0.0;
-}
 void ConnectionUI::showValue(){
 	t.move(mapFromGlobal(QCursor::pos()));
-	t.Text("value = " + std::to_string(getValue()));
+	t.Text(out->Value());
 	t.show();
 	t.raise();
 }
 void ConnectionUI::hideValue(){
 	t.hide();
 }
+
 void ConnectionUI::paintEvent(QPaintEvent *event)
 {
 	(event);

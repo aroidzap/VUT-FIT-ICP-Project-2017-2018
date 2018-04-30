@@ -2,25 +2,24 @@
 #define CONNECTION_UI_H
 
 #include <QWidget>
-#include <QPoint>
 #include <QPaintEvent>
 #include <QMouseEvent>
 
 #include "tooltip.h"
+#include "port_ui.h"
 
 class ConnectionUI : public QWidget
 {
-	Q_OBJECT
 private:
 	Tooltip t;
-	QPoint a, b;
+	InPortUI *in;
+	OutPortUI *out;
 	QPainterPath computePath();
 	bool hover = false;
-	double getValue();
 	void showValue();
 	void hideValue();
 public:
-	explicit ConnectionUI(QWidget *parent = nullptr);
+	explicit ConnectionUI(InPortUI *in, OutPortUI *out, QWidget *parent = nullptr);
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
