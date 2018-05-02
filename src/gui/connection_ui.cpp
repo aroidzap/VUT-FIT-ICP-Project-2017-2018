@@ -7,17 +7,40 @@
 #include <algorithm>
 
 ConnectionUI::ConnectionUI(InPortUI *in, OutPortUI *out, QWidget *parent)
-	: QWidget(parent), t(parent), in(in), out(out)
+	: QWidget(parent), p(parent), t(parent), in(in), out(out)
 {
 	resize(parent->size());
 	show();
-	setMouseTracking(true);
+	setAttribute(Qt::WA_TransparentForMouseEvents);
+}
+
+ConnectionUI::ConnectionUI(const ConnectionUI &other)
+	: QWidget(other.p), p(other.p), t(other.p), in(other.in), out(other.out) { }
+
+bool ConnectionUI::operator==(const InPort &p)
+{
+	return this->in == &p;
+}
+
+bool ConnectionUI::operator==(const OutPort &p)
+{
+	return this->out == &p;
+}
+
+bool ConnectionUI::operator==(const Port &p)
+{
+	return (this->in == &p || this->out == &p);
+}
+
+bool operator==(const ConnectionUI &a, const ConnectionUI &b)
+{
+	return a.in == b.in;
 }
 
 QPainterPath ConnectionUI::computePath()
 {
-	QPoint left = this->in->pos();
-	QPoint right = this->out->pos();
+	QPoint left = getLeft();
+	QPoint right = getRight();
 
 	QPainterPath path;
 	path.moveTo(left);
@@ -43,6 +66,7 @@ void ConnectionUI::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	QPen p(Style::ConnectionCol);
+	raise();
 	if(hover){
 		p.setWidth(2);
 		showValue();
@@ -53,16 +77,67 @@ void ConnectionUI::paintEvent(QPaintEvent *event)
 	painter.drawPath(computePath());
 }
 
-void ConnectionUI::mouseMoveEvent(QMouseEvent *event)
+QPoint ConnectionUI::getLeft()
 {
-	QPoint off = QPoint(Style::ConnectionHoverSize / 2, Style::ConnectionHoverSize / 2);
-	hover = computePath().intersects(QRectF(event->pos() - off, event->pos() + off));
-	update();
+	return this->out->Pos();
 }
 
-void ConnectionUI::leaveEvent(QEvent *event)
+QPoint ConnectionUI::getRight()
 {
-	(event);
-	hover = false;
-	update();
+	return this->in->Pos();
 }
+
+bool ConnectionUI::mouseHover(QPoint mouse){
+	QPoint off = QPoint(Style::ConnectionHoverSize / 2, Style::ConnectionHoverSize / 2);
+	hover = computePath().intersects(QRectF(mouse - off, mouse + off));
+	update();
+	return hover;
+}
+
+bool ConnectionUI::mouseHover(bool hover){
+	this->hover = hover;
+	update();
+	return this->hover;
+}
+
+TempConnectionUI::TempConnectionUI(InPort **in, OutPort **out, QWidget *parent)
+	: ConnectionUI(static_cast<InPortUI*>(*in), static_cast<OutPortUI*>(*out), parent),
+	  in_c(in), out_c(out) { }
+
+QPoint TempConnectionUI::getLeft()
+{
+	if (*in_c == nullptr && *out_c == nullptr){
+		//hide();
+		return QPoint(0, 0);
+	} else {
+		//show();
+		if (*out_c == nullptr){
+			return mapFromGlobal(cursor().pos());
+		} else {
+			return (*static_cast<OutPortUI*>(*out_c)).Pos();
+		}
+	}
+}
+
+QPoint TempConnectionUI::getRight()
+{
+	//return mapFromGlobal(cursor().pos());
+	if (*in_c == nullptr && *out_c == nullptr){
+		//hide();
+		return QPoint(0, 0);
+	} else {
+		//show();
+		if (*in_c == nullptr){
+			return mapFromGlobal(cursor().pos());
+		} else {
+			return (*static_cast<InPortUI*>(*in_c)).Pos();
+		}
+	}
+}
+
+void TempConnectionUI::paintEvent(QPaintEvent *event)
+{
+	hover = false;
+	ConnectionUI::paintEvent(event);
+}
+

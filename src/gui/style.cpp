@@ -20,6 +20,8 @@ const QColor Style::NodeOutlineHighlightCol = QColor(50, 100, 255);
 const QColor Style::NodeBackgroundCol = QColor(160, 160, 160);
 
 const int Style::TooltipRoundSize = 8;
+const int Style::TooltipPadding = 8;
+const int Style::TooltipHPadding = 16;
 const QColor Style::TooltipOutlineCol = QColor(0, 0, 0, 0);
 const QColor Style::TooltipBackgroundCol = QColor(0, 0, 0, 80);
 const QColor Style::TooltipTextCol = QColor(255, 255, 255);

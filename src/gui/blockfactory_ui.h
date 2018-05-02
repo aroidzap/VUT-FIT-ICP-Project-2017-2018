@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <list>
 #include "../core/blockfactory.h"
-#include "block_ui.h"
 
 class GraphUI;
 

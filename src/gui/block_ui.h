@@ -1,6 +1,7 @@
 #ifndef BLOCK_UI_H
 #define BLOCK_UI_H
 
+#include <QApplication>
 #include <QPaintEvent>
 #include <QWidget>
 #include <list>
@@ -13,6 +14,7 @@
 #include "block_ui.h"
 #include "style.h"
 #include "port_ui.h"
+#include "graph_ui.h"
 
 #include "../core/blockbase.h"
 
@@ -32,6 +34,7 @@ public:
 	explicit BlockUI(const BlockBaseT &b, QWidget *parent = nullptr)
 		: BlockBaseT(b), QWidget(parent), label(b.name.c_str(), this)
 	{
+		setMouseTracking(true);
 		for(size_t i = 0; i < BlockBaseT::InputCount(); i++) {
 			inputs.push_back(InPortUI(InPort(BlockBaseT::Input(i), *this), parent));
 		}
@@ -49,6 +52,7 @@ public:
 		height = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
 				 std::max(Style::PortMarginV, Style::NodeNameHeight);
 		width = std::max(input_w + output_w, Style::NodeMinWidth);
+		width = std::max(width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(label.text()));
 
 		resize(width + 1, height + 1);
 
@@ -130,17 +134,27 @@ protected:
 	}
 	void mouseMoveEvent(QMouseEvent *event) override
 	{
-		if (!drag) {
-			drag = true;
-			drag_p = event->pos();
+		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
+		if(drag){
+			QPoint tmp = pos() + event->pos() - drag_p;
+			Move(tmp.x(), tmp.y());
 		}
-		QPoint tmp = pos() + event->pos() - drag_p;
-		Move(tmp.x(), tmp.y());
+	}
+	void mousePressEvent(QMouseEvent *event) override
+	{
+		(event);
+		drag = true;
+		drag_p = event->pos();
 	}
 	void mouseReleaseEvent(QMouseEvent *event) override
 	{
 		(event);
 		drag = false;
+	}
+	void enterEvent(QEvent *event) override
+	{
+		(event);
+		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
 	}
 };
 

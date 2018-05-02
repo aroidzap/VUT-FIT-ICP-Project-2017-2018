@@ -3,6 +3,8 @@
 
 #include <QPainter>
 #include <QPainterPath>
+#include <QApplication>
+#include <vector>
 
 Tooltip::Tooltip(QWidget *parent) : QWidget(parent) {
 	setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -18,6 +20,26 @@ void Tooltip::Text(std::string text){
 
 void Tooltip::paintEvent(QPaintEvent *event)
 {
+	(event);
+	int w = 0;
+	std::vector<std::string> lines;
+	std::string tmp;
+	for(auto const &c : text){
+		if(c == '\n'){
+			int width = QApplication::fontMetrics().width(tmp.c_str());
+			w = width > w ? width : w;
+			lines.push_back(tmp);
+			tmp.clear();
+		} else {
+			tmp += c;
+		}
+	}
+
+	int h = QApplication::fontMetrics().height();
+
+	resize(w + 2 * Style::TooltipHPadding,
+		   h * static_cast<int>(lines.size()) + 2 * Style::TooltipPadding);
+
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
@@ -30,5 +52,9 @@ void Tooltip::paintEvent(QPaintEvent *event)
 	painter.drawPath(path);
 
 	painter.setPen(Style::TooltipTextCol);
-	painter.drawText(16,16,text.c_str()); //TODO: style
+	int offset = h - 3;
+	for(const std::string &line : lines){
+		painter.drawText(Style::TooltipHPadding, offset + Style::TooltipPadding, line.c_str());
+		offset += h;
+	}
 }
