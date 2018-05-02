@@ -5,44 +5,53 @@ BlockFactory &GraphUI::GetBlockFactory()
 	return bf;
 }
 
-GraphUI::GraphUI() : bf(*this) {
+GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
+	tc(&in_click, &out_click, this) {
 	setMouseTracking(true);
 }
 
-void GraphUI::addConnection(OutPort &a, InPort &b)
+bool GraphUI::addConnection(OutPort &a, InPort &b)
 {
-	Graph::addConnection(a, b);
-	// remove previous connection
-	for(ConnectionUI *c : ui_connections){
-		if((*c) == b){
-			ui_connections.remove(c);
-			delete c;
+	if(Graph::addConnection(a, b)) {
+		// remove previous connection
+		for(ConnectionUI *c : ui_connections){
+			if((*c) == b){
+				ui_connections.remove(c);
+				delete c;
+			}
 		}
+		// create new connection
+		ui_connections.push_back(new ConnectionUI(static_cast<InPortUI*>(&b), static_cast<OutPortUI*>(&a), this));
+
+		this->in_click = nullptr;
+		this->out_click = nullptr;
+		return true;
 	}
-	// create new connection
-	ui_connections.push_back(new ConnectionUI(static_cast<InPortUI*>(&b), static_cast<OutPortUI*>(&a), this));
-}
-
-void GraphUI::removeConnection(OutPort &a, InPort &b)
-{
-	Graph::removeConnection(a, b);
-
-	for(ConnectionUI *c : ui_connections){
-		if((*c) == a && (*c) == b){
-			ui_connections.remove(c);
-			delete c;
-		}
+	else {
+		// Unable to add connection - acyclic
+		return false;
 	}
 }
 
 void GraphUI::removeConnection(InPort &p)
 {
-	Graph::removeConnection(p);
+	OutPort *conn_p = getConnectedOutPort(p);
+	if(conn_p != nullptr){
+		this->out_click = conn_p;
 
-	for(ConnectionUI *c : ui_connections){
-		if((*c) == p){
-			ui_connections.remove(c);
-			delete c;
+		Graph::removeConnection(p);
+
+		for (auto it = ui_connections.cbegin(); it != ui_connections.cend();)
+		{
+			if (*(*it) == p)
+			{
+				delete (*it);
+				ui_connections.erase(it++);
+			}
+			else
+			{
+				it++;
+			}
 		}
 	}
 }
@@ -68,11 +77,13 @@ void GraphUI::hoverConnectionUI(QPoint mouse)
 	for(ConnectionUI *c : ui_connections){
 		c->mouseHover(mouse);
 	}
+	tc.update();
 }
 
 void GraphUI::mouseMoveEvent(QMouseEvent *event)
 {
 	hoverConnectionUI(event->pos());
+	tc.update();
 }
 
 void GraphUI::hideHoverConnectionUI()
@@ -86,4 +97,12 @@ void GraphUI::leaveEvent(QEvent *event)
 {
 	(event);
 	hideHoverConnectionUI();
+}
+
+void GraphUI::mousePressEvent(QMouseEvent *event)
+{
+	(event);
+	in_click = nullptr;
+	out_click = nullptr;
+	tc.update();
 }

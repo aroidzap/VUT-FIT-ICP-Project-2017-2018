@@ -39,8 +39,8 @@ bool operator==(const ConnectionUI &a, const ConnectionUI &b)
 
 QPainterPath ConnectionUI::computePath()
 {
-	QPoint left = this->out->Pos();
-	QPoint right = this->in->Pos();
+	QPoint left = getLeft();
+	QPoint right = getRight();
 
 	QPainterPath path;
 	path.moveTo(left);
@@ -77,6 +77,16 @@ void ConnectionUI::paintEvent(QPaintEvent *event)
 	painter.drawPath(computePath());
 }
 
+QPoint ConnectionUI::getLeft()
+{
+	return this->out->Pos();
+}
+
+QPoint ConnectionUI::getRight()
+{
+	return this->in->Pos();
+}
+
 bool ConnectionUI::mouseHover(QPoint mouse){
 	QPoint off = QPoint(Style::ConnectionHoverSize / 2, Style::ConnectionHoverSize / 2);
 	hover = computePath().intersects(QRectF(mouse - off, mouse + off));
@@ -88,5 +98,46 @@ bool ConnectionUI::mouseHover(bool hover){
 	this->hover = hover;
 	update();
 	return this->hover;
+}
+
+TempConnectionUI::TempConnectionUI(InPort **in, OutPort **out, QWidget *parent)
+	: ConnectionUI(static_cast<InPortUI*>(*in), static_cast<OutPortUI*>(*out), parent),
+	  in_c(in), out_c(out) { }
+
+QPoint TempConnectionUI::getLeft()
+{
+	if (*in_c == nullptr && *out_c == nullptr){
+		//hide();
+		return QPoint(0, 0);
+	} else {
+		//show();
+		if (*out_c == nullptr){
+			return mapFromGlobal(cursor().pos());
+		} else {
+			return (*static_cast<OutPortUI*>(*out_c)).Pos();
+		}
+	}
+}
+
+QPoint TempConnectionUI::getRight()
+{
+	//return mapFromGlobal(cursor().pos());
+	if (*in_c == nullptr && *out_c == nullptr){
+		//hide();
+		return QPoint(0, 0);
+	} else {
+		//show();
+		if (*in_c == nullptr){
+			return mapFromGlobal(cursor().pos());
+		} else {
+			return (*static_cast<InPortUI*>(*in_c)).Pos();
+		}
+	}
+}
+
+void TempConnectionUI::paintEvent(QPaintEvent *event)
+{
+	hover = false;
+	ConnectionUI::paintEvent(event);
 }
 

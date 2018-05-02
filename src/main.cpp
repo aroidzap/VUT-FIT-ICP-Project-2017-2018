@@ -35,9 +35,7 @@ int main(int argc, char *argv[]) {
 
 	b->Input(1).Value() = vec2(1, 1);
 
-	schema.addConnection(a->Output(0), b->Input(0));
-
-	b->Compute();
+	//b->Compute();
 
 	std::string out = b->Output(0).Value();
 

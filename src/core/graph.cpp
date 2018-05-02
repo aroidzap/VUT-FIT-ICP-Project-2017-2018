@@ -24,9 +24,20 @@ void Graph::removeBlock(BlockBase *b)
 	GetBlockFactory().FreeBlock(b);
 }
 
-void Graph::addConnection(OutPort &a, InPort &b)
+OutPort *Graph::getConnectedOutPort(InPort &p)
 {
+	if (connections.find(&p) != connections.end()){
+		return connections.at(&p);
+	} else {
+		return nullptr;
+	}
+}
+
+bool Graph::addConnection(OutPort &a, InPort &b)
+{
+	//TODO: check acyclic
 	connections.insert(std::pair<InPort *, OutPort *>(&b, &a));
+	return true;
 }
 
 void Graph::removeConnection(OutPort &a, InPort &b)

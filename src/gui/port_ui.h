@@ -19,7 +19,6 @@ protected:
 
 	void paintEvent(QPaintEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
 	void leaveEvent(QEvent *event) override;
 public:
 	QPoint Pos();
@@ -35,6 +34,7 @@ public:
 	void Move(int x, int y) override;
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
 };
 
 class OutPortUI : public PortBaseUI, public OutPort
@@ -45,6 +45,7 @@ public:
 	void Move(int x, int y) override;
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
 };
 
 #endif // PORT_UI_H
