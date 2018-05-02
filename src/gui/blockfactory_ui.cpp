@@ -1,6 +1,7 @@
 #include "blockfactory_ui.h"
 #include "port_ui.h"
 #include "graph_ui.h"
+#include "block_ui.h"
 
 #include "../core/blocks/vectoraddblock.h"
 

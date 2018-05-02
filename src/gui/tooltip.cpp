@@ -18,6 +18,7 @@ void Tooltip::Text(std::string text){
 
 void Tooltip::paintEvent(QPaintEvent *event)
 {
+	(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 

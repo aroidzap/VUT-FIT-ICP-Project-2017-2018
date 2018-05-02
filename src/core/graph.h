@@ -31,9 +31,9 @@ public:
 
 	void addBlock(BlockType);
 	void removeBlock(BlockBase *b);
-	void addConnection(OutPort &a, InPort &b);
-	void removeConnection(OutPort &a, InPort &b);
-	void removeConnection(InPort &p);
+	virtual void addConnection(OutPort &a, InPort &b);
+	virtual void removeConnection(OutPort &a, InPort &b);
+	virtual void removeConnection(InPort &p);
 	void computeReset();
 	void computeStep();
 	void computeAll();

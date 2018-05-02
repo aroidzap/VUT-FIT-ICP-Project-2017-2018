@@ -2,6 +2,7 @@
 #include "style.h"
 #include <QPainter>
 #include <QPainterPath>
+#include "graph_ui.h"
 
 PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
 	: QWidget(parent), label(name.c_str(), parent), p(parent)
@@ -21,11 +22,23 @@ InPortUI::InPortUI(const InPort &p, QWidget *parent)
 	Move(0, 0);
 }
 
+void InPortUI::mouseMoveEvent(QMouseEvent *event)
+{
+	static_cast<GraphUI&>(this->block.graph).hoverConnectionUI(event->pos() + pos());
+	PortBaseUI::mouseMoveEvent(event);
+}
+
 OutPortUI::OutPortUI(const OutPortUI &other) : OutPortUI(other, other.p) { }
 
 OutPortUI::OutPortUI(const OutPort &p, QWidget *parent)
 	: OutPort(p), PortBaseUI(p.name, parent) {
 	Move(0, 0);
+}
+
+void OutPortUI::mouseMoveEvent(QMouseEvent *event)
+{
+	static_cast<GraphUI&>(this->block.graph).hoverConnectionUI(event->pos() + pos());
+	PortBaseUI::mouseMoveEvent(event);
 }
 
 int PortBaseUI::getWidth() const{
@@ -36,12 +49,18 @@ void InPortUI::Move(int x, int y)
 {
 	move(x - Style::PortSize/2 - 1, y - Style::PortSize/2 - 1);
 	label.move(x + Style::PortNamePadding, y - label.height() / 2);
+
+	GraphUI &g = static_cast<GraphUI&>(this->block.graph);
+	g.updateConnectionUI(*this);
 }
 
 void OutPortUI::Move(int x, int y)
 {
 	move(x - Style::PortSize/2 - 1, y - Style::PortSize/2 - 1);
 	label.move(x - Style::PortNamePadding - label.width(), y - label.height() / 2);
+
+	GraphUI &g = static_cast<GraphUI&>(this->block.graph);
+	g.updateConnectionUI(*this);
 }
 
 void PortBaseUI::paintEvent(QPaintEvent *event)
@@ -73,6 +92,11 @@ void PortBaseUI::leaveEvent(QEvent *event)
 	(event);
 	hover = false;
 	update();
+}
+
+QPoint PortBaseUI::Pos()
+{
+	return QPoint(pos().x() + Style::PortSize/2 + 1, pos().y() + Style::PortSize/2 + 1);
 }
 
 void PortBaseUI::mouseReleaseEvent(QMouseEvent *event)

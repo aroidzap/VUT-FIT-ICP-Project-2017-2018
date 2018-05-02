@@ -13,6 +13,7 @@
 #include "block_ui.h"
 #include "style.h"
 #include "port_ui.h"
+#include "graph_ui.h"
 
 #include "../core/blockbase.h"
 
@@ -141,6 +142,11 @@ protected:
 	{
 		(event);
 		drag = false;
+	}
+	void enterEvent(QEvent *event) override
+	{
+		(event);
+		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
 	}
 };
 

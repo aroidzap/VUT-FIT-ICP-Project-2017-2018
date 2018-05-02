@@ -7,6 +7,7 @@
 #include "core/blockfactory.h"
 
 #include "gui/graph_ui.h"
+#include "gui/block_ui.h"
 
 int main(int argc, char *argv[]) {
 
@@ -23,8 +24,10 @@ int main(int argc, char *argv[]) {
 	schema.addBlock(VECTOR_ADD);
 	schema.addBlock(VECTOR_ADD);
 
-	BlockBase *a = schema.blocks.front();
-	BlockBase *b = schema.blocks.back();
+	BlockUI<BlockBase> *a = static_cast<BlockUI<BlockBase>*>(schema.blocks.front());
+	BlockUI<BlockBase> *b = static_cast<BlockUI<BlockBase>*>(schema.blocks.back());
+	b->Move(300,300);
+	a->Move(100,100);
 
 	a->Input(0).Value() = vec2(0, 1);
 	a->Input(1).Value() = vec2(1, 0);
