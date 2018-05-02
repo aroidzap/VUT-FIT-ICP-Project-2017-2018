@@ -34,6 +34,7 @@ public:
 	explicit BlockUI(const BlockBaseT &b, QWidget *parent = nullptr)
 		: BlockBaseT(b), QWidget(parent), label(b.name.c_str(), this)
 	{
+		setMouseTracking(true);
 		for(size_t i = 0; i < BlockBaseT::InputCount(); i++) {
 			inputs.push_back(InPortUI(InPort(BlockBaseT::Input(i), *this), parent));
 		}
@@ -133,12 +134,17 @@ protected:
 	}
 	void mouseMoveEvent(QMouseEvent *event) override
 	{
-		if (!drag) {
-			drag = true;
-			drag_p = event->pos();
+		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
+		if(drag){
+			QPoint tmp = pos() + event->pos() - drag_p;
+			Move(tmp.x(), tmp.y());
 		}
-		QPoint tmp = pos() + event->pos() - drag_p;
-		Move(tmp.x(), tmp.y());
+	}
+	void mousePressEvent(QMouseEvent *event) override
+	{
+		(event);
+		drag = true;
+		drag_p = event->pos();
 	}
 	void mouseReleaseEvent(QMouseEvent *event) override
 	{

@@ -91,6 +91,7 @@ void GraphUI::hideHoverConnectionUI()
 	for(ConnectionUI *c : ui_connections){
 		c->mouseHover(false);
 	}
+	tc.update();
 }
 
 void GraphUI::leaveEvent(QEvent *event)
