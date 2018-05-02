@@ -26,6 +26,8 @@ public:
 	static const QColor NodeBackgroundCol;
 
 	static const int TooltipRoundSize;
+	static const int TooltipPadding;
+	static const int TooltipHPadding;
 	static const QColor TooltipOutlineCol;
 	static const QColor TooltipBackgroundCol;
 	static const QColor TooltipTextCol;

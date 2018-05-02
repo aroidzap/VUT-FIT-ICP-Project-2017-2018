@@ -2,6 +2,7 @@
 #include "style.h"
 #include <QPainter>
 #include <QPainterPath>
+#include <QApplication>
 #include "graph_ui.h"
 
 PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
@@ -42,7 +43,7 @@ void OutPortUI::mouseMoveEvent(QMouseEvent *event)
 }
 
 int PortBaseUI::getWidth() const{
-	return Style::PortNamePadding * 2 + label.width();
+	return Style::PortNamePadding * 2 + QApplication::fontMetrics().width(label.text());
 }
 
 void InPortUI::Move(int x, int y)

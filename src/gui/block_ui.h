@@ -1,6 +1,7 @@
 #ifndef BLOCK_UI_H
 #define BLOCK_UI_H
 
+#include <QApplication>
 #include <QPaintEvent>
 #include <QWidget>
 #include <list>
@@ -50,6 +51,7 @@ public:
 		height = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
 				 std::max(Style::PortMarginV, Style::NodeNameHeight);
 		width = std::max(input_w + output_w, Style::NodeMinWidth);
+		width = std::max(width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(label.text()));
 
 		resize(width + 1, height + 1);
 

@@ -66,6 +66,7 @@ void ConnectionUI::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	QPen p(Style::ConnectionCol);
+	raise();
 	if(hover){
 		p.setWidth(2);
 		showValue();
