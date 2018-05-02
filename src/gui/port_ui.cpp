@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QApplication>
+#include <cmath>
 #include "graph_ui.h"
 
 PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
@@ -83,7 +84,7 @@ void PortBaseUI::paintEvent(QPaintEvent *event)
 void PortBaseUI::mouseMoveEvent(QMouseEvent *event)
 {
 	QPoint diff = (event->pos() - QPoint(Style::PortSize/2, Style::PortSize/2));
-	int dist = sqrt(diff.x()*diff.x() + diff.y()*diff.y());
+    int dist = std::sqrt(diff.x()*diff.x() + diff.y()*diff.y());
 	hover = (dist <= Style::PortSize/2);
 	update();
 }
