@@ -7,7 +7,7 @@
 #          Tomáš Pazdiora (xpazdi02@stud.fit.vutbr.cz)
 
 ##### TARGETS - first target is default
-compile: 
+compile: update
 	make -f qMakefile
 
 run: compile
@@ -21,7 +21,7 @@ doxygen:
 	doxygen doc/Doxyfile
 
 clean:
-	rm -f blockeditor *.o ui_blockeditor.h moc_blockeditor.cpp
+	rm -f blockeditor *.o ui_blockeditor.h moc_blockeditor.cpp qMakefile
 
 pack: update
-	zip -r xpazdi02_xpospi95.zip src res examples ICP_Project.pro Makefile qMakefile README.txt doc/Doxyfile
+	zip -r xpazdi02_xpospi95.zip src res examples ICP_Project.pro Makefile README.txt doc/Doxyfile
