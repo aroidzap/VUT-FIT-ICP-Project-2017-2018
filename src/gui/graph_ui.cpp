@@ -27,6 +27,9 @@ void GraphUI::clearGraph()
 
 bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 {
+	// block id offset
+	int b_id_off = static_cast<int>(blocks.size());
+
 	if (!Graph::loadGraph(graph, merge)){
 		return false;
 	}
@@ -42,6 +45,7 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 		std::stringstream pos_stream(tmp);
 
 		auto it = blocks.begin();
+		std::advance(it, b_id_off);
 
 		while(std::getline(pos_stream, tmp, ',')){
 			std::stringstream xy(tmp);
@@ -272,6 +276,7 @@ void GraphUI::mousePressEvent(QMouseEvent *event)
 	tc.update();
 	drag = true;
 	drag_p = event->pos();
+	block_click_remove = false;
 }
 
 void GraphUI::mouseReleaseEvent(QMouseEvent *event)
