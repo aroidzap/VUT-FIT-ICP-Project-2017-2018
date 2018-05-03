@@ -276,6 +276,7 @@ void GraphUI::mousePressEvent(QMouseEvent *event)
 	tc.update();
 	drag = true;
 	drag_p = event->pos();
+	block_click_remove = false;
 }
 
 void GraphUI::mouseReleaseEvent(QMouseEvent *event)
