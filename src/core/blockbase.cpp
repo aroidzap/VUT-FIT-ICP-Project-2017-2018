@@ -37,3 +37,8 @@ bool BlockBase::HasAllValues()
 	}
 	return true;
 }
+
+bool BlockBase::Computable()
+{
+	return true;
+}

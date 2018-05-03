@@ -13,6 +13,8 @@ const QColor Style::PortHoverCol = QColor(200, 200, 200);
 const int Style::ConnectionHoverSize = 16;
 const QColor Style::ConnectionCol = QColor(0, 0, 0);
 
+const int Style::NodeFieldOffset = 24;
+const int Style::NodeFieldWidth = 64;
 const int Style::NodeNamePadding = 12;
 const int Style::NodeNameHeight = 40;
 const int Style::NodeMinWidth = 64;

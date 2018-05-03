@@ -40,6 +40,8 @@ bool Graph::addConnection(OutPort &a, InPort &b)
 	}
 	//TODO: check acyclic
 	connections.insert(std::pair<InPort *, OutPort *>(&b, &a));
+	a.eventConnectionChange();
+	b.eventConnectionChange();
 	return true;
 }
 
@@ -48,10 +50,16 @@ void Graph::removeConnection(OutPort &a, InPort &b)
 	if ((connections.find(&b) != connections.end()) &&
 		(connections.at(&b) == &a)) {
 		connections.erase(&b);
+		a.eventConnectionChange();
+		b.eventConnectionChange();
 	}
 }
 
 void Graph::removeConnection(InPort &p)
 {
+	OutPort *op = getConnectedOutPort(p);
+	if (op != nullptr){
+		op->eventConnectionChange();
+	}
 	connections.erase(&p);
 }

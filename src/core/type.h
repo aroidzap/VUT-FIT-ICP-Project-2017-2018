@@ -33,6 +33,7 @@ public:
 	Type & operator=(const Type &other);
 	Type(Type &&other) = delete;
 	TypeValue & operator[](const std::string &s);
+	const std::map<std::string, TypeValue> Data();
 	bool isNull() const;
 	void setNull();
 	bool type_of(const Type &other) const; // type comparison

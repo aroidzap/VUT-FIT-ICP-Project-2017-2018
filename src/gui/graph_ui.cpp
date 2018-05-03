@@ -91,7 +91,9 @@ void GraphUI::mouseMoveEvent(QMouseEvent *event)
 		x = x > 0 ? 0 : x;
 		y = y > Style::MenuHeight ? Style::MenuHeight : y;
 		move(x, y);
-		resize(width() - x, height() - y);
+		if(parentWidget() != nullptr){
+			resize(parentWidget()->width() - x, parentWidget()->height() - y);
+		}
 		lower();
 		update();
 	}
@@ -114,6 +116,7 @@ void GraphUI::leaveEvent(QEvent *event)
 void GraphUI::mousePressEvent(QMouseEvent *event)
 {
 	(event);
+	setFocus();
 	in_click = nullptr;
 	out_click = nullptr;
 	tc.update();
