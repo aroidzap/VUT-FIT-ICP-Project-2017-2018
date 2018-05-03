@@ -19,18 +19,28 @@ private:
 	TempConnectionUI tc;
 	BlockFactoryUI bf;
 	BlockFactory & GetBlockFactory() override;
+	bool drag = false;
+	QPoint drag_p;
 public:
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
+	void clearGraph() override;
+	bool loadGraph(std::stringstream &graph, bool merge = false) override;
+	virtual std::stringstream saveGraph() override;
 	bool addConnection(OutPort &a, InPort &b) override;
 	void removeConnection(InPort &p) override;
 	void updateConnectionUI(Port &p);
 	void hoverConnectionUI(QPoint mouse);
 	void hideHoverConnectionUI();
+	bool allInputsConnected() override;
+	void computeReset() override;
+	bool computeStep() override;
+	bool computeAll() override;
 	~GraphUI();
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 	void leaveEvent(QEvent *event) override;
 };
 

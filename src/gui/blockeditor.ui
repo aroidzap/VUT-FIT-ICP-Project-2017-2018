@@ -61,6 +61,11 @@
     <string>E&amp;xit</string>
    </property>
   </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

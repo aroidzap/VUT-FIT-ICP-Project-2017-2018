@@ -4,9 +4,25 @@
 Port::Port(const BlockBase &b, const Type &t, std::string name)
 	: block(b), data(t), name(name) { }
 
+void Port::eventConnectionChange() {
+	if (connUpdate) {
+		connUpdate(*this);
+	}
+}
+
+void Port::onConnectionChange(std::function<void (Port &)> connUpdate)
+{
+	this->connUpdate = connUpdate;
+}
+
 TypeValue &Port::operator[](const std::string &s)
 {
 	return Value()[s];
+}
+
+int InPort::getID() const
+{
+	return this->block.getPortID(*this);
 }
 
 InPort::InPort(const InPort &other, const BlockBase &b) : InPort(b, other.data, other.name) { }
@@ -23,6 +39,11 @@ Type &InPort::Value()
 		}
 	}
 	return this->data;
+}
+
+int OutPort::getID() const
+{
+	return this->block.getPortID(*this);
 }
 
 OutPort::OutPort(const OutPort &other, const BlockBase &b) : OutPort(b, other.data, other.name) { }

@@ -32,6 +32,11 @@ TypeValue &Type::operator[](const std::string &component)
 	return this->data.at(component);
 }
 
+const std::map<std::string, TypeValue> Type::Data()
+{
+	return data;
+}
+
 bool Type::isNull() const
 {
 	return null_data;

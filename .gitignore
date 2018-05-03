@@ -23,7 +23,6 @@ moc_*.cpp
 moc_*.h
 qrc_*.cpp
 ui_*.h
-Makefile*
 *build-*
 
 # QtCreator
@@ -37,3 +36,8 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user*
 
+# Archive for submitting
+xpazdi02_xpospi95.zip
+xpospi95_xpazdi02.zip
+
+doc/

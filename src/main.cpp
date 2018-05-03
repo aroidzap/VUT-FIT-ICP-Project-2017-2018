@@ -21,23 +21,37 @@ int main(int argc, char *argv[]) {
 	win.show();
 
 	schema.SetName("schema");
-	schema.addBlock(VECTOR_ADD);
-	schema.addBlock(VECTOR_ADD);
 
-	BlockUI<BlockBase> *a = static_cast<BlockUI<BlockBase>*>(schema.blocks.front());
-	BlockUI<BlockBase> *b = static_cast<BlockUI<BlockBase>*>(schema.blocks.back());
+	schema.addBlock(VECTOR_INPUT);
+	schema.addBlock(VECTOR_ADD);
+	schema.addBlock(SCAL_INPUT);
+	schema.addBlock(SCAL_OUTPUT);
+	schema.addBlock(VECTOR_OUTPUT);
+	schema.addBlock(MAT2_INPUT);
+	schema.addBlock(MAT2_OUTPUT);
+	/*schema.addBlock(VECTOR_ADD);
+	schema.addBlock(VECTOR_DOTPRODUCT);
+	schema.addBlock(SCALAR_ADD);
+	schema.addBlock(SCALAR_SUB);
+	schema.addBlock(SCALAR_MUL);
+	schema.addBlock(MAT_MUL);
+	schema.addBlock(MAT_ADD);*/
+
+	auto it = schema.blocks.begin();
+
+	BlockUI<BlockBase> *a = static_cast<BlockUI<BlockBase>*>(*(it++));
+	BlockUI<BlockBase> *b = static_cast<BlockUI<BlockBase>*>(*(it++));
+
+	schema.addConnection(a->Output(0), b->Input(0));
+	schema.addConnection(a->Output(0), b->Input(1));
+
 	b->Move(300,300);
 	a->Move(100,100);
 
-	a->Input(0).Value() = vec2(0, 1);
-	a->Input(1).Value() = vec2(1, 0);
-	a->Compute();
+	schema.computeStep();
 
-	b->Input(1).Value() = vec2(1, 1);
-
-	//b->Compute();
-
-	std::string out = b->Output(0).Value();
+	auto ss = schema.saveGraph();
+	schema.loadGraph(ss);
 
 	return app.exec();
 }

@@ -2,7 +2,7 @@
 #include "../types/types.h"
 
 VectorAddBlock::VectorAddBlock(Graph &g)
-	: BlockBase(g, VECTOR_ADD, "Vector Add",
+    : BlockBase(g, VECTOR_ADD, "2D Vector Addition",
 	{
 		InPort(*this, vec2(), "A"),
 		InPort(*this, vec2(), "B")

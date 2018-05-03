@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QApplication>
+#include <cmath>
 #include "graph_ui.h"
 
 PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
@@ -32,7 +33,9 @@ void InPortUI::mouseMoveEvent(QMouseEvent *event)
 void InPortUI::mousePressEvent(QMouseEvent *event)
 {
 	(event);
+	setFocus();
 	GraphUI& g = dynamic_cast<GraphUI&>(block.graph);
+	g.hideHoverConnectionUI();
 	if(g.getConnectedOutPort(*this) == nullptr)
 	{
 		g.in_click = this;
@@ -61,7 +64,9 @@ void OutPortUI::mouseMoveEvent(QMouseEvent *event)
 void OutPortUI::mousePressEvent(QMouseEvent *event)
 {
 	(event);
+	setFocus();
 	GraphUI& g = static_cast<GraphUI&>(block.graph);
+	g.hideHoverConnectionUI();
 	g.out_click = this;
 	if (g.in_click != nullptr){
 		g.addConnection(*this, *g.in_click);
@@ -109,7 +114,7 @@ void PortBaseUI::paintEvent(QPaintEvent *event)
 void PortBaseUI::mouseMoveEvent(QMouseEvent *event)
 {
 	QPoint diff = (event->pos() - QPoint(Style::PortSize/2, Style::PortSize/2));
-	int dist = sqrt(diff.x()*diff.x() + diff.y()*diff.y());
+    int dist = std::sqrt(diff.x()*diff.x() + diff.y()*diff.y());
 	hover = (dist <= Style::PortSize/2);
 	update();
 }
