@@ -203,6 +203,7 @@ protected:
 		setFocus();
 		drag = true;
 		drag_p = event->pos();
+		static_cast<GraphUI&>(graph).blockClicked(this);
 	}
 	void mouseReleaseEvent(QMouseEvent *event) override
 	{

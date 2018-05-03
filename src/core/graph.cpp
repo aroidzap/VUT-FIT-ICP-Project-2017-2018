@@ -138,6 +138,12 @@ void Graph::addBlock(BlockType t)
 void Graph::removeBlock(BlockBase *b)
 {
 	this->blocks.remove(b);
+	for(int i = 0; i < b->InputCount(); i++){
+		removeConnection(b->Input(i));
+	}
+	for(int i = 0; i < b->OutputCount(); i++){
+		removeConnection(b->Output(i));
+	}
 	GetBlockFactory().FreeBlock(b);
 	computeReset();
 }
@@ -164,17 +170,6 @@ bool Graph::addConnection(OutPort &a, InPort &b)
 	return true;
 }
 
-void Graph::removeConnection(OutPort &a, InPort &b)
-{
-	if ((connections.find(&b) != connections.end()) &&
-		(connections.at(&b) == &a)) {
-		connections.erase(&b);
-		a.eventConnectionChange();
-		b.eventConnectionChange();
-		computeReset();
-	}
-}
-
 void Graph::removeConnection(InPort &p)
 {
 	OutPort *op = getConnectedOutPort(p);
@@ -182,6 +177,20 @@ void Graph::removeConnection(InPort &p)
 		op->eventConnectionChange();
 	}
 	connections.erase(&p);
+	computeReset();
+}
+
+void Graph::removeConnection(OutPort &p)
+{
+	for(auto it = connections.begin(); it != connections.end();){
+		if ((*it).second == &p) {
+			(*it).first->eventConnectionChange();
+			(*it).second->eventConnectionChange();
+			it = connections.erase(it);
+		} else {
+			it++;
+		}
+	}
 	computeReset();
 }
 
