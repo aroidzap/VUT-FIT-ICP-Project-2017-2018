@@ -28,6 +28,7 @@ public:
 	virtual OutPort & Output(std::size_t id);
 	virtual std::size_t OutputCount();
 	bool HasAllValues();
+	virtual bool Computable();
 	virtual void Compute() = 0;
 	virtual ~BlockBase() = default;
 };

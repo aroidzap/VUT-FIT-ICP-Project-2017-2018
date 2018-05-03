@@ -6,6 +6,8 @@
 class Style
 {
 public:
+	static const int MenuHeight;
+
 	static const int PortSize;
 	static const int PortDrawSize;
 	static const int PortMarginV;
@@ -17,6 +19,8 @@ public:
 	static const int ConnectionHoverSize;
 	static const QColor ConnectionCol;
 
+	static const int NodeFieldOffset;
+	static const int NodeFieldWidth;
 	static const int NodeNamePadding;
 	static const int NodeNameHeight;
 	static const int NodeMinWidth;

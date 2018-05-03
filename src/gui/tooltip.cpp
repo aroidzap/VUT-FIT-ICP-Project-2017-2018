@@ -6,6 +6,27 @@
 #include <QApplication>
 #include <vector>
 
+std::vector<std::string> Tooltip::TextLines(const std::string &text, int &width, int &height)
+{
+	int w = 0;
+	std::vector<std::string> lines;
+	std::string tmp;
+	for(auto const &c : text){
+		if(c == '\n'){
+			int width = QApplication::fontMetrics().width(tmp.c_str());
+			w = width > w ? width : w;
+			lines.push_back(tmp);
+			tmp.clear();
+		} else {
+			tmp += c;
+		}
+	}
+	int h = QApplication::fontMetrics().height();
+	height = h;
+	width = w;
+	return lines;
+}
+
 Tooltip::Tooltip(QWidget *parent) : QWidget(parent) {
 	setAttribute(Qt::WA_TransparentForMouseEvents);
 }
@@ -21,21 +42,9 @@ void Tooltip::Text(std::string text){
 void Tooltip::paintEvent(QPaintEvent *event)
 {
 	(event);
-	int w = 0;
-	std::vector<std::string> lines;
-	std::string tmp;
-	for(auto const &c : text){
-		if(c == '\n'){
-			int width = QApplication::fontMetrics().width(tmp.c_str());
-			w = width > w ? width : w;
-			lines.push_back(tmp);
-			tmp.clear();
-		} else {
-			tmp += c;
-		}
-	}
 
-	int h = QApplication::fontMetrics().height();
+	int w, h;
+	auto lines = TextLines(text,w , h);
 
 	resize(w + 2 * Style::TooltipHPadding,
 		   h * static_cast<int>(lines.size()) + 2 * Style::TooltipPadding);

@@ -19,6 +19,8 @@ private:
 	TempConnectionUI tc;
 	BlockFactoryUI bf;
 	BlockFactory & GetBlockFactory() override;
+	bool drag = false;
+	QPoint drag_p;
 public:
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
@@ -31,6 +33,7 @@ public:
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 	void leaveEvent(QEvent *event) override;
 };
 

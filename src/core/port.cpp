@@ -4,6 +4,17 @@
 Port::Port(const BlockBase &b, const Type &t, std::string name)
 	: block(b), data(t), name(name) { }
 
+void Port::eventConnectionChange() {
+	if (connUpdate) {
+		connUpdate(*this);
+	}
+}
+
+void Port::onConnectionChange(std::function<void (Port &)> connUpdate)
+{
+	this->connUpdate = connUpdate;
+}
+
 TypeValue &Port::operator[](const std::string &s)
 {
 	return Value()[s];

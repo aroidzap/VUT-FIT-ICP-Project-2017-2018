@@ -31,6 +31,7 @@ SOURCES += \
     src/core/port.cpp \
     src/core/blockbase.cpp \
     src/core/blocks/vectoraddblock.cpp \
+    src/core/blocks/vector_io.cpp \
     src/gui/connection_ui.cpp \
     src/gui/port_ui.cpp \
     src/gui/blockeditor.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     src/core/port.h \
     src/core/blockbase.h \
     src/core/blocks/vectoraddblock.h \
+    src/core/blocks/vector_io.h \
     src/gui/connection_ui.h \
     src/gui/block_ui.h \
     src/gui/port_ui.h \
