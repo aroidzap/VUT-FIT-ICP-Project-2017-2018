@@ -6,6 +6,8 @@
 class Style
 {
 public:
+	static const int MenuHeight;
+
 	static const int PortSize;
 	static const int PortDrawSize;
 	static const int PortMarginV;

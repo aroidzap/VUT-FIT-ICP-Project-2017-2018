@@ -10,7 +10,8 @@ Type::Type(std::initializer_list<std::string> components) : null_data(true)
 	}
 }
 
-Type::Type(const Type &other) : null_data(other.null_data) {
+Type::Type(const Type &other, std::function<void(void)> update_callback)
+	: null_data(other.null_data), update_callback(update_callback) {
 	for (const auto &elem : other.data) {
 		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second.data)));
 	}
@@ -40,6 +41,9 @@ bool Type::isNull() const
 void Type::setNull()
 {
 	null_data = true;
+	if(update_callback) {
+		update_callback();
+	}
 }
 
 // check type compatibility
@@ -105,6 +109,9 @@ TypeValue &TypeValue::operator=(const double &value)
 {
 	this->data = value;
 	this->type.null_data = false;
+	if(this->type.update_callback) {
+		this->type.update_callback();
+	}
 	return *this;
 }
 

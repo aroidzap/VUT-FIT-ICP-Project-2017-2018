@@ -1,5 +1,7 @@
 #include "style.h"
 
+const int Style::MenuHeight = 21;
+
 const int Style::PortDrawSize = 8;
 const int Style::PortSize = 24;
 const int Style::PortMarginV = 32;

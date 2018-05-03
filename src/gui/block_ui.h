@@ -84,6 +84,9 @@ public:
 
 	void Move(int x, int y)
 	{
+		x = x < 0 ? 0 : x;
+		y = y < 0 ? 0 : y;
+
 		move(x, y);
 
 		label.move(0, Style::NodeNamePadding);

@@ -5,6 +5,7 @@
 #include <string>
 #include <initializer_list>
 #include <iostream>
+#include <functional>
 
 class Type;
 
@@ -26,9 +27,10 @@ class Type
 private:
 	bool null_data;
 	std::map<std::string, TypeValue> data;
+	std::function<void(void)> update_callback;
 public:
 	Type(std::initializer_list<std::string> components);
-	Type(const Type &other);
+	Type(const Type &other, std::function<void(void)> update_callback = nullptr);
 	Type & operator=(const Type &other);
 	Type(Type &&other) = delete;
 	TypeValue & operator[](const std::string &s);

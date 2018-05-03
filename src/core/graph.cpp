@@ -35,6 +35,9 @@ OutPort *Graph::getConnectedOutPort(InPort &p)
 
 bool Graph::addConnection(OutPort &a, InPort &b)
 {
+	if(!a.Value().type_of(b.Value())) {
+		return false;
+	}
 	//TODO: check acyclic
 	connections.insert(std::pair<InPort *, OutPort *>(&b, &a));
 	return true;
