@@ -36,17 +36,16 @@ public:
 	virtual std::stringstream saveGraph();
 
 	void addBlock(BlockType);
-	void removeBlock(BlockBase *b);
+	virtual void removeBlock(BlockBase *b);
 	OutPort * getConnectedOutPort(InPort &p);
 	virtual bool addConnection(OutPort &a, InPort &b);
-	virtual void removeConnection(OutPort &a, InPort &b);
 	virtual void removeConnection(InPort &p);
+	virtual void removeConnection(OutPort &p);
 	virtual bool allInputsConnected();
 	virtual void computeReset();
 	virtual bool computeStep();
 	virtual bool computeAll();
 	bool computeFinished();
-
 };
 
 #endif // GRAPH_H

@@ -82,6 +82,24 @@ std::stringstream GraphUI::saveGraph()
 	return std::move(ss);
 }
 
+void GraphUI::blockClicked(BlockBase *b)
+{
+	if(block_click_remove){
+		removeBlock(b);
+	}
+}
+
+void GraphUI::removeBlockOnClickEnable()
+{
+	block_click_remove = true;
+}
+
+void GraphUI::removeBlock(BlockBase *b)
+{
+	Graph::removeBlock(b);
+	block_click_remove = false;
+}
+
 bool GraphUI::addConnection(OutPort &a, InPort &b)
 {
 	if(Graph::addConnection(a, b)) {
@@ -126,12 +144,30 @@ void GraphUI::removeConnection(InPort &p)
 			if (*(*it) == p)
 			{
 				delete (*it);
-				ui_connections.erase(it++);
+				it = ui_connections.erase(it);
 			}
 			else
 			{
 				it++;
 			}
+		}
+	}
+}
+
+void GraphUI::removeConnection(OutPort &p)
+{
+	Graph::removeConnection(p);
+
+	for (auto it = ui_connections.cbegin(); it != ui_connections.cend();)
+	{
+		if (*(*it) == p)
+		{
+			delete (*it);
+			it = ui_connections.erase(it);
+		}
+		else
+		{
+			it++;
 		}
 	}
 }
