@@ -1,6 +1,8 @@
 #include "graph_ui.h"
 #include "style.h"
 
+#include "alert.h"
+
 BlockFactory &GraphUI::GetBlockFactory()
 {
 	return bf;
@@ -29,7 +31,12 @@ bool GraphUI::addConnection(OutPort &a, InPort &b)
 		return true;
 	}
 	else {
-		// Unable to add connection - acyclic
+		if(!a.Value().type_of(b.Value())){
+			ErrorAlert("These Port types are incompatible!");
+		}
+		else {
+			ErrorAlert("This connection would form cycle!");
+		}
 
 		this->in_click = nullptr;
 		this->out_click = nullptr;

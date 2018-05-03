@@ -48,7 +48,8 @@ SOURCES += \
     src/core/blocks/scalarsubblock.cpp \
     src/core/blocks/scalarmulblock.cpp \
     src/core/blocks/scalar_io.cpp \
-    src/core/blocks/matrix_io.cpp
+    src/core/blocks/matrix_io.cpp \
+    src/gui/alert.cpp
 
 HEADERS += \
     src/gui/style.h \
@@ -76,7 +77,8 @@ HEADERS += \
     src/core/blocks/scalarsubblock.h \
     src/core/blocks/scalarmulblock.h \
     src/core/blocks/scalar_io.h \
-    src/core/blocks/matrix_io.h
+    src/core/blocks/matrix_io.h \
+    src/gui/alert.h
 
 FORMS += \
     src/gui/blockeditor.ui
