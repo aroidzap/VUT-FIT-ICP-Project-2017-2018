@@ -15,14 +15,17 @@ private:
 	std::vector<InPort> inputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
 	std::vector<OutPort> outputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
 protected:
-	const BlockType type;
 	BlockBase(Graph &g, BlockType type, std::string name);
 	BlockBase(Graph &g, BlockType type, std::string name,
 			  std::initializer_list<InPort> inputs,
 			  std::initializer_list<OutPort> outputs);
 public:
 	Graph &graph;
+	const BlockType type;
 	const std::string name;
+	int getID() const;
+	virtual int getPortID(const InPort &port) const;
+	virtual int getPortID(const OutPort &port) const;
 	virtual InPort & Input(std::size_t id);
 	virtual std::size_t InputCount();
 	virtual OutPort & Output(std::size_t id);

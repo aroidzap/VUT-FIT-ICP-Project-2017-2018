@@ -71,6 +71,10 @@ public:
 		this->label.show();
 	}
 
+	QPoint Pos() const {
+		return pos();
+	}
+
 	bool HasAllValues() override {
 		for (InPortUI &p : this->inputs) {
 			if(p.Value().isNull()){
@@ -87,6 +91,30 @@ public:
 			}
 		}
 		return true;
+	}
+
+	int getPortID(const InPort &port) const override
+	{
+		int idx = 0;
+		for (const InPortUI &p : inputs) {
+			if (&p == &port){
+				return idx;
+			}
+			idx++;
+		}
+		return -1;
+	}
+
+	int getPortID(const OutPort &port) const override
+	{
+		int idx = 0;
+		for (const OutPortUI &p : outputs) {
+			if (&p == &port){
+				return idx;
+			}
+			idx++;
+		}
+		return -1;
 	}
 
 	InPort & Input(std::size_t id) override

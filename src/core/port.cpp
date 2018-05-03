@@ -20,6 +20,11 @@ TypeValue &Port::operator[](const std::string &s)
 	return Value()[s];
 }
 
+int InPort::getID() const
+{
+	return this->block.getPortID(*this);
+}
+
 InPort::InPort(const InPort &other, const BlockBase &b) : InPort(b, other.data, other.name) { }
 
 InPort::InPort(const BlockBase &b, const Type &t, std::string name) : Port(b, t, name) { }
@@ -34,6 +39,11 @@ Type &InPort::Value()
 		}
 	}
 	return this->data;
+}
+
+int OutPort::getID() const
+{
+	return this->block.getPortID(*this);
 }
 
 OutPort::OutPort(const OutPort &other, const BlockBase &b) : OutPort(b, other.data, other.name) { }

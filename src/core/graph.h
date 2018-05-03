@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <list>
 #include <map>
 #include <initializer_list>
@@ -29,8 +30,10 @@ public:
 
 	virtual void SetName(const std::string name);
 
-	void loadGraph(const XML & xml);
-	const XML & saveGraph();
+	int getBlockID(const BlockBase &block) const;
+	virtual void clearGraph();
+	virtual bool loadGraph(std::stringstream &graph, bool merge = false);
+	virtual std::stringstream saveGraph();
 
 	void addBlock(BlockType);
 	void removeBlock(BlockBase *b);

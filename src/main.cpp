@@ -50,5 +50,8 @@ int main(int argc, char *argv[]) {
 
 	schema.computeStep();
 
+	auto ss = schema.saveGraph();
+	schema.loadGraph(ss);
+
 	return app.exec();
 }

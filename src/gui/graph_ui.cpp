@@ -13,6 +13,75 @@ GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
 	setMouseTracking(true);
 }
 
+void GraphUI::clearGraph()
+{
+	Graph::clearGraph();
+	for(ConnectionUI *c : ui_connections){
+		delete c;
+	}
+	ui_connections.clear();
+	in_click = nullptr;
+	out_click = nullptr;
+	last_computed = nullptr;
+}
+
+bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
+{
+	if (!Graph::loadGraph(graph, merge)){
+		return false;
+	}
+
+	std::string tmp;
+	try {
+		// Block Positions
+		std::getline(graph, tmp,'[');
+		if (tmp != "pos") {
+			return false;
+		}
+		std::getline(graph, tmp, ']');
+		std::stringstream pos_stream(tmp);
+
+		auto it = blocks.begin();
+
+		while(std::getline(pos_stream, tmp, ',')){
+			std::stringstream xy(tmp);
+			std::string xs, ys;
+			std::getline(xy, xs, ':');
+			std::getline(xy, ys, ':');
+			int x = std::stoi(xs);
+			int y = std::stoi(ys);
+			static_cast<BlockUI<BlockBase>*>(*it)->Move(x, y);
+			it++;
+		}
+	}
+	catch (const std::invalid_argument &e) {
+		(e);
+		return false;
+	}
+	return true;
+}
+
+std::stringstream GraphUI::saveGraph()
+{
+	std::stringstream ss = Graph::saveGraph();
+
+	// Block Positions
+	ss << "pos[";
+	bool first = true;
+	for (BlockBase *b : blocks) {
+		if(first) {
+			first = false;
+		} else {
+			ss << ",";
+		}
+		BlockUI<BlockBase> *b_ui = static_cast<BlockUI<BlockBase>*>(b);
+		ss << b_ui->Pos().x() << ":" << b_ui->Pos().y();
+	}
+	ss << "]";
+
+	return std::move(ss);
+}
+
 bool GraphUI::addConnection(OutPort &a, InPort &b)
 {
 	if(Graph::addConnection(a, b)) {

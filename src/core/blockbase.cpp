@@ -6,7 +6,36 @@ BlockBase::BlockBase(Graph &g, BlockType type, std::string name)
 BlockBase::BlockBase(Graph &g, BlockType type, std::string name,
 					 std::initializer_list<InPort> inputs,
 					 std::initializer_list<OutPort> outputs)
- : graph(g), type(type), name(name), inputs(inputs), outputs(outputs) { }
+	: graph(g), type(type), name(name), inputs(inputs), outputs(outputs) { }
+
+int BlockBase::getID() const
+{
+	return this->graph.getBlockID(*this);
+}
+
+int BlockBase::getPortID(const InPort &port) const
+{
+	int idx = 0;
+	for (const InPort &p : inputs) {
+		if (&p == &port){
+			return idx;
+		}
+		idx++;
+	}
+	return -1;
+}
+
+int BlockBase::getPortID(const OutPort &port) const
+{
+	int idx = 0;
+	for (const OutPort &p : outputs) {
+		if (&p == &port){
+			return idx;
+		}
+		idx++;
+	}
+	return -1;
+}
 
 InPort &BlockBase::Input(std::size_t id)
 {
