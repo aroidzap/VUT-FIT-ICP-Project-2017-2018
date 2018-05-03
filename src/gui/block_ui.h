@@ -293,7 +293,7 @@ public:
 		}
 	}
 protected:
-	void paintEvent(QPaintEvent *e) override {
+	void paintEvent(QPaintEvent *event) override {
 		int h = QApplication::fontMetrics().height();
 		auto orig_w = this->width; auto orig_h = this->height;
 		this->width = this->width - static_cast<OutPortUI&>(this->Output(0)).getWidth() + text_in_off + Style::NodeFieldWidth;
@@ -301,7 +301,7 @@ protected:
 		this->height = this->height + Style::NodeFieldOffset * (cnt < 0 ? 0 : cnt);
 		this->resize(this->width + 1, this->height + 1);
 		this->Move(this->pos().x(), this->pos().y());
-		BlockUI<BlockBaseT>::paintEvent(e);
+		BlockUI<BlockBaseT>::paintEvent(event);
 		this->width = orig_w; this->height = orig_h;
 
 		QPainter painter(this);
@@ -326,7 +326,7 @@ public:
 		return false;
 	}
 protected:
-	void paintEvent(QPaintEvent *e) override {
+	void paintEvent(QPaintEvent *event) override {
 		int w, h;
 		auto lines = Tooltip::TextLines(static_cast<std::string>(this->Input(0).Value()), w, h);
 		auto orig_w = this->width; auto orig_h = this->height;
@@ -337,7 +337,7 @@ protected:
 		this->width = std::max(this->width, Style::NodeMinWidth);
 		this->resize(this->width + 1, this->height + 1);
 		this->Move(this->pos().x(), this->pos().y());
-		BlockUI<BlockBaseT>::paintEvent(e);
+		BlockUI<BlockBaseT>::paintEvent(event);
 		this->width = orig_w; this->height = orig_h;
 
 		QPainter painter(this);
