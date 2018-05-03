@@ -86,7 +86,7 @@ public:
 
 	bool InputsAreConnected() override {
 		for (InPortUI &p : this->inputs) {
-			if(graph.connections.count(&p) <= 0) {
+			if(this->graph.connections.count(&p) <= 0) {
 				return false;
 			}
 		}
@@ -203,7 +203,7 @@ protected:
 		setFocus();
 		drag = true;
 		drag_p = event->pos();
-		static_cast<GraphUI&>(graph).blockClicked(this);
+		static_cast<GraphUI&>(this->graph).blockClicked(this);
 	}
 	void mouseReleaseEvent(QMouseEvent *event) override
 	{
@@ -251,7 +251,7 @@ private:
 	int text_in_off;
 	std::map<std::string, TextEdit*> text_in;
 	void update_output() {
-		Type &val = Output(0).Value();
+		Type &val = this->Output(0).Value();
 		for(auto l : text_in){
 			bool ok;
 			val[l.first] = l.second->text().toDouble(&ok);
@@ -266,7 +266,7 @@ private:
 public:
 	explicit InputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
 		: BlockUI<BlockBaseT>(b, parent){
-		auto data = Output(0).Value().Data();
+		auto data = this->Output(0).Value().Data();
 		text_in_off = 0;
 		for(auto &el : data){
 			text_in_off = std::max(text_in_off, QApplication::fontMetrics().width((el.first + " : ").c_str()));
@@ -293,16 +293,16 @@ public:
 		}
 	}
 protected:
-	void paintEvent(QPaintEvent *event) override {
+	void paintEvent(QPaintEvent *e) override {
 		int h = QApplication::fontMetrics().height();
-		auto orig_w = width; auto orig_h = height;
-		width = width - static_cast<OutPortUI&>(Output(0)).getWidth() + text_in_off + Style::NodeFieldWidth;
+		auto orig_w = this->width; auto orig_h = this->height;
+		this->width = this->width - static_cast<OutPortUI&>(this->Output(0)).getWidth() + text_in_off + Style::NodeFieldWidth;
 		int cnt = static_cast<int>(text_in.size()) - 1;
-		height = height + Style::NodeFieldOffset * (cnt < 0 ? 0 : cnt);
-		resize(width + 1, height + 1);
-		Move(pos().x(), pos().y());
-		BlockUI::paintEvent(event);
-		width = orig_w; height = orig_h;
+		this->height = this->height + Style::NodeFieldOffset * (cnt < 0 ? 0 : cnt);
+		this->resize(this->width + 1, this->height + 1);
+		this->Move(this->pos().x(), this->pos().y());
+		BlockUI<BlockBaseT>::paintEvent(e);
+		this->width = orig_w; this->height = orig_h;
 
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);
@@ -320,25 +320,25 @@ class OutputBlockUI : public BlockUI<BlockBaseT> {
 public:
 	explicit OutputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
 		: BlockUI<BlockBaseT>(b, parent) {
-		Input(0).onConnectionChange([this](Port &){this->update();});
+		this->Input(0).onConnectionChange([this](Port &){this->update();});
 	}
 	bool Computable() override {
 		return false;
 	}
 protected:
-	void paintEvent(QPaintEvent *event) override {
+	void paintEvent(QPaintEvent *e) override {
 		int w, h;
-		auto lines = Tooltip::TextLines(static_cast<std::string>(Input(0).Value()), w, h);
-		auto orig_w = width; auto orig_h = height;
+		auto lines = Tooltip::TextLines(static_cast<std::string>(this->Input(0).Value()), w, h);
+		auto orig_w = this->width; auto orig_h = this->height;
 		int cnt = static_cast<int>(lines.size()) - 1;
-		height = height + h * (cnt < 0 ? 0 : cnt) - h;
-		width = width - static_cast<InPortUI&>(Input(0)).getWidth() + w;
-		width = std::max(width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
-		width = std::max(width, Style::NodeMinWidth);
-		resize(width + 1, height + 1);
-		Move(pos().x(), pos().y());
-		BlockUI::paintEvent(event);
-		width = orig_w; height = orig_h;
+		this->height = this->height + h * (cnt < 0 ? 0 : cnt) - h;
+		this->width = this->width - static_cast<InPortUI&>(this->Input(0)).getWidth() + w;
+		this->width = std::max(this->width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
+		this->width = std::max(this->width, Style::NodeMinWidth);
+		this->resize(this->width + 1, this->height + 1);
+		this->Move(this->pos().x(), this->pos().y());
+		BlockUI<BlockBaseT>::paintEvent(e);
+		this->width = orig_w; this->height = orig_h;
 
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);
