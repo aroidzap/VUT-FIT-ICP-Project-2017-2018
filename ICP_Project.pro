@@ -63,4 +63,6 @@ HEADERS += \
 FORMS += \
     src/gui/blockeditor.ui
 
+RESOURCES += res/icons.qrc
+
 QMAKE_CXXFLAGS += -std=c++14
