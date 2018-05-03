@@ -27,10 +27,9 @@ class Type
 private:
 	bool null_data;
 	std::map<std::string, TypeValue> data;
-	std::function<void(void)> update_callback;
 public:
 	Type(std::initializer_list<std::string> components);
-	Type(const Type &other, std::function<void(void)> update_callback = nullptr);
+	Type(const Type &other);
 	Type & operator=(const Type &other);
 	Type(Type &&other) = delete;
 	TypeValue & operator[](const std::string &s);

@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <list>
 
+#include <QDoubleSpinBox>
 #include <QPainter>
 #include <QPainterPath>
 
@@ -170,25 +171,33 @@ protected:
 
 template <typename BlockBaseT>
 class InputBlockUI : public BlockUI<BlockBaseT> {
+private:
+	std::vector<QDoubleSpinBox> boxes;
 public:
 	explicit InputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
 		: BlockUI<BlockBaseT>(b, parent){
 
 	}
 	void Compute() override {
-
+		Output(0).Value() = Output(0).Value(); //TODO
 	}
 };
 
 template <typename BlockBaseT>
 class OutputBlockUI : public BlockUI<BlockBaseT> {
+private:
+	std::string value;
 public:
 	explicit OutputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
 		: BlockUI<BlockBaseT>(b, parent){
 
 	}
 	void Compute() override {
-
+		value = Input(0).Value();
+	}
+protected:
+	void paintEvent(QPaintEvent *event) override {
+		BlockUI::paintEvent(event);
 	}
 };
 
