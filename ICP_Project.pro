@@ -31,6 +31,7 @@ SOURCES += \
     src/core/port.cpp \
     src/core/blockbase.cpp \
     src/core/blocks/vectoraddblock.cpp \
+    src/core/blocks/vector_io.cpp \
     src/gui/connection_ui.cpp \
     src/gui/port_ui.cpp \
     src/gui/blockeditor.cpp \
@@ -39,8 +40,7 @@ SOURCES += \
     src/core/types/types.cpp \
     src/core/blockfactory.cpp \
     src/gui/blockfactory_ui.cpp \
-    src/gui/graph_ui.cpp \
-    src/core/blocks/vector_io.cpp
+    src/gui/graph_ui.cpp
 
 HEADERS += \
     src/gui/style.h \
@@ -49,6 +49,7 @@ HEADERS += \
     src/core/port.h \
     src/core/blockbase.h \
     src/core/blocks/vectoraddblock.h \
+    src/core/blocks/vector_io.h \
     src/gui/connection_ui.h \
     src/gui/block_ui.h \
     src/gui/port_ui.h \
@@ -59,8 +60,7 @@ HEADERS += \
     src/core/blockfactory.h \
     src/core/blocks.h \
     src/gui/blockfactory_ui.h \
-    src/gui/graph_ui.h \
-    src/core/blocks/vector_io.h
+    src/gui/graph_ui.h
 
 FORMS += \
     src/gui/blockeditor.ui

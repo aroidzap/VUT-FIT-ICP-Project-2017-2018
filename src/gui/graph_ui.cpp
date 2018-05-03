@@ -30,6 +30,9 @@ bool GraphUI::addConnection(OutPort &a, InPort &b)
 	}
 	else {
 		// Unable to add connection - acyclic
+
+		this->in_click = nullptr;
+		this->out_click = nullptr;
 		return false;
 	}
 }

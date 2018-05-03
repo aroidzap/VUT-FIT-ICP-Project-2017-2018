@@ -34,6 +34,7 @@ void InPortUI::mousePressEvent(QMouseEvent *event)
 	(event);
 	setFocus();
 	GraphUI& g = dynamic_cast<GraphUI&>(block.graph);
+	g.hideHoverConnectionUI();
 	if(g.getConnectedOutPort(*this) == nullptr)
 	{
 		g.in_click = this;
@@ -64,6 +65,7 @@ void OutPortUI::mousePressEvent(QMouseEvent *event)
 	(event);
 	setFocus();
 	GraphUI& g = static_cast<GraphUI&>(block.graph);
+	g.hideHoverConnectionUI();
 	g.out_click = this;
 	if (g.in_click != nullptr){
 		g.addConnection(*this, *g.in_click);
