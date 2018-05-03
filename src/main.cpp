@@ -22,9 +22,10 @@ int main(int argc, char *argv[]) {
 
 	schema.SetName("schema");
 
+	schema.addBlock(VECTOR_INPUT);
+	schema.addBlock(VECTOR_ADD);
 	schema.addBlock(SCAL_INPUT);
 	schema.addBlock(SCAL_OUTPUT);
-	schema.addBlock(VECTOR_INPUT);
 	schema.addBlock(VECTOR_OUTPUT);
 	schema.addBlock(MAT2_INPUT);
 	schema.addBlock(MAT2_OUTPUT);
@@ -41,9 +42,16 @@ int main(int argc, char *argv[]) {
 	BlockUI<BlockBase> *a = static_cast<BlockUI<BlockBase>*>(*(it++));
 	BlockUI<BlockBase> *b = static_cast<BlockUI<BlockBase>*>(*(it++));
 
+	schema.addConnection(a->Output(0), b->Input(0));
+	schema.addConnection(a->Output(0), b->Input(1));
+
 	b->Move(300,300);
 	a->Move(100,100);
 
+	schema.computeStep();
+
+	auto ss = schema.saveGraph();
+	schema.loadGraph(ss);
 
 	return app.exec();
 }

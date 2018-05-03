@@ -71,6 +71,52 @@ public:
 		this->label.show();
 	}
 
+	QPoint Pos() const {
+		return pos();
+	}
+
+	bool HasAllValues() override {
+		for (InPortUI &p : this->inputs) {
+			if(p.Value().isNull()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool InputsAreConnected() override {
+		for (InPortUI &p : this->inputs) {
+			if(graph.connections.count(&p) <= 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	int getPortID(const InPort &port) const override
+	{
+		int idx = 0;
+		for (const InPortUI &p : inputs) {
+			if (&p == &port){
+				return idx;
+			}
+			idx++;
+		}
+		return -1;
+	}
+
+	int getPortID(const OutPort &port) const override
+	{
+		int idx = 0;
+		for (const OutPortUI &p : outputs) {
+			if (&p == &port){
+				return idx;
+			}
+			idx++;
+		}
+		return -1;
+	}
+
 	InPort & Input(std::size_t id) override
 	{
 		return inputs[id];
@@ -235,6 +281,7 @@ public:
 			text_in.insert(std::pair<std::string, TextEdit*>(el.first.c_str(), l));
 			off += Style::NodeFieldOffset;
 		}
+		update_output();
 	}
 	bool Computable() override {
 		return false;
