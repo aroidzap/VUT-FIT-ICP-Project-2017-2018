@@ -42,12 +42,18 @@ public:
 			outputs.push_back(OutPortUI(OutPort(BlockBaseT::Output(i), *this), parent));
 		}
 
-		int input_w = (*std::max_element(inputs.begin(), inputs.end(),
-			[] (const InPortUI &a, const InPortUI &b) { return a.getWidth() < b.getWidth(); }
-		)).getWidth();
-		int output_w = (*std::max_element(outputs.begin(), outputs.end(),
-			[] (const OutPortUI &a, const OutPortUI &b) { return a.getWidth() < b.getWidth(); }
-		)).getWidth();
+		int input_w = 0;
+		int output_w = 0;
+		if (inputs.size()>0) {
+			input_w = (*std::max_element(inputs.begin(), inputs.end(),
+				[] (const InPortUI &a, const InPortUI &b) { return a.getWidth() < b.getWidth(); }
+			)).getWidth();
+		}
+		if (outputs.size()>0) {
+			output_w = (*std::max_element(outputs.begin(), outputs.end(),
+				[] (const OutPortUI &a, const OutPortUI &b) { return a.getWidth() < b.getWidth(); }
+			)).getWidth();
+		}
 
 		height = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
 				 std::max(Style::PortMarginV, Style::NodeNameHeight);
@@ -158,6 +164,31 @@ protected:
 	{
 		(event);
 		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
+	}
+};
+
+
+template <typename BlockBaseT>
+class InputBlockUI : public BlockUI<BlockBaseT> {
+public:
+	explicit InputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
+		: BlockUI<BlockBaseT>(b, parent){
+
+	}
+	void Compute() override {
+
+	}
+};
+
+template <typename BlockBaseT>
+class OutputBlockUI : public BlockUI<BlockBaseT> {
+public:
+	explicit OutputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
+		: BlockUI<BlockBaseT>(b, parent){
+
+	}
+	void Compute() override {
+
 	}
 };
 
