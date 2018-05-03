@@ -30,6 +30,22 @@ void InPortUI::mouseMoveEvent(QMouseEvent *event)
 	PortBaseUI::mouseMoveEvent(event);
 }
 
+void InPortUI::mousePressEvent(QMouseEvent *event)
+{
+	(event);
+	GraphUI& g = dynamic_cast<GraphUI&>(block.graph);
+	if(g.getConnectedOutPort(*this) == nullptr)
+	{
+		g.in_click = this;
+		if (g.out_click != nullptr){
+			g.addConnection(*g.out_click, *this);
+		}
+	}
+	else {
+		g.removeConnection(*this);
+	}
+}
+
 OutPortUI::OutPortUI(const OutPortUI &other) : OutPortUI(other, other.p) { }
 
 OutPortUI::OutPortUI(const OutPort &p, QWidget *parent)
@@ -41,6 +57,16 @@ void OutPortUI::mouseMoveEvent(QMouseEvent *event)
 {
 	static_cast<GraphUI&>(this->block.graph).hoverConnectionUI(event->pos() + pos());
 	PortBaseUI::mouseMoveEvent(event);
+}
+
+void OutPortUI::mousePressEvent(QMouseEvent *event)
+{
+	(event);
+	GraphUI& g = static_cast<GraphUI&>(block.graph);
+	g.out_click = this;
+	if (g.in_click != nullptr){
+		g.addConnection(*this, *g.in_click);
+	}
 }
 
 int PortBaseUI::getWidth() const{
@@ -99,9 +125,4 @@ void PortBaseUI::leaveEvent(QEvent *event)
 QPoint PortBaseUI::Pos()
 {
 	return QPoint(pos().x() + Style::PortSize/2 + 1, pos().y() + Style::PortSize/2 + 1);
-}
-
-void PortBaseUI::mouseReleaseEvent(QMouseEvent *event)
-{
-	(event);
 }

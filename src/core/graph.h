@@ -31,7 +31,8 @@ public:
 
 	void addBlock(BlockType);
 	void removeBlock(BlockBase *b);
-	virtual void addConnection(OutPort &a, InPort &b);
+	OutPort * getConnectedOutPort(InPort &p);
+	virtual bool addConnection(OutPort &a, InPort &b);
 	virtual void removeConnection(OutPort &a, InPort &b);
 	virtual void removeConnection(InPort &p);
 	void computeReset();

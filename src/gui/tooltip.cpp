@@ -38,7 +38,7 @@ void Tooltip::paintEvent(QPaintEvent *event)
 	int h = QApplication::fontMetrics().height();
 
 	resize(w + 2 * Style::TooltipHPadding,
-		   h * lines.size() + 2 * Style::TooltipPadding);
+		   h * static_cast<int>(lines.size()) + 2 * Style::TooltipPadding);
 
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);

@@ -41,9 +41,7 @@ int main(int argc, char *argv[]) {
 
     b->Input(1).Value() = scal(6);
 
-    //schema.addConnection(a->Output(0), b->Input(0));
-
-    //b->Compute();
+	//b->Compute();
 
     //std::string out = b->Output(0).Value();
 

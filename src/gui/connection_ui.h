@@ -1,6 +1,7 @@
 #ifndef CONNECTION_UI_H
 #define CONNECTION_UI_H
 
+#include <QPoint>
 #include <QWidget>
 #include <QPaintEvent>
 
@@ -9,7 +10,7 @@
 
 class ConnectionUI : public QWidget
 {
-private:
+protected:
 	QWidget *p;
 	Tooltip t;
 	InPortUI *in;
@@ -18,6 +19,8 @@ private:
 	bool hover = false;
 	void showValue();
 	void hideValue();
+	virtual QPoint getLeft();
+	virtual QPoint getRight();
 public:
 	explicit ConnectionUI(InPortUI *in, OutPortUI *out, QWidget *parent = nullptr);
 	ConnectionUI(const ConnectionUI &other);
@@ -29,6 +32,19 @@ public:
 	bool mouseHover(bool hover);
 protected:
 	void paintEvent(QPaintEvent *event) override;
+};
+
+class TempConnectionUI : public ConnectionUI
+{
+private:
+	InPort **in_c;
+	OutPort **out_c;
+protected:
+	QPoint getLeft() override;
+	QPoint getRight() override;
+	void paintEvent(QPaintEvent *event) override;
+public:
+	TempConnectionUI(InPort **in, OutPort **out, QWidget *parent = nullptr);
 };
 
 #endif // CONNECTION_UI_H
