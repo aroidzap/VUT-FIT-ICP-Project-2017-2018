@@ -38,6 +38,16 @@ bool BlockBase::HasAllValues()
 	return true;
 }
 
+bool BlockBase::InputsAreConnected()
+{
+	for (InPort &p : this->inputs) {
+		if(graph.connections.count(&p) <= 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool BlockBase::Computable()
 {
 	return true;

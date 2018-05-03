@@ -18,6 +18,9 @@ private:
 protected:
 	std::string name;
 	virtual BlockFactory & GetBlockFactory();
+	std::list<BlockBase*> to_compute;
+	std::list<BlockBase*>::iterator c_it;
+	BlockBase *last_computed;
 public:
 	std::list<BlockBase*> blocks;
 	std::map<InPort *, OutPort *> connections;
@@ -35,9 +38,11 @@ public:
 	virtual bool addConnection(OutPort &a, InPort &b);
 	virtual void removeConnection(OutPort &a, InPort &b);
 	virtual void removeConnection(InPort &p);
-	void computeReset();
-	void computeStep();
-	void computeAll();
+	virtual bool allInputsConnected();
+	virtual void computeReset();
+	virtual bool computeStep();
+	virtual bool computeAll();
+	bool computeFinished();
 
 };
 

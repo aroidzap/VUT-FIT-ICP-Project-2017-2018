@@ -1,6 +1,6 @@
 #include "graph_ui.h"
+#include "block_ui.h"
 #include "style.h"
-
 #include "alert.h"
 
 BlockFactory &GraphUI::GetBlockFactory()
@@ -32,7 +32,7 @@ bool GraphUI::addConnection(OutPort &a, InPort &b)
 	}
 	else {
 		if(!a.Value().type_of(b.Value())){
-			ErrorAlert("These Port types are incompatible!");
+			ErrorAlert("These port types are incompatible!");
 		}
 		else {
 			ErrorAlert("This connection would form cycle!");
@@ -115,6 +115,41 @@ void GraphUI::hideHoverConnectionUI()
 		c->mouseHover(false);
 	}
 	tc.update();
+}
+
+bool GraphUI::allInputsConnected()
+{
+	if(!Graph::allInputsConnected()){
+		ErrorAlert("Some input ports are not connected!");
+		return false;
+	}
+	return true;
+}
+
+void GraphUI::computeReset()
+{
+	if(last_computed != nullptr){
+		static_cast<BlockUI<BlockBase>*>(last_computed)->Highlight(false);
+	}
+	Graph::computeReset();
+}
+
+bool GraphUI::computeStep()
+{
+	if(last_computed != nullptr){
+		static_cast<BlockUI<BlockBase>*>(last_computed)->Highlight(false);
+	}
+	bool ret = Graph::computeStep();
+	if(last_computed != nullptr){
+		static_cast<BlockUI<BlockBase>*>(last_computed)->Highlight(true);
+	}
+	return ret;
+}
+
+bool GraphUI::computeAll()
+{
+	bool ret = Graph::computeAll();
+	return computeStep() && ret;
 }
 
 void GraphUI::leaveEvent(QEvent *event)

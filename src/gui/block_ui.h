@@ -71,6 +71,24 @@ public:
 		this->label.show();
 	}
 
+	bool HasAllValues() override {
+		for (InPortUI &p : this->inputs) {
+			if(p.Value().isNull()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool InputsAreConnected() override {
+		for (InPortUI &p : this->inputs) {
+			if(graph.connections.count(&p) <= 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	InPort & Input(std::size_t id) override
 	{
 		return inputs[id];
@@ -235,6 +253,7 @@ public:
 			text_in.insert(std::pair<std::string, TextEdit*>(el.first.c_str(), l));
 			off += Style::NodeFieldOffset;
 		}
+		update_output();
 	}
 	bool Computable() override {
 		return false;

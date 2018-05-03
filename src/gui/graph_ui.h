@@ -29,6 +29,10 @@ public:
 	void updateConnectionUI(Port &p);
 	void hoverConnectionUI(QPoint mouse);
 	void hideHoverConnectionUI();
+	bool allInputsConnected() override;
+	void computeReset() override;
+	bool computeStep() override;
+	bool computeAll() override;
 	~GraphUI();
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
