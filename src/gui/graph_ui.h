@@ -21,7 +21,7 @@ private:
 	BlockFactory & GetBlockFactory() override;
 	bool drag = false;
 	QPoint drag_p;
-	bool block_click_remove = true;
+	bool block_click_remove = false;
 public:
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
