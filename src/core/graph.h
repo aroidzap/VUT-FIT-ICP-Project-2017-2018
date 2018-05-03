@@ -46,6 +46,7 @@ public:
 	virtual bool computeStep();
 	virtual bool computeAll();
 	bool computeFinished();
+	bool isAcyclic(OutPort &a, InPort &b);
 };
 
 #endif // GRAPH_H

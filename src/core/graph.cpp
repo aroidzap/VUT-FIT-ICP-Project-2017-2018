@@ -159,10 +159,12 @@ OutPort *Graph::getConnectedOutPort(InPort &p)
 
 bool Graph::addConnection(OutPort &a, InPort &b)
 {
-	if(!a.Value().type_of(b.Value())) {
+	if (!a.Value().type_of(b.Value())) {
 		return false;
 	}
-	//TODO: check acyclic
+	if (!isAcyclic(a, b)) {
+		return false;
+	}
 	connections.insert(std::pair<InPort *, OutPort *>(&b, &a));
 	a.eventConnectionChange();
 	b.eventConnectionChange();
@@ -264,4 +266,20 @@ bool Graph::computeAll()
 bool Graph::computeFinished()
 {
 	return (to_compute.size() == 0);
+}
+
+bool Graph::isAcyclic(OutPort &a, InPort &b)
+{
+	// edges
+	std::vector<std::pair<const BlockBase*, const BlockBase*>> dag;
+	dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(a.block), &(b.block)));
+	for(auto &el : connections) {
+		dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(el.first->block), &(el.second->block)));
+	}
+	// check for connections on same block
+	for (auto &p : dag){
+		if (p.first == p.second) {
+			return false;
+		}
+	}
 }
