@@ -39,7 +39,8 @@ SOURCES += \
     src/core/types/types.cpp \
     src/core/blockfactory.cpp \
     src/gui/blockfactory_ui.cpp \
-    src/gui/graph_ui.cpp
+    src/gui/graph_ui.cpp \
+    src/core/blocks/vector_io.cpp
 
 HEADERS += \
     src/gui/style.h \
@@ -58,7 +59,8 @@ HEADERS += \
     src/core/blockfactory.h \
     src/core/blocks.h \
     src/gui/blockfactory_ui.h \
-    src/gui/graph_ui.h
+    src/gui/graph_ui.h \
+    src/core/blocks/vector_io.h
 
 FORMS += \
     src/gui/blockeditor.ui

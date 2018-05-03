@@ -1,4 +1,5 @@
 #include "graph_ui.h"
+#include "style.h"
 
 BlockFactory &GraphUI::GetBlockFactory()
 {
@@ -84,6 +85,18 @@ void GraphUI::mouseMoveEvent(QMouseEvent *event)
 {
 	hoverConnectionUI(event->pos());
 	tc.update();
+	if(drag){
+		int x = pos().x() + event->pos().x() - drag_p.x();
+		int y = pos().y() + event->pos().y() - drag_p.y();
+		x = x > 0 ? 0 : x;
+		y = y > Style::MenuHeight ? Style::MenuHeight : y;
+		move(x, y);
+		if(parentWidget() != nullptr){
+			resize(parentWidget()->width() - x, parentWidget()->height() - y);
+		}
+		lower();
+		update();
+	}
 }
 
 void GraphUI::hideHoverConnectionUI()
@@ -103,7 +116,16 @@ void GraphUI::leaveEvent(QEvent *event)
 void GraphUI::mousePressEvent(QMouseEvent *event)
 {
 	(event);
+	setFocus();
 	in_click = nullptr;
 	out_click = nullptr;
 	tc.update();
+	drag = true;
+	drag_p = event->pos();
+}
+
+void GraphUI::mouseReleaseEvent(QMouseEvent *event)
+{
+	(event);
+	drag = false;
 }

@@ -32,6 +32,7 @@ void InPortUI::mouseMoveEvent(QMouseEvent *event)
 void InPortUI::mousePressEvent(QMouseEvent *event)
 {
 	(event);
+	setFocus();
 	GraphUI& g = dynamic_cast<GraphUI&>(block.graph);
 	if(g.getConnectedOutPort(*this) == nullptr)
 	{
@@ -61,6 +62,7 @@ void OutPortUI::mouseMoveEvent(QMouseEvent *event)
 void OutPortUI::mousePressEvent(QMouseEvent *event)
 {
 	(event);
+	setFocus();
 	GraphUI& g = static_cast<GraphUI&>(block.graph);
 	g.out_click = this;
 	if (g.in_click != nullptr){

@@ -1,11 +1,18 @@
 #include "blockfactory.h"
 
+#include "blocks/vector_io.h"
 #include "blocks/vectoraddblock.h"
 
 BlockBase *BlockFactory::AllocBlock(BlockType t)
 {
 	BlockBase *b;
 	switch (t) {
+	case VECTOR_INPUT:
+		b = new VectorInput(g);
+		break;
+	case VECTOR_OUTPUT:
+		b = new VectorOutput(g);
+		break;
 	case VECTOR_ADD:
 		b = new VectorAddBlock(g);
 		break;

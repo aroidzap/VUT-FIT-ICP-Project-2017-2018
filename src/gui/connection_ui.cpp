@@ -63,6 +63,7 @@ void ConnectionUI::hideValue(){
 void ConnectionUI::paintEvent(QPaintEvent *event)
 {
 	(event);
+	resize(parentWidget()->size());
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	QPen p(Style::ConnectionCol);
