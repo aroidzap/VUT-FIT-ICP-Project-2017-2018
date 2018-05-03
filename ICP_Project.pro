@@ -40,7 +40,15 @@ SOURCES += \
     src/core/types/types.cpp \
     src/core/blockfactory.cpp \
     src/gui/blockfactory_ui.cpp \
-    src/gui/graph_ui.cpp
+    src/gui/graph_ui.cpp \
+    src/core/blocks/vectordotproductblock.cpp \
+    src/core/blocks/scalaraddblock.cpp \
+    src/core/blocks/matrixmulblock.cpp \
+    src/core/blocks/matrixaddblock.cpp \
+    src/core/blocks/scalarsubblock.cpp \
+    src/core/blocks/scalarmulblock.cpp \
+    src/core/blocks/scalar_io.cpp \
+    src/core/blocks/matrix_io.cpp
 
 HEADERS += \
     src/gui/style.h \
@@ -60,7 +68,15 @@ HEADERS += \
     src/core/blockfactory.h \
     src/core/blocks.h \
     src/gui/blockfactory_ui.h \
-    src/gui/graph_ui.h
+    src/gui/graph_ui.h \
+    src/core/blocks/vectordotproductblock.h \
+    src/core/blocks/scalaraddblock.h \
+    src/core/blocks/matrixaddblock.h \
+    src/core/blocks/matrixmulblock.h \
+    src/core/blocks/scalarsubblock.h \
+    src/core/blocks/scalarmulblock.h \
+    src/core/blocks/scalar_io.h \
+    src/core/blocks/matrix_io.h
 
 FORMS += \
     src/gui/blockeditor.ui

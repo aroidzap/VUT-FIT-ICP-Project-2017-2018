@@ -281,14 +281,16 @@ protected:
 	void paintEvent(QPaintEvent *event) override {
 		int w, h;
 		auto lines = Tooltip::TextLines(static_cast<std::string>(Input(0).Value()), w, h);
-		auto orig_w = width;
+		auto orig_w = width; auto orig_h = height;
+		int cnt = static_cast<int>(lines.size()) - 1;
+		height = height + h * (cnt < 0 ? 0 : cnt) - h;
 		width = width - static_cast<InPortUI&>(Input(0)).getWidth() + w;
 		width = std::max(width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
 		width = std::max(width, Style::NodeMinWidth);
 		resize(width + 1, height + 1);
 		Move(pos().x(), pos().y());
 		BlockUI::paintEvent(event);
-		width = orig_w;
+		width = orig_w; height = orig_h;
 
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);

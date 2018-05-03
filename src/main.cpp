@@ -22,8 +22,19 @@ int main(int argc, char *argv[]) {
 
 	schema.SetName("schema");
 
+	schema.addBlock(SCAL_INPUT);
+	schema.addBlock(SCAL_OUTPUT);
 	schema.addBlock(VECTOR_INPUT);
 	schema.addBlock(VECTOR_OUTPUT);
+	schema.addBlock(MAT2_INPUT);
+	schema.addBlock(MAT2_OUTPUT);
+	/*schema.addBlock(VECTOR_ADD);
+	schema.addBlock(VECTOR_DOTPRODUCT);
+	schema.addBlock(SCALAR_ADD);
+	schema.addBlock(SCALAR_SUB);
+	schema.addBlock(SCALAR_MUL);
+	schema.addBlock(MAT_MUL);
+	schema.addBlock(MAT_ADD);*/
 
 	auto it = schema.blocks.begin();
 
