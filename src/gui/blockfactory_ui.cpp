@@ -39,7 +39,6 @@ BlockBase *BlockFactoryUI::AllocBlock(BlockType t)
 	default:
 		return nullptr;
 	}
-	// TODO: promote Ports to PortUI
 	blocks.push_back(b);
 	return b;
 }

@@ -8,12 +8,11 @@ VectorDotProductBlock::VectorDotProductBlock(Graph &g)
         InPort(*this, vec2(), "B")
     },
     {
-        OutPort(*this, vec2(), "Out")
+		OutPort(*this, scal(), "Dot")
     }
     ){}
 
 void VectorDotProductBlock::Compute()
 {
-    this->Output(0)["x"] = this->Input(0)["x"] * this->Input(1)["x"];
-    this->Output(0)["y"] = this->Input(0)["y"] * this->Input(1)["y"];
+	this->Output(0)["val"] = this->Input(0)["x"] * this->Input(1)["x"] + this->Input(0)["y"] * this->Input(1)["y"];
 }
