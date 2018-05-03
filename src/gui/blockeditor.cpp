@@ -149,7 +149,8 @@ void BLOCKEDITOR::help()
     QMessageBox::about(this, "Help",
                              "<h1>Block Editor Help</h1>"
                              "<p><b>Creating blocks: </b>Right-click and select the desired type.</p>"
-                             "<p><b>Deleting blocks/connections: </b>Click on a trash icon and then on a block/connection.</p>");
+							 "<p><b>Creating connections: </b>Click on one port, then on other to make connection. Click elsewhere to discard connection.</p>"
+							 "<p><b>Deleting blocks: </b>Click on a trash icon and then on a block.</p>");
 }
 
 void BLOCKEDITOR::documentWasModified()
