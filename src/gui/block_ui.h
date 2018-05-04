@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: block_ui.h
+*/
+
 #ifndef BLOCK_UI_H
 #define BLOCK_UI_H
 
@@ -73,24 +79,6 @@ public:
 
 	QPoint Pos() const {
 		return pos();
-	}
-
-	bool HasAllValues() override {
-		for (InPortUI &p : this->inputs) {
-			if(p.Value().isNull()){
-				return false;
-			}
-		}
-		return true;
-	}
-
-	bool InputsAreConnected() override {
-		for (InPortUI &p : this->inputs) {
-			if(this->graph.connections.count(&p) <= 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	int getPortID(const InPort &port) const override
@@ -221,6 +209,7 @@ class TextEdit : public QLineEdit{
 private:
 	std::function<void(void)> callback;
 	bool err = false;
+	QString prev;
 public:
 	TextEdit(QWidget *parent, std::function<void(void)> callback)
 		: QLineEdit(parent), callback(callback) { }
@@ -231,7 +220,10 @@ protected:
 	bool event(QEvent * e) override {
 		auto propertyEvent = dynamic_cast<QDynamicPropertyChangeEvent*>(e);
 		if (propertyEvent != nullptr) {
-			callback();
+			if(text() != prev){
+				callback();
+			}
+			prev = text();
 		}
 		return QWidget::event(e);
 	}
@@ -251,6 +243,7 @@ private:
 	int text_in_off;
 	std::map<std::string, TextEdit*> text_in;
 	void update_output() {
+		this->graph.computeReset();
 		Type &val = this->Output(0).Value();
 		for(auto l : text_in){
 			bool ok;

@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: matrix_io.h
+*/
+
 #ifndef MATRIX_IO_H
 #define MATRIX_IO_H
 

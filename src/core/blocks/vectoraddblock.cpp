@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: vectoraddblock.cpp
+*/
+
 #include "vectoraddblock.h"
 #include "../types/types.h"
 

@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: port_ui.cpp
+*/
+
 #include "port_ui.h"
 #include "style.h"
 #include <QPainter>

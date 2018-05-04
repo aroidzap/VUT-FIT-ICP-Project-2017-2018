@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: port_ui.h
+*/
+
 #ifndef PORT_UI_H
 #define PORT_UI_H
 

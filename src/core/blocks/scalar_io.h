@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: scalar_io.h
+*/
+
 #ifndef SCALAR_IO_H
 #define SCALAR_IO_H
 
