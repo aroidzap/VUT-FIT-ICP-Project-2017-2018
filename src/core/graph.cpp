@@ -329,65 +329,55 @@ bool Graph::computeFinished()
 
 static bool isCyclicUntil(
 		std::map<const BlockBase*, std::set<const BlockBase*>> &connections,
-		const BlockBase* v, std::map<const BlockBase*,bool> &visited,
-		std::map<const BlockBase*,bool> &recStack)
+		const BlockBase* v, std::set<const BlockBase*> &visited, std::set<const BlockBase*> &recStack)
 {
-	if(!visited[v])
+	if(visited.find(v) == visited.end())
 	{
-		// Mark the current node as visited and part of recursion stack
-		visited[v] = true;
-		recStack[v] = true;
+		// mark the current node as visited and part of recursion stack
+		visited.insert(v);
+		recStack.insert(v);
 
-		// Recur for all the vertices adjacent to this vertex
-		std::set<const BlockBase*>::iterator i;
-		for(i = connections[v].begin(); i != connections[v].end(); ++i)
-		{
-			if ( !visited[*i] && isCyclicUntil(connections , *i, visited, recStack) )
-				return true;
-			else if (recStack[*i])
-				return true;
+		// recur for all the vertices adjacent to this vertex
+		if(connections.find(v) != connections.end()){
+			for(auto &i : connections.at(v))
+			{
+				if ( (visited.find(i) == visited.end()) && isCyclicUntil(connections , i, visited, recStack) )
+					return true;
+				else if (recStack.find(i) != recStack.end())
+					return true;
+			}
 		}
 
 	}
-	recStack[v] = false;  // remove the vertex from recursion stack
+	recStack.erase(v);
 	return false;
 }
 
-
 bool Graph::isAcyclic(OutPort &a, InPort &b)
 {
-	// edges
-	std::vector<std::pair<const BlockBase*, const BlockBase*>> dag;
-	dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(a.block), &(b.block)));
-	for(auto &el : connections) {
-		dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(el.second->block), &(el.first->block)));
+	// std::map<output, inputs> edges
+	std::map<const BlockBase*, std::set<const BlockBase*>> dag;
+
+	dag[&(a.block)].insert(&(b.block));
+	for(auto &c : connections) {
+		dag[&(c.second->block)].insert(&(c.first->block));
 	}
 
 	// check for connections on same block - kept for faster resolution
-	for (auto &p : dag){
-		if (p.first == p.second) {
-			return false;
+	for (auto &c : dag){
+		for (auto out : c.second){
+			if (c.first == out){
+				return false;
+			}
 		}
 	}
 
-	// set of all outputs of input
-	std::map<const BlockBase*, std::set<const BlockBase*>> outLists;
-	for(auto &p : dag) {
-		outLists[p.first].insert(p.second);
-	}
-
-	// mark all the vertices as not visited and not part of recursion bool stack
-	std::map<const BlockBase*, bool> visited;
-	std::map<const BlockBase*, bool> recStack;
-	for(auto &b : blocks)
-	{
-		visited[b] = false;
-		recStack[b] = false;
-	}
+	std::set<const BlockBase*> visited;
+	std::set<const BlockBase*> recStack;
 
 	// call the recursive helper function
-	for(auto &m : outLists)
-		if (isCyclicUntil(outLists, m.first, visited, recStack))
+	for(auto &m : dag)
+		if (isCyclicUntil(dag, m.first, visited, recStack))
 			return false;
 
 	return true;
