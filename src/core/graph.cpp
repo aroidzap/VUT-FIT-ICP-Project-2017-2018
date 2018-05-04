@@ -327,6 +327,9 @@ bool Graph::computeFinished()
 	return (to_compute.size() == 0);
 }
 
+// Directed Acyclic Graph Check
+// reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+
 static bool isCyclicUntil(
 		std::map<const BlockBase*, std::set<const BlockBase*>> &connections,
 		const BlockBase* v, std::set<const BlockBase*> &visited, std::set<const BlockBase*> &recStack)
