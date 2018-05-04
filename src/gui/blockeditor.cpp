@@ -38,6 +38,11 @@ void BLOCKEDITOR::createActions()
     openAct->setStatusTip("Open an existing file");
     connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
+	mergeAct = new QAction("&Merge", this);
+	mergeAct->setStatusTip("Merge file into currently opened schema");
+	connect(mergeAct, SIGNAL(triggered()), this, SLOT(merge()));
+
+
     saveAct = new QAction(QIcon(":/icons/save.png"), "&Save", this);
     saveAct->setShortcuts(QKeySequence::Save);
     saveAct->setStatusTip("Save the document to disk");
@@ -48,20 +53,20 @@ void BLOCKEDITOR::createActions()
     saveAsAct->setStatusTip("Save the document under a new name");
     connect(saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
 
-    computeAct = new QAction(QIcon(":/icons/compute.png"), "&Compute", this);
+	computeAct = new QAction(QIcon(":/icons/compute.png"), "&Compute (F3)", this);
     computeAct->setShortcut(QKeySequence::fromString("F3", QKeySequence::NativeText));
     computeAct->setStatusTip("Computes the whole schema");
-    //connect(computeAct, SIGNAL(triggered()), this, SLOT(compute()));
+	connect(computeAct, SIGNAL(triggered()), this, SLOT(compute()));
 
-    stepAct = new QAction(QIcon(":/icons/step.png"), "&Step", this);
+	stepAct = new QAction(QIcon(":/icons/step.png"), "&Step (F4)", this);
     stepAct->setShortcut(QKeySequence::fromString("F4", QKeySequence::NativeText));
     stepAct->setStatusTip("Steps through the computation");
-    //connect(copyAct, SIGNAL(triggered()), this, SLOT(step()));
+	connect(stepAct, SIGNAL(triggered()), this, SLOT(step()));
 
-    resetAct = new QAction(QIcon(":/icons/reset.png"), "&Reset", this);
+	resetAct = new QAction(QIcon(":/icons/reset.png"), "&Reset (F5)", this);
     resetAct->setShortcut(QKeySequence::fromString("F5", QKeySequence::NativeText));
-    resetAct->setStatusTip("Resets the computation to the first block");
-    //connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
+	resetAct->setStatusTip("Marks first block as next to compute");
+	connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
 
     aboutAct = new QAction(QIcon(":/icons/about.png"), "&About", this);
     aboutAct->setStatusTip("Show the application's about box");
@@ -78,8 +83,8 @@ void BLOCKEDITOR::createActions()
     exitAct->setShortcuts(QKeySequence::Quit);
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-	deleteAct = new QAction(QIcon(":/icons/delete.png"), "Delete", this);
-	deleteAct->setStatusTip("Deletes a blocks from the schema");
+	deleteAct = new QAction(QIcon(":/icons/delete.png"), "Delete (Del)", this);
+	deleteAct->setStatusTip("Deletes a block or detaches a connection from the schema");
 	deleteAct->setShortcuts(QKeySequence::Delete);
 	connect(deleteAct, SIGNAL(triggered()), this, SLOT(delBlock()));
 }
@@ -88,6 +93,7 @@ void BLOCKEDITOR::createMenus()
 {
 	fileMenu = menuBar()->addMenu("&File");
 	fileMenu->addAction(openAct);
+	fileMenu->addAction(mergeAct);
 	fileMenu->addSeparator();
 	fileMenu->addAction(saveAct);
 	fileMenu->addAction(saveAsAct);
@@ -127,11 +133,20 @@ void BLOCKEDITOR::closeEvent(QCloseEvent *event)
 
 void BLOCKEDITOR::open()
 {
-    if (maybeSave()) {
+	if (maybeSave()) {
         QString fileName = QFileDialog::getOpenFileName(this);
         if (!fileName.isEmpty())
-            loadFile(fileName);
+			loadFile(fileName, false);
     }
+}
+
+void BLOCKEDITOR::merge()
+{
+
+	QString fileName = QFileDialog::getOpenFileName(this);
+	if (!fileName.isEmpty())
+		loadFile(fileName, true);
+
 }
 
 bool BLOCKEDITOR::save()
@@ -155,6 +170,27 @@ bool BLOCKEDITOR::saveAs()
         return false;
 
     return saveFile(files.at(0));
+}
+
+void BLOCKEDITOR::compute() {
+	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	if(graph != nullptr) {
+		graph->computeAll();
+	}
+}
+
+void BLOCKEDITOR::step() {
+	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	if(graph != nullptr) {
+		graph->computeStep();
+	}
+}
+
+void BLOCKEDITOR::reset() {
+	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	if(graph != nullptr) {
+		graph->computeReset();
+	}
 }
 
 void BLOCKEDITOR::about()
@@ -202,7 +238,7 @@ bool BLOCKEDITOR::maybeSave()
 }
 
 
-void BLOCKEDITOR::loadFile(const QString &fileName)
+void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
 {
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -225,10 +261,6 @@ void BLOCKEDITOR::loadFile(const QString &fileName)
 			funcIn << in.read(1024).toStdString() << '\n';
 		}
 
-		bool merge = true;
-		if(curFile != "") {
-			merge = false;
-		}
 		if(!graph->loadGraph(funcIn, merge)) {
 			QMessageBox::warning(this, "BLOCKEDITOR",
 									   QString::fromStdString("Error while reading the file."));

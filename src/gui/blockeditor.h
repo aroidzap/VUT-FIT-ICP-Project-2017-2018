@@ -34,8 +34,12 @@ protected:
 
 private slots:
     void open();
+	void merge();
     bool save();
     bool saveAs();
+	void compute();
+	void step();
+	void reset();
     void help();
     void about();
     void documentWasModified();
@@ -48,7 +52,7 @@ private:
     void createMenus();
     void createToolBars();
     bool maybeSave();
-    void loadFile(const QString &fileName);
+	void loadFile(const QString &fileName, bool merge);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
 
@@ -60,6 +64,7 @@ private:
     QToolBar *actionToolBar;
     QToolBar *helpToolBar;
     QAction *openAct;
+	QAction *mergeAct;
     QAction *saveAct;
     QAction *saveAsAct;
     QAction *exitAct;

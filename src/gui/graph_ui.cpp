@@ -265,13 +265,17 @@ void GraphUI::leaveEvent(QEvent *event)
 
 void GraphUI::mousePressEvent(QMouseEvent *event)
 {
-	(event);
-	setFocus();
-	in_click = nullptr;
-	out_click = nullptr;
-	tc.update();
-	drag = true;
-	drag_p = event->pos();
+	if(event->button() != Qt::RightButton) {
+		setFocus();
+		in_click = nullptr;
+		out_click = nullptr;
+		tc.update();
+		drag = true;
+		drag_p = event->pos();
+	}
+	else {
+
+	}
 }
 
 void GraphUI::mouseReleaseEvent(QMouseEvent *event)
