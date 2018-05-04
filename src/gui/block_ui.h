@@ -220,15 +220,15 @@ public:
 		this->err = err;
 	}
 protected:
-	bool event(QEvent * e) override {
-		auto propertyEvent = dynamic_cast<QDynamicPropertyChangeEvent*>(e);
-		if (propertyEvent != nullptr) {
-			if(text() != prev){
-				callback();
-			}
-			prev = text();
-		}
-		return QWidget::event(e);
+	void focusOutEvent(QFocusEvent *e) override {
+		QLineEdit::focusOutEvent(e);
+		if (text() != prev) { callback(); }
+		prev = text();
+	}
+	void keyPressEvent(QKeyEvent *e) override {
+		QLineEdit::keyPressEvent(e);
+		if (text() != prev) { callback(); }
+		prev = text();
 	}
 	void paintEvent(QPaintEvent *e) override {
 		QLineEdit::paintEvent(e);
