@@ -8,6 +8,7 @@
 #include <utility>
 #include <sstream>
 #include <iterator>
+#include <set>
 
 Graph::Graph() : bf(*this), last_computed(nullptr), to_compute(), c_it(to_compute.begin()) { }
 
@@ -326,73 +327,68 @@ bool Graph::computeFinished()
 	return (to_compute.size() == 0);
 }
 
+static bool isCyclicUntil(
+		std::map<const BlockBase*, std::set<const BlockBase*>> &connections,
+		const BlockBase* v, std::map<const BlockBase*,bool> &visited,
+		std::map<const BlockBase*,bool> &recStack)
+{
+	if(!visited[v])
+	{
+		// Mark the current node as visited and part of recursion stack
+		visited[v] = true;
+		recStack[v] = true;
+
+		// Recur for all the vertices adjacent to this vertex
+		std::set<const BlockBase*>::iterator i;
+		for(i = connections[v].begin(); i != connections[v].end(); ++i)
+		{
+			if ( !visited[*i] && isCyclicUntil(connections , *i, visited, recStack) )
+				return true;
+			else if (recStack[*i])
+				return true;
+		}
+
+	}
+	recStack[v] = false;  // remove the vertex from recursion stack
+	return false;
+}
+
+
 bool Graph::isAcyclic(OutPort &a, InPort &b)
 {
 	// edges
 	std::vector<std::pair<const BlockBase*, const BlockBase*>> dag;
 	dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(a.block), &(b.block)));
 	for(auto &el : connections) {
-		dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(el.first->block), &(el.second->block)));
+		dag.push_back(std::pair<const BlockBase*, const BlockBase*>(&(el.second->block), &(el.first->block)));
 	}
-	// check for connections on same block - left for quicker resolution
+
+	// check for connections on same block - kept for faster resolution
 	for (auto &p : dag){
 		if (p.first == p.second) {
 			return false;
 		}
 	}
 
-	size_t allNodes = this->blocks.size();
-	std::map<const BlockBase*, std::list<const BlockBase*>> outLists;
-	// Copying from vector of connected blocks (dag) to lists of blocks connected from OutPorts
-	BlockBase* activeNode = this->blocks.front();
-	for(auto &i : dag) { // iterates through all nodes
-		std::list<const BlockBase*> connectsTo;
-		for(size_t j = 0; j < dag.size(); j++) { // iterates through all connections, looks for those that start in active node
-			if(dag.at(j).first == activeNode) {
-				connectsTo.push_back(dag.at(j).second); // constructs vector of all connected blocks
-			}
-		}
-		outLists.insert(std::pair<const BlockBase*, std::list<const BlockBase*>>(activeNode, connectsTo));
-		activeNode++; // next node
+	// set of all outputs of input
+	std::map<const BlockBase*, std::set<const BlockBase*>> outLists;
+	for(auto &p : dag) {
+		outLists[p.first].insert(p.second);
 	}
 
-	// Mark all the vertices as not visited and not part of recursion
-	  // bool stack
-	  std::map<const BlockBase*, bool> visited;
-	  std::map<const BlockBase*, bool> recStack;
-	  for(auto &i : blocks)
-	  {
-		visited[i] = false;
-		recStack[i] = false;
-	  }
-
-	  // Call the recursive helper function
-	  for(auto &m : outLists)
-		if (!isCyclicRec(outLists, m.first, visited, recStack))
-		  return true;
-
-	  return false;
-}
-
-bool Graph::isCyclicRec(std::map<const BlockBase*, std::list<const BlockBase*>> &connections, const BlockBase* v, std::map<const BlockBase*,bool> &visited, std::map<const BlockBase*,bool> &recStack)
-{
-  if(!visited[v])
-  {
-	// Mark the current node as visited and part of recursion stack
-	visited[v] = true;
-	recStack[v] = true;
-
-	// Recur for all the vertices adjacent to this vertex
-	std::list<const BlockBase*>::iterator i;
-	for(i = connections[v].begin(); i != connections[v].end(); ++i)
+	// mark all the vertices as not visited and not part of recursion bool stack
+	std::map<const BlockBase*, bool> visited;
+	std::map<const BlockBase*, bool> recStack;
+	for(auto &b : blocks)
 	{
-	  if ( !visited[*i] && isCyclicRec(connections , *i, visited, recStack) )
-		return true;
-	  else if (recStack[*i])
-		return true;
+		visited[b] = false;
+		recStack[b] = false;
 	}
 
-  }
-  recStack[v] = false;  // remove the vertex from recursion stack
-  return false;
+	// call the recursive helper function
+	for(auto &m : outLists)
+		if (isCyclicUntil(outLists, m.first, visited, recStack))
+			return false;
+
+	return true;
 }

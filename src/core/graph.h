@@ -57,7 +57,6 @@ public:
 	virtual bool computeAll();
 	bool computeFinished();
 	bool isAcyclic(OutPort &a, InPort &b);
-	bool isCyclicRec(std::map<const BlockBase*, std::list<const BlockBase*>> &connections, const BlockBase* v, std::map<const BlockBase*,bool> &visited, std::map<const BlockBase*,bool> &recStack);
 };
 
 #endif // GRAPH_H
