@@ -18,23 +18,45 @@
 #include "ui_blockeditor.h"
 #include "graph_ui.h"
 
-BLOCKEDITOR::BLOCKEDITOR(QWidget *parent) :
-    QMainWindow(parent),
-	ui(new Ui::BLOCKEDITOR)
+BLOCKEDITOR::BLOCKEDITOR(GraphUI &g, QWidget *parent) :
+	QMainWindow(parent), ui(new Ui::BLOCKEDITOR), graph(g)
 {
 	ui->setupUi(this);
 
-    createActions();
+	createActions();
     createMenus();
     createToolBars();
     setCurrentFile("");
-    setUnifiedTitleAndToolBarOnMac(true);
+	setUnifiedTitleAndToolBarOnMac(true);
 
+	setCentralWidget(&graph);
+	show();
+
+	graph.onGraphChange([this](){this->documentWasModified();});
 }
 
 BLOCKEDITOR::~BLOCKEDITOR()
 {
+	//avoid destruction of graph, which is destructed externally
+	centralWidget()->setParent(nullptr);
+
+	deleteActions();
     delete ui;
+}
+
+void BLOCKEDITOR::deleteActions()
+{
+	delete openAct;
+	delete mergeAct;
+	delete saveAct;
+	delete saveAsAct;
+	delete computeAct;
+	delete stepAct;
+	delete resetAct;
+	delete aboutAct;
+	delete helpAct;
+	delete exitAct;
+	delete deleteAct;
 }
 
 void BLOCKEDITOR::createActions()
@@ -140,7 +162,8 @@ void BLOCKEDITOR::closeEvent(QCloseEvent *event)
 void BLOCKEDITOR::open()
 {
 	if (maybeSave()) {
-        QString fileName = QFileDialog::getOpenFileName(this);
+		QString fileName = QFileDialog::getOpenFileName(this,
+			QString(), QString(), QString(".gph"));
         if (!fileName.isEmpty())
 			loadFile(fileName, false);
     }
@@ -149,7 +172,8 @@ void BLOCKEDITOR::open()
 void BLOCKEDITOR::merge()
 {
 
-	QString fileName = QFileDialog::getOpenFileName(this);
+	QString fileName = QFileDialog::getOpenFileName(this,
+		QString(), QString(), QString(".gph"));
 	if (!fileName.isEmpty())
 		loadFile(fileName, true);
 
@@ -166,9 +190,11 @@ bool BLOCKEDITOR::save()
 
 bool BLOCKEDITOR::saveAs()
 {
-    QFileDialog dialog(this);
+	QFileDialog dialog(this);
     dialog.setWindowModality(Qt::WindowModal);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
+	dialog.setNameFilter(".gph");
+	dialog.selectFile( + ".gph");
     QStringList files;
     if (dialog.exec())
         files = dialog.selectedFiles();
@@ -179,21 +205,15 @@ bool BLOCKEDITOR::saveAs()
 }
 
 void BLOCKEDITOR::compute() {
-	if(centralWidget() != nullptr) {
-		static_cast<GraphUI*>(centralWidget())->computeAll();
-	}
+	graph.computeAll();
 }
 
 void BLOCKEDITOR::step() {
-	if(centralWidget() != nullptr) {
-		static_cast<GraphUI*>(centralWidget())->computeStep();
-	}
+	graph.computeStep();
 }
 
 void BLOCKEDITOR::reset() {
-	if(centralWidget() != nullptr) {
-		static_cast<GraphUI*>(centralWidget())->computeReset();
-	}
+	graph.computeReset();
 }
 
 void BLOCKEDITOR::about()
@@ -213,7 +233,7 @@ void BLOCKEDITOR::help()
 							 "<p><b>Deleting blocks: </b>Click on a trash icon and then on a block.</p>"
 							 "<h2>Connections</h2>"
 							 "<p><b>Creating connections: </b>Click on one port, then on other to make connection. Click elsewhere to discard connection.</p>"
-							 "<p><b>Detaching connection: </b>Click on a trash icon and then on a block's connection point to detach it. Click elsewhere to detach on the other side or click on other port to reconnect.</p>"
+							 "<p><b>Detaching connection: </b>Click on input port to detach connection. Click elsewhere to discard connection or click on any input port to reconnect.</p>"
 					   );
 
 }
@@ -257,18 +277,14 @@ void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE LOADING
-	if(centralWidget() != nullptr) {
-		GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	std::stringstream funcIn;
+	while(!in.atEnd()){
+		funcIn << in.read(1024).toStdString() << '\n';
+	}
 
-		std::stringstream funcIn;
-		while(!in.atEnd()){
-			funcIn << in.read(1024).toStdString() << '\n';
-		}
-
-		if(!graph->loadGraph(funcIn, merge)) {
-			QMessageBox::warning(this, "BLOCKEDITOR",
-									   QString::fromStdString("Error while reading the file."));
-		}
+	if(!graph.loadGraph(funcIn, merge)) {
+		QMessageBox::warning(this, "BLOCKEDITOR",
+								   QString::fromStdString("Error while reading the file."));
 	}
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
@@ -295,22 +311,17 @@ bool BLOCKEDITOR::saveFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE SAVING
-	if(centralWidget() != nullptr) {
-		GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-		std::stringstream funcOut;
+	std::stringstream funcOut;
+	funcOut = graph.saveGraph();
 
-			funcOut = graph->saveGraph();
-
-
-		while(funcOut.good()) {
-			std::string str;
-			std::getline(funcOut, str);
-			out << QString::fromStdString(str) << '\n';
-		}
-		if(funcOut.fail()) {
-			QMessageBox::warning(this, "BLOCKEDITOR",
-									   QString::fromStdString("Error while writing the file."));
-		}
+	while(funcOut.good()) {
+		std::string str;
+		std::getline(funcOut, str);
+		out << QString::fromStdString(str) << '\n';
+	}
+	if(funcOut.fail()) {
+		QMessageBox::warning(this, "BLOCKEDITOR",
+								   QString::fromStdString("Error while writing the file."));
 	}
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
@@ -335,8 +346,6 @@ void BLOCKEDITOR::setCurrentFile(const QString &fileName)
 
 void BLOCKEDITOR::delBlock()
 {
-	if(centralWidget() != nullptr) {
-		static_cast<GraphUI*>(centralWidget())->removeBlockOnClickEnable();
-	}
+	graph.removeBlockOnClickEnable();
 }
 

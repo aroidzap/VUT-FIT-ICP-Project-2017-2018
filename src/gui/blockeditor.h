@@ -17,6 +17,7 @@
 #define BLOCKEDITOR_H
 
 #include <QMainWindow>
+#include "graph_ui.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -30,9 +31,10 @@ class BLOCKEDITOR;
 class BLOCKEDITOR : public QMainWindow
 {
     Q_OBJECT
-
+private:
+	GraphUI &graph;
 public:
-	explicit BLOCKEDITOR(QWidget *parent = 0);
+	explicit BLOCKEDITOR(GraphUI &g, QWidget *parent = 0);
 	~BLOCKEDITOR();
 
 protected:
@@ -54,6 +56,7 @@ private slots:
 private:
 	Ui::BLOCKEDITOR *ui;
 
+	void deleteActions();
     void createActions();
     void createMenus();
     void createToolBars();

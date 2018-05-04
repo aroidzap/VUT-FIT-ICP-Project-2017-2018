@@ -19,12 +19,9 @@ int main(int argc, char *argv[]) {
 
 	QApplication app(argc, argv);
 
-	BLOCKEDITOR win;
-
 	GraphUI schema;
 
-	win.setCentralWidget(&schema);
-	win.show();
+	BLOCKEDITOR win(schema);
 
 	schema.SetName("schema");
 
@@ -53,11 +50,6 @@ int main(int argc, char *argv[]) {
 
 	b->Move(300,300);
 	a->Move(100,100);
-
-	schema.computeStep();
-
-	auto ss = schema.saveGraph();
-	schema.loadGraph(ss);
 
 	return app.exec();
 }
