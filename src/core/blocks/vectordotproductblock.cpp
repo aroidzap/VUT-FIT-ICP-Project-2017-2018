@@ -6,9 +6,10 @@
 
 #include "vectordotproductblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 VectorDotProductBlock::VectorDotProductBlock(Graph &g)
-    : BlockBase(g, VECTOR_DOTPRODUCT, "2D Vector Dot Product",
+	: BlockBase(g, VECTOR_DOTPRODUCT, BLOCK_NAME.at(VECTOR_DOTPRODUCT),
     {
         InPort(*this, vec2(), "A"),
         InPort(*this, vec2(), "B")

@@ -7,6 +7,9 @@
 #ifndef BLOCKS_H
 #define BLOCKS_H
 
+#include <string>
+#include <map>
+
 enum BlockType {
 	// Input
 	SCAL_INPUT = 0,
@@ -28,6 +31,29 @@ enum BlockType {
 	// Matrix
 	MAT_ADD = 16,
     MAT_MUL = 17
+};
+
+const std::map<BlockType, std::string> BLOCK_NAME = {
+	// Input
+	{ SCAL_INPUT, "Scalar Input" },
+	{ VECTOR_INPUT, "Vector Input" },
+	{ MAT2_INPUT, "Matrix Input" },
+	// Output
+	{ SCAL_OUTPUT, "Scalar Output" },
+	{ VECTOR_OUTPUT, "Vector Output" },
+	{ MAT2_OUTPUT, "Matrix Output" },
+
+	// Vector
+	{ VECTOR_ADD, "Vector Add"},
+	/*{ VECTOR_SUB,  "Vector Sub"},*/
+	{ VECTOR_DOTPRODUCT, "Vector Dot Product" },
+	// Scalar
+	{ SCALAR_ADD, "Scalar Add"},
+	{ SCALAR_SUB, "Scalar Sub"},
+	{ SCALAR_MUL,  "Scalar Multiply"},
+	// Matrix
+	{ MAT_ADD, "Matrix Add"},
+	{ MAT_MUL,  "Matrix Multiply"}
 };
 
 #endif // BLOCKS_H

@@ -15,7 +15,7 @@ BlockFactory &GraphUI::GetBlockFactory()
 }
 
 GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
-	tc(&in_click, &out_click, this) {
+	tc(&in_click, &out_click, this), block_menu(*this), block_context_menu(*this) {
 	setMouseTracking(true);
 }
 
@@ -96,22 +96,14 @@ std::stringstream GraphUI::saveGraph()
 	return std::move(ss);
 }
 
-void GraphUI::blockClicked(BlockBase *b)
+void GraphUI::blockContextMenu(BlockBase *b)
 {
-	if(block_click_remove){
-		removeBlock(b);
-	}
-}
-
-void GraphUI::removeBlockOnClickEnable()
-{
-	block_click_remove = true;
+	block_context_menu.ShowMenu(b);
 }
 
 void GraphUI::removeBlock(BlockBase *b)
 {
 	Graph::removeBlock(b);
-	block_click_remove = false;
 }
 
 bool GraphUI::addConnection(OutPort &a, InPort &b)
@@ -267,8 +259,11 @@ bool GraphUI::computeStep()
 
 bool GraphUI::computeAll()
 {
-	bool ret = Graph::computeAll();
-	return computeStep() && ret;
+	if (Graph::computeAll()) {
+		return computeStep();
+	} else {
+		return false;
+	}
 }
 
 void GraphUI::leaveEvent(QEvent *event)
@@ -279,14 +274,17 @@ void GraphUI::leaveEvent(QEvent *event)
 
 void GraphUI::mousePressEvent(QMouseEvent *event)
 {
-	(event);
-	setFocus();
-	in_click = nullptr;
-	out_click = nullptr;
-	tc.update();
-	drag = true;
-	drag_p = event->pos();
-	block_click_remove = false;
+	if(event->button() != Qt::RightButton) {
+		setFocus();
+		in_click = nullptr;
+		out_click = nullptr;
+		tc.update();
+		drag = true;
+		drag_p = event->pos();
+	}
+	else {
+		block_menu.ShowMenu();
+	}
 }
 
 void GraphUI::mouseReleaseEvent(QMouseEvent *event)
