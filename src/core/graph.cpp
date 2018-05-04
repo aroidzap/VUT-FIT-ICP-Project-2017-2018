@@ -11,9 +11,19 @@
 
 Graph::Graph() : bf(*this), last_computed(nullptr), to_compute(), c_it(to_compute.begin()) { }
 
+std::string Graph::GetName() const
+{
+	return this->name;
+}
+
 void Graph::SetName(const std::string name)
 {
 	this->name = name;
+}
+
+void Graph::onGraphChange(std::function<void ()> callback)
+{
+	this->graphChanged = callback;
 }
 
 int Graph::getBlockID(const BlockBase &block) const
@@ -36,6 +46,9 @@ void Graph::clearGraph()
 	blocks.clear();
 	connections.clear();
 	name.clear();
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 bool Graph::loadGraph(std::stringstream &graph, bool merge)
@@ -139,19 +152,25 @@ void Graph::addBlock(BlockType t)
 {
 	this->blocks.push_back(GetBlockFactory().AllocBlock(t));
 	computeReset();
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 void Graph::removeBlock(BlockBase *b)
 {
 	this->blocks.remove(b);
-	for(int i = 0; i < b->InputCount(); i++){
+	for(std::size_t i = 0; i < b->InputCount(); i++){
 		removeConnection(b->Input(i));
 	}
-	for(int i = 0; i < b->OutputCount(); i++){
+	for(std::size_t i = 0; i < b->OutputCount(); i++){
 		removeConnection(b->Output(i));
 	}
 	GetBlockFactory().FreeBlock(b);
 	computeReset();
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 OutPort *Graph::getConnectedOutPort(InPort &p)
@@ -173,6 +192,9 @@ bool Graph::addConnection(OutPort &a, InPort &b)
 	a.eventConnectionChange();
 	b.eventConnectionChange();
 	computeReset();
+	if (graphChanged) {
+		graphChanged();
+	}
 	return true;
 }
 
@@ -184,6 +206,9 @@ void Graph::removeConnection(InPort &p)
 	}
 	connections.erase(&p);
 	computeReset();
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 void Graph::removeConnection(OutPort &p)
@@ -198,6 +223,9 @@ void Graph::removeConnection(OutPort &p)
 		}
 	}
 	computeReset();
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 bool Graph::allInputsConnected()
@@ -211,7 +239,11 @@ bool Graph::allInputsConnected()
 	return true;
 }
 
-void Graph::computeReset() {
+void Graph::computeReset()
+{
+	for (BlockBase *b : blocks){
+		if(b->Computable()) { b->Reset(); }
+	}
 	to_compute = blocks;
 	c_it = to_compute.begin();
 }

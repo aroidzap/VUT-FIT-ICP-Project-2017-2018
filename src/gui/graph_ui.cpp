@@ -51,7 +51,9 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 		std::stringstream pos_stream(tmp);
 
 		auto it = blocks.begin();
-		std::advance(it, b_id_off);
+		if (merge) {
+			std::advance(it, b_id_off);
+		}
 
 		while(std::getline(pos_stream, tmp, ',')){
 			std::stringstream xy(tmp);
