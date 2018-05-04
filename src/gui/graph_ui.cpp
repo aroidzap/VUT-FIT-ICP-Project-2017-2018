@@ -259,8 +259,11 @@ bool GraphUI::computeStep()
 
 bool GraphUI::computeAll()
 {
-	bool ret = Graph::computeAll();
-	return computeStep() && ret;
+	if (Graph::computeAll()) {
+		return computeStep();
+	} else {
+		return false;
+	}
 }
 
 void GraphUI::leaveEvent(QEvent *event)

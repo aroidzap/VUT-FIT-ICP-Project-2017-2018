@@ -8,6 +8,7 @@
 #include <utility>
 #include <sstream>
 #include <iterator>
+#include <set>
 
 Graph::Graph() : bf(*this), last_computed(nullptr), to_compute(), c_it(to_compute.begin()) { }
 
@@ -205,10 +206,12 @@ OutPort *Graph::getConnectedOutPort(InPort &p)
 
 bool Graph::addConnection(OutPort &a, InPort &b)
 {
-	if(!a.Value().type_of(b.Value())) {
+	if (!a.Value().type_of(b.Value())) {
 		return false;
 	}
-	//TODO: check acyclic
+	if (!isAcyclic(a, b)) {
+		return false;
+	}
 	connections.insert(std::pair<InPort *, OutPort *>(&b, &a));
 	a.eventConnectionChange();
 	b.eventConnectionChange();
@@ -322,4 +325,60 @@ bool Graph::computeAll()
 bool Graph::computeFinished()
 {
 	return (to_compute.size() == 0);
+}
+
+static bool isCyclicUntil(
+		std::map<const BlockBase*, std::set<const BlockBase*>> &connections,
+		const BlockBase* v, std::set<const BlockBase*> &visited, std::set<const BlockBase*> &recStack)
+{
+	if(visited.find(v) == visited.end())
+	{
+		// mark the current node as visited and part of recursion stack
+		visited.insert(v);
+		recStack.insert(v);
+
+		// recur for all the vertices adjacent to this vertex
+		if(connections.find(v) != connections.end()){
+			for(auto &i : connections.at(v))
+			{
+				if ( (visited.find(i) == visited.end()) && isCyclicUntil(connections , i, visited, recStack) )
+					return true;
+				else if (recStack.find(i) != recStack.end())
+					return true;
+			}
+		}
+
+	}
+	recStack.erase(v);
+	return false;
+}
+
+bool Graph::isAcyclic(OutPort &a, InPort &b)
+{
+	// std::map<output, inputs> edges
+	std::map<const BlockBase*, std::set<const BlockBase*>> dag;
+
+	dag[&(a.block)].insert(&(b.block));
+	for(auto &c : connections) {
+		dag[&(c.second->block)].insert(&(c.first->block));
+	}
+
+	// check for connections on same block - kept for faster resolution
+	for (auto &c : dag){
+		for (auto out : c.second){
+			if (c.first == out){
+				return false;
+			}
+		}
+	}
+
+	std::set<const BlockBase*> visited;
+	std::set<const BlockBase*> recStack;
+
+	// call the recursive helper function
+	for(auto &m : dag)
+		if (isCyclicUntil(dag, m.first, visited, recStack))
+			return false;
+
+	return true;
 }
