@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: block_ui.h
+*/
+
 #ifndef BLOCK_UI_H
 #define BLOCK_UI_H
 

@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: graph.cpp
+*/
+
 #include "graph.h"
 #include <utility>
 #include <sstream>

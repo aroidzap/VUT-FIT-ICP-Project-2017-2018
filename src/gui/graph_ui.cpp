@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: graph_ui.cpp
+*/
+
 #include "graph_ui.h"
 #include "block_ui.h"
 #include "style.h"

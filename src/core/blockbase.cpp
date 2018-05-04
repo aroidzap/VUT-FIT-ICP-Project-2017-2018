@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: blockbase.cpp
+*/
+
 #include "blockbase.h"
 
 BlockBase::BlockBase(Graph &g, BlockType type, std::string name)

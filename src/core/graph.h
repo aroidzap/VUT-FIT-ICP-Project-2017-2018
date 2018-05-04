@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: graph.h
+*/
+
 #ifndef GRAPH_H
 #define GRAPH_H
 

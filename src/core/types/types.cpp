@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: types_h
+*/
+
 #include "types.h"
 
 scal::scal() : Type{"val"} { }

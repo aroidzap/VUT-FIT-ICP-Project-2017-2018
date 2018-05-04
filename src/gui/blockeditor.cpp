@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: blockeditor.cpp
+*/
+
 #include "blockeditor.h"
 #include "ui_blockeditor.h"
 
