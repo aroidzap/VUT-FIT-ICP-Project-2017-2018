@@ -63,6 +63,7 @@ private:
 	void loadFile(const QString &fileName, bool merge);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
+	QString strippedName(const QString &fullFileName);
 
     QString curFile;
 

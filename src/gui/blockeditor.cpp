@@ -156,7 +156,7 @@ void BLOCKEDITOR::open()
 {
 	if (maybeSave()) {
 		QString fileName = QFileDialog::getOpenFileName(this,
-			QString(), QString(), QString(".gph"));
+			QString(), QString(), QString("BLOCKEDITOR Files (*.gph)"));
         if (!fileName.isEmpty())
 			loadFile(fileName, false);
     }
@@ -166,7 +166,7 @@ void BLOCKEDITOR::merge()
 {
 
 	QString fileName = QFileDialog::getOpenFileName(this,
-		QString(), QString(), QString(".gph"));
+		QString(), QString(), QString("BLOCKEDITOR Files (*.gph)"));
 	if (!fileName.isEmpty())
 		loadFile(fileName, true);
 
@@ -186,7 +186,7 @@ bool BLOCKEDITOR::saveAs()
 	QFileDialog dialog(this);
     dialog.setWindowModality(Qt::WindowModal);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
-	dialog.setNameFilter(".gph");
+	dialog.setNameFilter("BLOCKEDITOR Files (*.gph)");
 	dialog.selectFile((graph.GetName() + ".gph").c_str());
     QStringList files;
     if (dialog.exec())
@@ -233,24 +233,28 @@ void BLOCKEDITOR::help()
 
 void BLOCKEDITOR::graphModified()
 {
-    //setWindowModified(textEdit->document()->isModified());
+	setWindowModified(true);
 }
 
 bool BLOCKEDITOR::maybeSave()
 {
-    QMessageBox::StandardButton ret;
-    ret = QMessageBox::warning(this, "BLOCKEDITOR",
-                                     "Do you want to save your changes?",
-                 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    if (ret == QMessageBox::Save) {
-        return save();
-    }
-    else {
-        if (ret == QMessageBox::Cancel) {
-        return false;
-        }
-    }
-    return true;
+	if(this->isWindowModified()) {
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::warning(this, "BLOCKEDITOR",
+										 "The document has been modified.\n"
+										 "Do you want to save your changes?",
+					 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+		if (ret == QMessageBox::Save) {
+			return save();
+		}
+		else {
+			if (ret == QMessageBox::Cancel) {
+			return false;
+			}
+		}
+	}
+	return true;
+
 }
 
 
@@ -331,8 +335,15 @@ void BLOCKEDITOR::setCurrentFile(const QString &fileName)
 
     setWindowModified(false);
 
-    QString shownName = curFile;
-    if (curFile.isEmpty())
-		shownName = "untitled";
-    setWindowFilePath(shownName);
+	QString shownName = curFile + " - BLOCKEDITOR";
+	if (curFile.isEmpty()) {
+		shownName = "untitled.gph - BLOCKEDITOR";
+	}
+
+	setWindowFilePath(shownName);
+}
+
+QString BLOCKEDITOR::strippedName(const QString &fullFileName)
+{
+	return QFileInfo(fullFileName).fileName();
 }
