@@ -6,9 +6,10 @@
 
 #include "vectoraddblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 VectorAddBlock::VectorAddBlock(Graph &g)
-    : BlockBase(g, VECTOR_ADD, "2D Vector Addition",
+	: BlockBase(g, VECTOR_ADD, BLOCK_NAME.at(VECTOR_ADD),
 	{
 		InPort(*this, vec2(), "A"),
 		InPort(*this, vec2(), "B")

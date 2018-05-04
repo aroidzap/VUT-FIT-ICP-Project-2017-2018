@@ -32,7 +32,7 @@ BLOCKEDITOR::BLOCKEDITOR(GraphUI &g, QWidget *parent) :
 	setCentralWidget(&graph);
 	show();
 
-	graph.onGraphChange([this](){this->documentWasModified();});
+	graph.onGraphChange([this](){this->graphModified();});
 }
 
 BLOCKEDITOR::~BLOCKEDITOR()
@@ -56,7 +56,6 @@ void BLOCKEDITOR::deleteActions()
 	delete aboutAct;
 	delete helpAct;
 	delete exitAct;
-	delete deleteAct;
 }
 
 void BLOCKEDITOR::createActions()
@@ -110,11 +109,6 @@ void BLOCKEDITOR::createActions()
     exitAct->setStatusTip("Close the application");
     exitAct->setShortcuts(QKeySequence::Quit);
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
-
-	deleteAct = new QAction(QIcon(":/icons/delete.png"), "Delete (Del)", this);
-	deleteAct->setStatusTip("Deletes a block or detaches a connection from the schema");
-	deleteAct->setShortcuts(QKeySequence::Delete);
-	connect(deleteAct, SIGNAL(triggered()), this, SLOT(delBlock()));
 }
 
 void BLOCKEDITOR::createMenus()
@@ -144,7 +138,6 @@ void BLOCKEDITOR::createToolBars()
 	actionToolBar->addAction(computeAct);
 	actionToolBar->addAction(stepAct);
 	actionToolBar->addAction(resetAct);
-	actionToolBar->addAction(deleteAct);
 
 	helpToolBar = addToolBar("Help");
 	helpToolBar->addAction(helpAct);
@@ -194,7 +187,7 @@ bool BLOCKEDITOR::saveAs()
     dialog.setWindowModality(Qt::WindowModal);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
 	dialog.setNameFilter(".gph");
-	dialog.selectFile( + ".gph");
+	dialog.selectFile((graph.GetName() + ".gph").c_str());
     QStringList files;
     if (dialog.exec())
         files = dialog.selectedFiles();
@@ -230,7 +223,7 @@ void BLOCKEDITOR::help()
                              "<h1>Block Editor Help</h1>"
 							 "<h2>Blocks</h2>"
 							 "<p><b>Creating blocks: </b>Right-click and select the desired type.</p>"
-							 "<p><b>Deleting blocks: </b>Click on a trash icon and then on a block.</p>"
+							 "<p><b>Deleting blocks: </b>Right-click on block and select 'Delete'.</p>"
 							 "<h2>Connections</h2>"
 							 "<p><b>Creating connections: </b>Click on one port, then on other to make connection. Click elsewhere to discard connection.</p>"
 							 "<p><b>Detaching connection: </b>Click on input port to detach connection. Click elsewhere to discard connection or click on any input port to reconnect.</p>"
@@ -238,7 +231,7 @@ void BLOCKEDITOR::help()
 
 }
 
-void BLOCKEDITOR::documentWasModified()
+void BLOCKEDITOR::graphModified()
 {
     //setWindowModified(textEdit->document()->isModified());
 }
@@ -343,9 +336,3 @@ void BLOCKEDITOR::setCurrentFile(const QString &fileName)
 		shownName = "untitled";
     setWindowFilePath(shownName);
 }
-
-void BLOCKEDITOR::delBlock()
-{
-	graph.removeBlockOnClickEnable();
-}
-

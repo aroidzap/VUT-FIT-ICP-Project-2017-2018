@@ -187,11 +187,14 @@ protected:
 	}
 	void mousePressEvent(QMouseEvent *event) override
 	{
-		(event);
-		setFocus();
-		drag = true;
-		drag_p = event->pos();
-		static_cast<GraphUI&>(this->graph).blockClicked(this);
+		if(event->button() != Qt::RightButton) {
+			setFocus();
+			drag = true;
+			drag_p = event->pos();
+		}
+		else {
+			static_cast<GraphUI&>(this->graph).blockContextMenu(this);
+		}
 	}
 	void mouseReleaseEvent(QMouseEvent *event) override
 	{

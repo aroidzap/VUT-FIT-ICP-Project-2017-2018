@@ -6,9 +6,10 @@
 
 #include "matrixaddblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 MatrixAddBlock::MatrixAddBlock(Graph &g)
-    : BlockBase(g, MAT_ADD, "2D Matrix Addition",
+	: BlockBase(g, MAT_ADD, BLOCK_NAME.at(MAT_ADD),
     {
         InPort(*this, mat2(), "A"),
         InPort(*this, mat2(), "B")

@@ -6,9 +6,10 @@
 
 #include "scalaraddblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 ScalarAddBlock::ScalarAddBlock(Graph &g)
-    : BlockBase(g, SCALAR_ADD, "Scalar Addition",
+	: BlockBase(g, SCALAR_ADD, BLOCK_NAME.at(SCALAR_ADD),
     {
         InPort(*this, scal(), "A"),
         InPort(*this, scal(), "B")

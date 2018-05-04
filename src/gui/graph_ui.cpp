@@ -15,7 +15,7 @@ BlockFactory &GraphUI::GetBlockFactory()
 }
 
 GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
-	tc(&in_click, &out_click, this) {
+	tc(&in_click, &out_click, this), block_menu(*this), block_context_menu(*this) {
 	setMouseTracking(true);
 }
 
@@ -43,6 +43,7 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 	std::string tmp;
 	try {
 		// Block Positions
+		graph >> std::ws; // skip whitespaces
 		std::getline(graph, tmp,'[');
 		if (tmp != "pos") {
 			return false;
@@ -78,6 +79,7 @@ std::stringstream GraphUI::saveGraph()
 	std::stringstream ss = Graph::saveGraph();
 
 	// Block Positions
+	ss << '\n';
 	ss << "pos[";
 	bool first = true;
 	for (BlockBase *b : blocks) {
@@ -94,22 +96,14 @@ std::stringstream GraphUI::saveGraph()
 	return std::move(ss);
 }
 
-void GraphUI::blockClicked(BlockBase *b)
+void GraphUI::blockContextMenu(BlockBase *b)
 {
-	if(block_click_remove){
-		removeBlock(b);
-	}
-}
-
-void GraphUI::removeBlockOnClickEnable()
-{
-	block_click_remove = true;
+	block_context_menu.ShowMenu(b);
 }
 
 void GraphUI::removeBlock(BlockBase *b)
 {
 	Graph::removeBlock(b);
-	block_click_remove = false;
 }
 
 bool GraphUI::addConnection(OutPort &a, InPort &b)
@@ -284,10 +278,9 @@ void GraphUI::mousePressEvent(QMouseEvent *event)
 		tc.update();
 		drag = true;
 		drag_p = event->pos();
-		block_click_remove = false;
 	}
 	else {
-
+		block_menu.ShowMenu();
 	}
 }
 

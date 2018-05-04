@@ -6,9 +6,10 @@
 
 #include "scalarmulblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 ScalarMulBlock::ScalarMulBlock(Graph &g)
-    : BlockBase(g, SCALAR_MUL, "Scalar Multiplication",
+	: BlockBase(g, SCALAR_MUL, BLOCK_NAME.at(SCALAR_MUL),
     {
         InPort(*this, scal(), "A"),
         InPort(*this, scal(), "B")
