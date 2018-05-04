@@ -39,6 +39,7 @@ private slots:
     void help();
     void about();
     void documentWasModified();
+	void delBlock();
 
 private:
 	Ui::BLOCKEDITOR *ui;
@@ -65,6 +66,7 @@ private:
     QAction *computeAct;
     QAction *stepAct;
     QAction *resetAct;
+	QAction* deleteAct;
     QAction *helpAct;
     QAction *aboutAct;
 };

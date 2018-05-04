@@ -10,6 +10,7 @@
 
 #include "blockeditor.h"
 #include "ui_blockeditor.h"
+#include "graph_ui.h"
 
 BLOCKEDITOR::BLOCKEDITOR(QWidget *parent) :
     QMainWindow(parent),
@@ -28,22 +29,6 @@ BLOCKEDITOR::BLOCKEDITOR(QWidget *parent) :
 BLOCKEDITOR::~BLOCKEDITOR()
 {
     delete ui;
-}
-
-void BLOCKEDITOR::createMenus()
-{
-    fileMenu = menuBar()->addMenu("&File");
-    fileMenu->addAction(openAct);
-    fileMenu->addSeparator();
-    fileMenu->addAction(saveAct);
-    fileMenu->addAction(saveAsAct);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAct);
-
-    helpMenu = menuBar()->addMenu("&Help");
-    helpMenu->addAction(aboutAct);
-    helpMenu->addSeparator();
-    helpMenu->addAction(helpAct);
 }
 
 void BLOCKEDITOR::createActions()
@@ -80,7 +65,7 @@ void BLOCKEDITOR::createActions()
 
     aboutAct = new QAction(QIcon(":/icons/about.png"), "&About", this);
     aboutAct->setStatusTip("Show the application's about box");
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+	connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
 
     helpAct = new QAction(QIcon(":/icons/help.png"), "&Help", this);
@@ -92,8 +77,44 @@ void BLOCKEDITOR::createActions()
     exitAct->setStatusTip("Close the application");
     exitAct->setShortcuts(QKeySequence::Quit);
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+
+	deleteAct = new QAction(QIcon(":/icons/delete.png"), "Delete", this);
+	deleteAct->setStatusTip("Deletes a blocks from the schema");
+	deleteAct->setShortcuts(QKeySequence::Delete);
+	connect(deleteAct, SIGNAL(triggered()), this, SLOT(delBlock()));
 }
 
+void BLOCKEDITOR::createMenus()
+{
+	fileMenu = menuBar()->addMenu("&File");
+	fileMenu->addAction(openAct);
+	fileMenu->addSeparator();
+	fileMenu->addAction(saveAct);
+	fileMenu->addAction(saveAsAct);
+	fileMenu->addSeparator();
+	fileMenu->addAction(exitAct);
+
+	helpMenu = menuBar()->addMenu("&Help");
+	helpMenu->addAction(aboutAct);
+	helpMenu->addSeparator();
+	helpMenu->addAction(helpAct);
+}
+
+void BLOCKEDITOR::createToolBars()
+{
+	fileToolBar = addToolBar("File");
+	fileToolBar->addAction(openAct);
+	fileToolBar->addAction(saveAct);
+
+	actionToolBar = addToolBar("Actions");
+	actionToolBar->addAction(computeAct);
+	actionToolBar->addAction(stepAct);
+	actionToolBar->addAction(resetAct);
+	actionToolBar->addAction(deleteAct);
+
+	helpToolBar = addToolBar("Help");
+	helpToolBar->addAction(helpAct);
+}
 
 void BLOCKEDITOR::closeEvent(QCloseEvent *event)
 {
@@ -148,29 +169,19 @@ void BLOCKEDITOR::help()
 {
     QMessageBox::about(this, "Help",
                              "<h1>Block Editor Help</h1>"
-                             "<p><b>Creating blocks: </b>Right-click and select the desired type.</p>"
+							 "<h2>Blocks</h2>"
+							 "<p><b>Creating blocks: </b>Right-click and select the desired type.</p>"
+							 "<p><b>Deleting blocks: </b>Click on a trash icon and then on a block.</p>"
+							 "<h2>Connections</h2>"
 							 "<p><b>Creating connections: </b>Click on one port, then on other to make connection. Click elsewhere to discard connection.</p>"
-							 "<p><b>Deleting blocks: </b>Click on a trash icon and then on a block.</p>");
+							 "<p><b>Detaching connection: </b>Click on a trash icon and then on a block's connection point to detach it. Click elsewhere to detach on the other side or click on other port to reconnect.</p>"
+					   );
+
 }
 
 void BLOCKEDITOR::documentWasModified()
 {
     //setWindowModified(textEdit->document()->isModified());
-}
-
-void BLOCKEDITOR::createToolBars()
-{
-    fileToolBar = addToolBar("File");
-    fileToolBar->addAction(openAct);
-    fileToolBar->addAction(saveAct);
-
-    actionToolBar = addToolBar("Actions");
-    actionToolBar->addAction(computeAct);
-    actionToolBar->addAction(stepAct);
-    actionToolBar->addAction(resetAct);
-
-    helpToolBar = addToolBar("Help");
-    helpToolBar->addAction(helpAct);
 }
 
 bool BLOCKEDITOR::maybeSave()
@@ -195,7 +206,7 @@ void BLOCKEDITOR::loadFile(const QString &fileName)
 {
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, "Application",
+		QMessageBox::warning(this, "BLOCKEDITOR",
                                    QString::fromStdString("Cannot read file %1:\n%2.")
                              .arg(fileName)
                              .arg(file.errorString()));
@@ -207,6 +218,22 @@ void BLOCKEDITOR::loadFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE LOADING
+	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	if(graph != nullptr) {
+		std::stringstream funcIn;
+		while(!in.atEnd()){
+			funcIn << in.read(1024).toStdString() << '\n';
+		}
+
+		bool merge = true;
+		if(curFile != "") {
+			merge = false;
+		}
+		if(!graph->loadGraph(funcIn, merge)) {
+			QMessageBox::warning(this, "BLOCKEDITOR",
+									   QString::fromStdString("Error while reading the file."));
+		}
+	}
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
 #endif
@@ -232,6 +259,21 @@ bool BLOCKEDITOR::saveFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE SAVING
+	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	std::stringstream funcOut;
+	if(graph != nullptr) {
+		funcOut = graph->saveGraph();
+	}
+
+	while(funcOut.good()) {
+		std::string str;
+		std::getline(funcOut, str);
+		out << QString::fromStdString(str) << '\n';
+	}
+	if(funcOut.fail()) {
+		QMessageBox::warning(this, "BLOCKEDITOR",
+								   QString::fromStdString("Error while writing the file."));
+	}
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
 #endif
@@ -249,7 +291,15 @@ void BLOCKEDITOR::setCurrentFile(const QString &fileName)
 
     QString shownName = curFile;
     if (curFile.isEmpty())
-        shownName = "untitled.xml";
+		shownName = "untitled";
     setWindowFilePath(shownName);
+}
+
+void BLOCKEDITOR::delBlock()
+{
+	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+	if(graph != nullptr) {
+		graph->removeBlockOnClickEnable();
+	}
 }
 
