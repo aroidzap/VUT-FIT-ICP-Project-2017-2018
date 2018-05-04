@@ -6,9 +6,10 @@
 
 #include "scalarsubblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 ScalarSubBlock::ScalarSubBlock(Graph &g)
-    : BlockBase(g, SCALAR_SUB, "Scalar Subtraction\n(A - B)",
+	: BlockBase(g, SCALAR_SUB, BLOCK_NAME.at(SCALAR_SUB),
     {
         InPort(*this, scal(), "A"),
         InPort(*this, scal(), "B")

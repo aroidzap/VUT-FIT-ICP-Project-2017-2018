@@ -6,9 +6,10 @@
 
 #include "matrixmulblock.h"
 #include "../types/types.h"
+#include "../blocks.h"
 
 MatrixMulBlock::MatrixMulBlock(Graph &g)
-	: BlockBase(g, MAT_MUL, "2D Matrix Multiplication",
+	: BlockBase(g, MAT_MUL, BLOCK_NAME.at(MAT_MUL),
     {
         InPort(*this, mat2(), "A"),
         InPort(*this, mat2(), "B")
