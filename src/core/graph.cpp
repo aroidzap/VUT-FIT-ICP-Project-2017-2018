@@ -8,7 +8,10 @@
 #include <utility>
 #include <sstream>
 #include <iterator>
+#include <list>
+#include <map>
 #include <set>
+#include <algorithm>
 
 Graph::Graph() : bf(*this), last_computed(nullptr), to_compute(), c_it(to_compute.begin()) { }
 
@@ -327,37 +330,11 @@ bool Graph::computeFinished()
 	return (to_compute.size() == 0);
 }
 
-// Directed Acyclic Graph Check
-// reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
-
-static bool isCyclicUntil(
-		std::map<const BlockBase*, std::set<const BlockBase*>> &connections,
-		const BlockBase* v, std::set<const BlockBase*> &visited, std::set<const BlockBase*> &recStack)
-{
-	if(visited.find(v) == visited.end())
-	{
-		// mark the current node as visited and part of recursion stack
-		visited.insert(v);
-		recStack.insert(v);
-
-		// recur for all the vertices adjacent to this vertex
-		if(connections.find(v) != connections.end()){
-			for(auto &i : connections.at(v))
-			{
-				if ( (visited.find(i) == visited.end()) && isCyclicUntil(connections , i, visited, recStack) )
-					return true;
-				else if (recStack.find(i) != recStack.end())
-					return true;
-			}
-		}
-
-	}
-	recStack.erase(v);
-	return false;
-}
-
 bool Graph::isAcyclic(OutPort &a, InPort &b)
 {
+	// Directed Acyclic Graph Check
+	// reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+
 	// std::map<output, inputs> edges
 	std::map<const BlockBase*, std::set<const BlockBase*>> dag;
 
@@ -366,22 +343,47 @@ bool Graph::isAcyclic(OutPort &a, InPort &b)
 		dag[&(c.second->block)].insert(&(c.first->block));
 	}
 
-	// check for connections on same block - kept for faster resolution
-	for (auto &c : dag){
-		for (auto out : c.second){
-			if (c.first == out){
-				return false;
+	const BlockBase *curr;
+	std::list<const BlockBase*> visited;
+	std::list<const BlockBase*> stack;
+
+	auto not_visited = [&visited](auto x){
+		return std::find(visited.begin(), visited.end(), x) == visited.end();
+	};
+	auto in_stack = [&stack](auto x){
+		return std::find(stack.begin(), stack.end(), x) != stack.end();
+	};
+
+	for (auto &c : dag) {
+		curr = c.first;
+		if (not_visited(curr)) {
+			visited.push_back(curr);
+			stack.push_back(curr);
+		}
+		while (stack.size() > 0) {
+			curr = stack.back();
+			bool move_next = false;
+			if (dag.find(curr) != dag.end()) {
+				// if current has any connections, loop trough them
+				for (auto &next : dag.at(curr)) {
+					if(in_stack(next)){
+						// graph is not acyclic if next is already in stack
+						return false;
+					}
+					if(not_visited(next)){
+						// move to next if not visited
+						move_next = true;
+						visited.push_back(next);
+						stack.push_back(next);
+						break;
+					}
+				}
+			}
+			if (!move_next){
+				stack.pop_back();
 			}
 		}
 	}
-
-	std::set<const BlockBase*> visited;
-	std::set<const BlockBase*> recStack;
-
-	// call the recursive helper function
-	for(auto &m : dag)
-		if (isCyclicUntil(dag, m.first, visited, recStack))
-			return false;
 
 	return true;
 }
