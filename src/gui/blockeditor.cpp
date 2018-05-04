@@ -173,23 +173,20 @@ bool BLOCKEDITOR::saveAs()
 }
 
 void BLOCKEDITOR::compute() {
-	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-	if(graph != nullptr) {
-		graph->computeAll();
+	if(centralWidget() != nullptr) {
+		static_cast<GraphUI*>(centralWidget())->computeAll();
 	}
 }
 
 void BLOCKEDITOR::step() {
-	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-	if(graph != nullptr) {
-		graph->computeStep();
+	if(centralWidget() != nullptr) {
+		static_cast<GraphUI*>(centralWidget())->computeStep();
 	}
 }
 
 void BLOCKEDITOR::reset() {
-	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-	if(graph != nullptr) {
-		graph->computeReset();
+	if(centralWidget() != nullptr) {
+		static_cast<GraphUI*>(centralWidget())->computeReset();
 	}
 }
 
@@ -254,8 +251,9 @@ void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE LOADING
-	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-	if(graph != nullptr) {
+	if(centralWidget() != nullptr) {
+		GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+
 		std::stringstream funcIn;
 		while(!in.atEnd()){
 			funcIn << in.read(1024).toStdString() << '\n';
@@ -291,20 +289,22 @@ bool BLOCKEDITOR::saveFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE SAVING
-	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-	std::stringstream funcOut;
-	if(graph != nullptr) {
-		funcOut = graph->saveGraph();
-	}
+	if(centralWidget() != nullptr) {
+		GraphUI* graph = static_cast<GraphUI*>(centralWidget());
+		std::stringstream funcOut;
 
-	while(funcOut.good()) {
-		std::string str;
-		std::getline(funcOut, str);
-		out << QString::fromStdString(str) << '\n';
-	}
-	if(funcOut.fail()) {
-		QMessageBox::warning(this, "BLOCKEDITOR",
-								   QString::fromStdString("Error while writing the file."));
+			funcOut = graph->saveGraph();
+
+
+		while(funcOut.good()) {
+			std::string str;
+			std::getline(funcOut, str);
+			out << QString::fromStdString(str) << '\n';
+		}
+		if(funcOut.fail()) {
+			QMessageBox::warning(this, "BLOCKEDITOR",
+									   QString::fromStdString("Error while writing the file."));
+		}
 	}
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
@@ -329,9 +329,8 @@ void BLOCKEDITOR::setCurrentFile(const QString &fileName)
 
 void BLOCKEDITOR::delBlock()
 {
-	GraphUI* graph = static_cast<GraphUI*>(centralWidget());
-	if(graph != nullptr) {
-		graph->removeBlockOnClickEnable();
+	if(centralWidget() != nullptr) {
+		static_cast<GraphUI*>(centralWidget())->removeBlockOnClickEnable();
 	}
 }
 
