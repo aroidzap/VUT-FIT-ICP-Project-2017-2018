@@ -26,7 +26,7 @@ void BlockMenu::ShowMenu()
 }
 
 BlockMenuAction::BlockMenuAction(BlockType t)
-	: QAction(QString(BLOCK_NAME.at(t).c_str())), t(t) { }
+	: QAction(QString(BLOCK_NAME.at(t).c_str()), nullptr), t(t) { }
 
 BlockMenuAction::operator BlockType()
 {
