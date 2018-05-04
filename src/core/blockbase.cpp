@@ -82,7 +82,7 @@ bool BlockBase::HasAllValues()
 
 bool BlockBase::InputsAreConnected()
 {
-	for(size_t i = 0; i < OutputCount(); i++) {
+	for(size_t i = 0; i < InputCount(); i++) {
 		if(graph.connections.count(&Input(i)) <= 0) {
 			return false;
 		}
