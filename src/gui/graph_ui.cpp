@@ -15,7 +15,7 @@ BlockFactory &GraphUI::GetBlockFactory()
 }
 
 GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
-	tc(&in_click, &out_click, this) {
+	tc(&in_click, &out_click, this), block_menu(*this) {
 	setMouseTracking(true);
 }
 
@@ -289,7 +289,7 @@ void GraphUI::mousePressEvent(QMouseEvent *event)
 		block_click_remove = false;
 	}
 	else {
-
+		block_menu.ShowMenu();
 	}
 }
 

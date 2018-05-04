@@ -12,7 +12,9 @@
 #include "../core/graph.h"
 #include "blockfactory_ui.h"
 #include "connection_ui.h"
+#include "blockmenu.h"
 #include <list>
+
 
 class ConnectionUI;
 
@@ -28,6 +30,7 @@ private:
 	bool drag = false;
 	QPoint drag_p;
 	bool block_click_remove = false;
+	BlockMenu block_menu;
 public:
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
