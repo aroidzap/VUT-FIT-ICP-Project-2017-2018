@@ -168,10 +168,13 @@ BlockFactory &Graph::GetBlockFactory()
 
 void Graph::addBlock(BlockType t)
 {
-	this->blocks.push_back(GetBlockFactory().AllocBlock(t));
-	computeReset();
-	if (graphChanged) {
-		graphChanged();
+	BlockBase *b = GetBlockFactory().AllocBlock(t);
+	if (b != nullptr) {
+		this->blocks.push_back(b);
+		computeReset();
+		if (graphChanged) {
+			graphChanged();
+		}
 	}
 }
 

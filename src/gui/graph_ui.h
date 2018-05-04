@@ -29,16 +29,15 @@ private:
 	BlockFactory & GetBlockFactory() override;
 	bool drag = false;
 	QPoint drag_p;
-	bool block_click_remove = false;
 	BlockMenu block_menu;
+	BlockDelete block_context_menu;
 public:
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
 	void clearGraph() override;
 	bool loadGraph(std::stringstream &graph, bool merge = false) override;
 	std::stringstream saveGraph() override;
-	void removeBlockOnClickEnable();
-	void blockClicked(BlockBase *b);
+	void blockContextMenu(BlockBase *b);
 	void removeBlock(BlockBase *b) override;
 	bool addConnection(OutPort &a, InPort &b) override;
 	void removeConnection(InPort &p) override;

@@ -45,7 +45,7 @@ const std::map<BlockType, std::string> BLOCK_NAME = {
 
 	// Vector
 	{ VECTOR_ADD, "Vector Add"},
-	{ VECTOR_SUB,  "Vector Sub"},
+	/*{ VECTOR_SUB,  "Vector Sub"},*/
 	{ VECTOR_DOTPRODUCT, "Vector Dot Product" },
 	// Scalar
 	{ SCALAR_ADD, "Scalar Add"},

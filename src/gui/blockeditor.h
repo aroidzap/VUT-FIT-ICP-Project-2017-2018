@@ -50,8 +50,7 @@ private slots:
 	void reset();
     void help();
     void about();
-    void documentWasModified();
-	void delBlock();
+	void graphModified();
 
 private:
 	Ui::BLOCKEDITOR *ui;

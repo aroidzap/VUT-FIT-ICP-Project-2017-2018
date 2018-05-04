@@ -32,3 +32,16 @@ BlockMenuAction::operator BlockType()
 {
 	return t;
 }
+
+BlockDelete::BlockDelete(GraphUI &g) : graph(g)
+{
+	menu.addAction(QIcon(":/icons/delete.png"), "Delete");
+}
+
+void BlockDelete::ShowMenu(BlockBase *block)
+{
+	menu.move(QCursor::pos());
+	if (menu.exec() != nullptr) {
+		graph.removeBlock(block);
+	}
+}
