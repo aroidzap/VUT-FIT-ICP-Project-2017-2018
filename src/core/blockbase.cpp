@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: blockbase.cpp
+*/
+
 #include "blockbase.h"
 
 BlockBase::BlockBase(Graph &g, BlockType type, std::string name)
@@ -57,10 +63,17 @@ std::size_t BlockBase::OutputCount()
 	return outputs.size();
 }
 
+void BlockBase::Reset()
+{
+	for(size_t i = 0; i < OutputCount(); i++) {
+		Output(i).Value().setNull();
+	}
+}
+
 bool BlockBase::HasAllValues()
 {
-	for (InPort &p : this->inputs) {
-		if(p.Value().isNull()){
+	for(size_t i = 0; i < InputCount(); i++) {
+		if (Input(i).Value().isNull()) {
 			return false;
 		}
 	}
@@ -69,8 +82,8 @@ bool BlockBase::HasAllValues()
 
 bool BlockBase::InputsAreConnected()
 {
-	for (InPort &p : this->inputs) {
-		if(graph.connections.count(&p) <= 0) {
+	for(size_t i = 0; i < InputCount(); i++) {
+		if(graph.connections.count(&Input(i)) <= 0) {
 			return false;
 		}
 	}

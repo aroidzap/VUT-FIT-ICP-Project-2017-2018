@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: graph_ui.cpp
+*/
+
 #include "graph_ui.h"
 #include "block_ui.h"
 #include "style.h"
@@ -45,7 +51,9 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 		std::stringstream pos_stream(tmp);
 
 		auto it = blocks.begin();
-		std::advance(it, b_id_off);
+		if (merge) {
+			std::advance(it, b_id_off);
+		}
 
 		while(std::getline(pos_stream, tmp, ',')){
 			std::stringstream xy(tmp);
@@ -269,14 +277,18 @@ void GraphUI::leaveEvent(QEvent *event)
 
 void GraphUI::mousePressEvent(QMouseEvent *event)
 {
-	(event);
-	setFocus();
-	in_click = nullptr;
-	out_click = nullptr;
-	tc.update();
-	drag = true;
-	drag_p = event->pos();
-	block_click_remove = false;
+	if(event->button() != Qt::RightButton) {
+		setFocus();
+		in_click = nullptr;
+		out_click = nullptr;
+		tc.update();
+		drag = true;
+		drag_p = event->pos();
+		block_click_remove = false;
+	}
+	else {
+
+	}
 }
 
 void GraphUI::mouseReleaseEvent(QMouseEvent *event)

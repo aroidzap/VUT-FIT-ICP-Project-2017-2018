@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: matrixmulblock.cpp
+*/
+
 #include "matrixmulblock.h"
 #include "../types/types.h"
 

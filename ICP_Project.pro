@@ -36,7 +36,6 @@ SOURCES += \
     src/gui/port_ui.cpp \
     src/gui/blockeditor.cpp \
     src/core/graph.cpp \
-    src/core/xml.cpp \
     src/core/types/types.cpp \
     src/core/blockfactory.cpp \
     src/gui/blockfactory_ui.cpp \
@@ -64,7 +63,6 @@ HEADERS += \
     src/gui/port_ui.h \
     src/gui/blockeditor.h \
     src/core/graph.h \
-    src/core/xml.h \
     src/core/types/types.h \
     src/core/blockfactory.h \
     src/core/blocks.h \
@@ -82,5 +80,7 @@ HEADERS += \
 
 FORMS += \
     src/gui/blockeditor.ui
+
+RESOURCES += res/icons.qrc
 
 QMAKE_CXXFLAGS += -std=c++14

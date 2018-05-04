@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: blockbase.h
+*/
+
 #ifndef BLOCKBASE_H
 #define BLOCKBASE_H
 
@@ -30,9 +36,10 @@ public:
 	virtual std::size_t InputCount();
 	virtual OutPort & Output(std::size_t id);
 	virtual std::size_t OutputCount();
-	virtual bool HasAllValues();
-	virtual bool InputsAreConnected();
+	bool HasAllValues();
+	bool InputsAreConnected();
 	virtual bool Computable();
+	void Reset();
 	virtual void Compute() = 0;
 	virtual ~BlockBase() = default;
 };

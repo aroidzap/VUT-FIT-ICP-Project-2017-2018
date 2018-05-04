@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: tooltip.h
+*/
+
 #ifndef TOOLTIP_H
 #define TOOLTIP_H
 

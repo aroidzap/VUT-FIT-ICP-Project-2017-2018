@@ -1,3 +1,9 @@
+/*
+*	ICP Project: BlockEditor
+*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
+*	File: graph.h
+*/
+
 #ifndef GRAPH_H
 #define GRAPH_H
 
@@ -7,7 +13,7 @@
 #include <list>
 #include <map>
 #include <initializer_list>
-#include "xml.h"
+#include <functional>
 #include "port.h"
 #include "blockbase.h"
 #include "blockfactory.h"
@@ -15,6 +21,7 @@
 class Graph
 {
 private:
+	std::function<void(void)> graphChanged;
 	BlockFactory bf;
 protected:
 	std::string name;
@@ -28,7 +35,10 @@ public:
 
 	Graph();
 
-	virtual void SetName(const std::string name);
+	std::string GetName() const;
+	void SetName(const std::string name);
+
+	void onGraphChange(std::function<void(void)> callback);
 
 	int getBlockID(const BlockBase &block) const;
 	virtual void clearGraph();
