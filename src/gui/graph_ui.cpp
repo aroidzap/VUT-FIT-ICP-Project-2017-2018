@@ -43,6 +43,7 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 	std::string tmp;
 	try {
 		// Block Positions
+		graph >> std::ws; // skip whitespaces
 		std::getline(graph, tmp,'[');
 		if (tmp != "pos") {
 			return false;
@@ -78,6 +79,7 @@ std::stringstream GraphUI::saveGraph()
 	std::stringstream ss = Graph::saveGraph();
 
 	// Block Positions
+	ss << '\n';
 	ss << "pos[";
 	bool first = true;
 	for (BlockBase *b : blocks) {

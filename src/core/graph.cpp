@@ -61,7 +61,17 @@ bool Graph::loadGraph(std::stringstream &graph, bool merge)
 
 	std::string tmp;
 	try {
+		// Graph name
+		graph >> std::ws; // skip whitespaces
+		std::getline(graph, tmp,'[');
+		if (tmp != "graph") {
+			return false;
+		}
+		std::getline(graph, tmp, ']');
+		SetName(tmp);
+
 		// Blocks
+		graph >> std::ws; // skip whitespaces
 		std::getline(graph, tmp,'[');
 		if (tmp != "blocks") {
 			return false;
@@ -74,6 +84,7 @@ bool Graph::loadGraph(std::stringstream &graph, bool merge)
 		}
 
 		// Connections
+		graph >> std::ws; // skip whitespaces
 		std::getline(graph, tmp,'[');
 		if (tmp != "conn") {
 			return false;
@@ -111,7 +122,13 @@ std::stringstream Graph::saveGraph()
 {
 	std::stringstream ss;
 
+	// Graph name
+	ss << "graph[";
+	ss << GetName();
+	ss << "]";
+
 	// Blocks
+	ss << '\n';
 	ss << "blocks[";
 	bool first = true;
 	for (BlockBase *b : blocks) {
@@ -125,6 +142,7 @@ std::stringstream Graph::saveGraph()
 	ss << "]";
 
 	// Connections
+	ss << '\n';
 	ss << "conn[";
 	first = true;
 	for (std::pair<InPort *, OutPort *> p : connections) {
