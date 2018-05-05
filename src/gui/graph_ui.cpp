@@ -19,6 +19,11 @@ GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
 	setMouseTracking(true);
 }
 
+QPoint GraphUI::getOffset() const
+{
+	return pos_offset;
+}
+
 void GraphUI::clearGraph()
 {
 	Graph::clearGraph();
@@ -35,6 +40,14 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 {
 	// block id offset
 	int b_id_off = static_cast<int>(blocks.size());
+
+	int y_off = 0;
+	if (merge) {
+		for (BlockBase *b : blocks) {
+			auto block = static_cast<BlockUI<BlockBase>*>(b);
+			y_off = std::max(y_off, block->Pos().y() + block->height());
+		}
+	}
 
 	if (!Graph::loadGraph(graph, merge)){
 		return false;
@@ -61,8 +74,9 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 			std::string xs, ys;
 			std::getline(xy, xs, ':');
 			std::getline(xy, ys, ':');
-			int x = std::stoi(xs);
-			int y = std::stoi(ys);
+			int x = std::stoi(xs) + Style::GraphLoadPadding;
+			int y = std::stoi(ys) + Style::GraphLoadPadding + y_off;
+			static_cast<BlockUI<BlockBase>*>(*it)->updateOffset(pos_offset);
 			static_cast<BlockUI<BlockBase>*>(*it)->Move(x, y);
 			it++;
 		}
@@ -78,6 +92,21 @@ std::stringstream GraphUI::saveGraph()
 {
 	std::stringstream ss = Graph::saveGraph();
 
+	// get offset
+	int x_off = 0;
+	int y_off = 0;
+	bool first_ = true;
+	for (BlockBase *b : blocks) {
+		auto p = static_cast<BlockUI<BlockBase>*>(b)->Pos();
+		if (first_) {
+			x_off = p.x(); y_off = p.y();
+			first_ = false;
+		} else {
+			x_off = std::min(x_off, p.x());
+			y_off = std::min(y_off, p.y());
+		}
+	}
+
 	// Block Positions
 	ss << '\n';
 	ss << "pos[";
@@ -89,7 +118,7 @@ std::stringstream GraphUI::saveGraph()
 			ss << ",";
 		}
 		BlockUI<BlockBase> *b_ui = static_cast<BlockUI<BlockBase>*>(b);
-		ss << b_ui->Pos().x() << ":" << b_ui->Pos().y();
+		ss << b_ui->Pos().x() - x_off << ":" << b_ui->Pos().y() - y_off;
 	}
 	ss << "]";
 
@@ -209,16 +238,11 @@ void GraphUI::mouseMoveEvent(QMouseEvent *event)
 	hoverConnectionUI(event->pos());
 	tc.update();
 	if(drag){
-		int x = pos().x() + event->pos().x() - drag_p.x();
-		int y = pos().y() + event->pos().y() - drag_p.y();
-		x = x > 0 ? 0 : x;
-		y = y > Style::MenuHeight ? Style::MenuHeight : y;
-		move(x, y);
-		if(parentWidget() != nullptr){
-			resize(parentWidget()->width() - x, parentWidget()->height() - y);
+		pos_offset += event->pos() - drag_p;
+		drag_p = event->pos();
+		for (auto b : blocks) {
+			static_cast<BlockUI<BlockBase>*>(b)->updateOffset(pos_offset);
 		}
-		lower();
-		update();
 	}
 }
 

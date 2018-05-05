@@ -6,8 +6,6 @@
 
 #include "style.h"
 
-const int Style::MenuHeight = 21;
-
 const int Style::PortDrawSize = 8;
 const int Style::PortSize = 24;
 const int Style::PortMarginV = 32;
@@ -18,6 +16,8 @@ const QColor Style::PortHoverCol = QColor(200, 200, 200);
 
 const int Style::ConnectionHoverSize = 16;
 const QColor Style::ConnectionCol = QColor(0, 0, 0);
+
+const int Style::GraphLoadPadding = 16;
 
 const int Style::NodeFieldOffset = 24;
 const int Style::NodeFieldWidth = 64;

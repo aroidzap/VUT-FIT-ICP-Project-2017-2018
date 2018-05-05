@@ -35,10 +35,10 @@ private:
 	QLabel label;
 	bool drag = false;
 	bool highlight = false;
-	QPoint drag_p;
+	QPoint drag_p, offset;
 protected:
-	int height;
-	int width;
+	int height_;
+	int width_;
 public:
 	explicit BlockUI(const BlockBaseT &b, QWidget *parent = nullptr)
 		: BlockBaseT(b), QWidget(parent), label(b.name.c_str(), this)
@@ -64,12 +64,12 @@ public:
 			)).getWidth();
 		}
 
-		height = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
+		height_ = (static_cast<int>(std::max(inputs.size(), outputs.size()))) * Style::PortMarginV +
 				 std::max(Style::PortMarginV, Style::NodeNameHeight);
-		width = std::max(input_w + output_w, Style::NodeMinWidth);
-		width = std::max(width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(label.text()));
+		width_ = std::max(input_w + output_w, Style::NodeMinWidth);
+		width_ = std::max(width_, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(label.text()));
 
-		resize(width + 1, height + 1);
+		resize(width_ + 1, height_ + 1);
 
 		Move(0, 0);
 
@@ -78,7 +78,7 @@ public:
 	}
 
 	QPoint Pos() const {
-		return pos();
+		return (pos() - offset);
 	}
 
 	int getPortID(const InPort &port) const override
@@ -125,15 +125,21 @@ public:
 		return outputs.size();
 	}
 
+	void updateOffset(QPoint offset){
+		auto p = Pos();
+		this->offset = offset;
+		Move(p.x(), p.y());
+	}
+
 	void Move(int x, int y)
 	{
-		x = x < 0 ? 0 : x;
-		y = y < 0 ? 0 : y;
+		x += this->offset.x();
+		y += this->offset.y();
 
 		move(x, y);
 
 		label.move(0, Style::NodeNamePadding);
-		label.setFixedWidth(width);
+		label.setFixedWidth(width_);
 		label.setAlignment(Qt::AlignCenter);
 
 		int offset = std::max(Style::PortMarginV, Style::NodeNameHeight);
@@ -143,7 +149,7 @@ public:
 		}
 		offset = std::max(Style::PortMarginV, Style::NodeNameHeight);
 		for(auto &out : outputs) {
-			out.Move(x + width, y + offset);
+			out.Move(x + width_, y + offset);
 			offset += Style::PortMarginV;
 		}
 	}
@@ -161,13 +167,13 @@ protected:
 		painter.setRenderHint(QPainter::Antialiasing);
 
 		QPainterPath path;
-		path.addRoundedRect(QRectF(.5, .5, width, height), Style::NodeRoundSize, Style::NodeRoundSize);
+		path.addRoundedRect(QRectF(.5, .5, width_, height_), Style::NodeRoundSize, Style::NodeRoundSize);
 
 		painter.fillPath(path, QBrush(Style::NodeBackgroundCol));
 
 		if (highlight) {
 			QPainterPath h;
-			h.addRoundedRect(QRectF(2.5, 2.5, width - 4, height - 4), Style::NodeRoundSize, Style::NodeRoundSize);
+			h.addRoundedRect(QRectF(2.5, 2.5, width_ - 4, height_ - 4), Style::NodeRoundSize, Style::NodeRoundSize);
 
 			QPen p(Style::NodeOutlineHighlightCol);
 			p.setWidth(5);
@@ -181,7 +187,7 @@ protected:
 	{
 		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
 		if(drag){
-			QPoint tmp = pos() + event->pos() - drag_p;
+			QPoint tmp = Pos() + event->pos() - drag_p;
 			Move(tmp.x(), tmp.y());
 		}
 	}
@@ -291,14 +297,14 @@ public:
 protected:
 	void paintEvent(QPaintEvent *event) override {
 		int h = QApplication::fontMetrics().height();
-		auto orig_w = this->width; auto orig_h = this->height;
-		this->width = this->width - static_cast<OutPortUI&>(this->Output(0)).getWidth() + text_in_off + Style::NodeFieldWidth;
+		auto orig_w = this->width_; auto orig_h = this->height_;
+		this->width_ = this->width_ - static_cast<OutPortUI&>(this->Output(0)).getWidth() + text_in_off + Style::NodeFieldWidth;
 		int cnt = static_cast<int>(text_in.size()) - 1;
-		this->height = this->height + Style::NodeFieldOffset * (cnt < 0 ? 0 : cnt);
-		this->resize(this->width + 1, this->height + 1);
-		this->Move(this->pos().x(), this->pos().y());
+		this->height_ = this->height_ + Style::NodeFieldOffset * (cnt < 0 ? 0 : cnt);
+		this->resize(this->width_ + 1, this->height_ + 1);
+		Move(Pos().x(), Pos().y());
 		BlockUI<BlockBaseT>::paintEvent(event);
-		this->width = orig_w; this->height = orig_h;
+		this->width_ = orig_w; this->height_ = orig_h;
 
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);
@@ -325,16 +331,16 @@ protected:
 	void paintEvent(QPaintEvent *event) override {
 		int w, h;
 		auto lines = Tooltip::TextLines(static_cast<std::string>(this->Input(0).Value()), w, h);
-		auto orig_w = this->width; auto orig_h = this->height;
+		auto orig_w = this->width_; auto orig_h = this->height_;
 		int cnt = static_cast<int>(lines.size()) - 1;
-		this->height = this->height + h * (cnt < 0 ? 0 : cnt) - h;
-		this->width = this->width - static_cast<InPortUI&>(this->Input(0)).getWidth() + w;
-		this->width = std::max(this->width, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
-		this->width = std::max(this->width, Style::NodeMinWidth);
-		this->resize(this->width + 1, this->height + 1);
-		this->Move(this->pos().x(), this->pos().y());
+		this->height_ = this->height_ + h * (cnt < 0 ? 0 : cnt) - h;
+		this->width_ = this->width_ - static_cast<InPortUI&>(this->Input(0)).getWidth() + w;
+		this->width_ = std::max(this->width_, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
+		this->width_ = std::max(this->width_, Style::NodeMinWidth);
+		this->resize(this->width_ + 1, this->height_ + 1);
+		Move(Pos().x(), Pos().y());
 		BlockUI<BlockBaseT>::paintEvent(event);
-		this->width = orig_w; this->height = orig_h;
+		this->width_ = orig_w; this->height_ = orig_h;
 
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);

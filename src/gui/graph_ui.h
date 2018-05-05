@@ -8,6 +8,7 @@
 #define GRAPH_UI_H
 
 #include <QMouseEvent>
+#include <QPaintEvent>
 #include <QWidget>
 #include "../core/graph.h"
 #include "blockfactory_ui.h"
@@ -32,8 +33,10 @@ private:
 	BlockMenu block_menu;
 	BlockDelete block_context_menu;
 public:
+	QPoint pos_offset;
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
+	QPoint getOffset() const;
 	void clearGraph() override;
 	bool loadGraph(std::stringstream &graph, bool merge = false) override;
 	std::stringstream saveGraph() override;
