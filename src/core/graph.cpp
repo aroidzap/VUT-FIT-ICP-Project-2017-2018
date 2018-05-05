@@ -72,7 +72,11 @@ bool Graph::loadGraph(std::stringstream &graph, bool merge)
 			return false;
 		}
 		std::getline(graph, tmp, ']');
-		SetName(tmp);
+		if(merge){
+			SetName(GetName() + " + " + tmp);
+		} else {
+			SetName(tmp);
+		}
 
 		// Blocks
 		graph >> std::ws; // skip whitespaces

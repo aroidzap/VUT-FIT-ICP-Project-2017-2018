@@ -325,9 +325,13 @@ void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
 	QApplication::restoreOverrideCursor();
 #endif
 
-	setCurrentFile(fileName);
 	graphName->setText(QString::fromStdString(graph.GetName()));
 	statusBar()->showMessage("File loaded", 2000);
+
+	if(!merge){
+		setCurrentFile(fileName);
+		setWindowModified(false);
+	}
 }
 
 
