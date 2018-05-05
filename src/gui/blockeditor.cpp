@@ -195,7 +195,7 @@ void BLOCKEDITOR::merge()
 {
 
 	QString fileName = QFileDialog::getOpenFileName(this,
-		QString(), QString(), QString("BLOCKEDITOR Files (*.gph)"));
+		QString("Merge"), QString(), QString("BLOCKEDITOR Files (*.gph)"));
 	if (!fileName.isEmpty())
 		loadFile(fileName, true);
 
