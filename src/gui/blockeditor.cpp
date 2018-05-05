@@ -13,6 +13,7 @@
  * @author Michal Pospíšil
  */
 #include <QtWidgets>
+#include <QString>
 
 #include "blockeditor.h"
 #include "ui_blockeditor.h"
@@ -23,16 +24,22 @@ BLOCKEDITOR::BLOCKEDITOR(GraphUI &g, QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	QApplication::setApplicationDisplayName("BLOCKEDITOR");
+
 	createActions();
-    createMenus();
-    createToolBars();
-    setCurrentFile("");
+	createMenus();
+	createToolBars();
+	setCurrentFile("");
 	setUnifiedTitleAndToolBarOnMac(true);
 
 	setCentralWidget(&graph);
 	show();
 
-	graph.onGraphChange([this](){this->graphModified();});
+	connect(graphName, SIGNAL(textChanged(const QString &)), this,
+		SLOT(graphNameChange(const QString &))
+	);
+
+	graph.onGraphChange([this](){this->setWindowModified(true);});
 }
 
 BLOCKEDITOR::~BLOCKEDITOR()
@@ -40,8 +47,9 @@ BLOCKEDITOR::~BLOCKEDITOR()
 	//avoid destruction of graph, which is destructed externally
 	centralWidget()->setParent(nullptr);
 
+	deleteToolBars();
 	deleteActions();
-    delete ui;
+	delete ui;
 }
 
 void BLOCKEDITOR::deleteActions()
@@ -60,55 +68,55 @@ void BLOCKEDITOR::deleteActions()
 
 void BLOCKEDITOR::createActions()
 {
-    openAct = new QAction(QIcon(":/icons/open.png"), "&Open...", this);
-    openAct->setShortcuts(QKeySequence::Open);
-    openAct->setStatusTip("Open an existing file");
-    connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
+	openAct = new QAction(QIcon(":/icons/open.png"), "&Open...", this);
+	openAct->setShortcuts(QKeySequence::Open);
+	openAct->setStatusTip("Open an existing file");
+	connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
 	mergeAct = new QAction("&Merge", this);
-	mergeAct->setStatusTip("Merge file into currently opened schema");
+	mergeAct->setStatusTip("Merge file into currently opened scheme");
 	connect(mergeAct, SIGNAL(triggered()), this, SLOT(merge()));
 
 
-    saveAct = new QAction(QIcon(":/icons/save.png"), "&Save", this);
-    saveAct->setShortcuts(QKeySequence::Save);
-    saveAct->setStatusTip("Save the document to disk");
-    connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+	saveAct = new QAction(QIcon(":/icons/save.png"), "&Save", this);
+	saveAct->setShortcuts(QKeySequence::Save);
+	saveAct->setStatusTip("Save the document to disk");
+	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
-    saveAsAct = new QAction("Save &As...", this);
-    saveAsAct->setShortcuts(QKeySequence::SaveAs);
-    saveAsAct->setStatusTip("Save the document under a new name");
-    connect(saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
+	saveAsAct = new QAction("Save &As...", this);
+	saveAsAct->setShortcuts(QKeySequence::SaveAs);
+	saveAsAct->setStatusTip("Save the document with a new name");
+	connect(saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
 
 	computeAct = new QAction(QIcon(":/icons/compute.png"), "&Compute (F3)", this);
-    computeAct->setShortcut(QKeySequence::fromString("F3", QKeySequence::NativeText));
-    computeAct->setStatusTip("Computes the whole schema");
+	computeAct->setShortcut(QKeySequence::fromString("F3", QKeySequence::NativeText));
+	computeAct->setStatusTip("Computes the whole scheme");
 	connect(computeAct, SIGNAL(triggered()), this, SLOT(compute()));
 
 	stepAct = new QAction(QIcon(":/icons/step.png"), "&Step (F4)", this);
-    stepAct->setShortcut(QKeySequence::fromString("F4", QKeySequence::NativeText));
-    stepAct->setStatusTip("Steps through the computation");
+	stepAct->setShortcut(QKeySequence::fromString("F4", QKeySequence::NativeText));
+	stepAct->setStatusTip("Steps through the computation");
 	connect(stepAct, SIGNAL(triggered()), this, SLOT(step()));
 
 	resetAct = new QAction(QIcon(":/icons/reset.png"), "&Reset (F5)", this);
-    resetAct->setShortcut(QKeySequence::fromString("F5", QKeySequence::NativeText));
+	resetAct->setShortcut(QKeySequence::fromString("F5", QKeySequence::NativeText));
 	resetAct->setStatusTip("Marks first block as next to compute");
 	connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
 
-    aboutAct = new QAction(QIcon(":/icons/about.png"), "&About", this);
-    aboutAct->setStatusTip("Show the application's about box");
+	aboutAct = new QAction(QIcon(":/icons/about.png"), "&About", this);
+	aboutAct->setStatusTip("Show the application's about box");
 	connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
 
-    helpAct = new QAction(QIcon(":/icons/help.png"), "&Help", this);
-    helpAct->setStatusTip("Show the application's help");
-    helpAct->setShortcuts(QKeySequence::HelpContents);
-    connect(helpAct, SIGNAL(triggered()), this, SLOT(help()));
+	helpAct = new QAction(QIcon(":/icons/help.png"), "&Help", this);
+	helpAct->setStatusTip("Show the application's help");
+	helpAct->setShortcuts(QKeySequence::HelpContents);
+	connect(helpAct, SIGNAL(triggered()), this, SLOT(help()));
 
-    exitAct = new QAction(QIcon(":/icons/exit.png"), "E&xit", this);
-    exitAct->setStatusTip("Close the application");
-    exitAct->setShortcuts(QKeySequence::Quit);
-    connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+	exitAct = new QAction(QIcon(":/icons/exit.png"), "E&xit", this);
+	exitAct->setStatusTip("Close the application");
+	exitAct->setShortcuts(QKeySequence::Quit);
+	connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 }
 
 void BLOCKEDITOR::createMenus()
@@ -128,6 +136,13 @@ void BLOCKEDITOR::createMenus()
 	helpMenu->addAction(helpAct);
 }
 
+void BLOCKEDITOR::deleteToolBars()
+{
+	delete graphName;
+	delete graphNameHint;
+	delete spacerWidget;
+}
+
 void BLOCKEDITOR::createToolBars()
 {
 	fileToolBar = addToolBar("File");
@@ -141,32 +156,46 @@ void BLOCKEDITOR::createToolBars()
 
 	helpToolBar = addToolBar("Help");
 	helpToolBar->addAction(helpAct);
+
+
+	spacerWidget = new QWidget();
+	spacerWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+
+	graphNameHint = new QLabel("Scheme name: ");
+
+	graphName = new QLineEdit();
+	graphName->setMaximumWidth(200);
+
+	nameToolBar = addToolBar("Graph Name");
+	nameToolBar->addWidget(spacerWidget);
+	nameToolBar->addWidget(graphNameHint);
+	nameToolBar->addWidget(graphName);
 }
 
 void BLOCKEDITOR::closeEvent(QCloseEvent *event)
 {
-    if (maybeSave()) {
-        event->accept();
-    } else {
-        event->ignore();
-    }
+	if (maybeSave()) {
+		event->accept();
+	} else {
+		event->ignore();
+	}
 }
 
 void BLOCKEDITOR::open()
 {
 	if (maybeSave()) {
 		QString fileName = QFileDialog::getOpenFileName(this,
-			QString(), QString(), QString(".gph"));
-        if (!fileName.isEmpty())
+			QString(), QString(), QString("BLOCKEDITOR Files (*.gph)"));
+		if (!fileName.isEmpty())
 			loadFile(fileName, false);
-    }
+	}
 }
 
 void BLOCKEDITOR::merge()
 {
 
 	QString fileName = QFileDialog::getOpenFileName(this,
-		QString(), QString(), QString(".gph"));
+		QString(), QString(), QString("BLOCKEDITOR Files (*.gph)"));
 	if (!fileName.isEmpty())
 		loadFile(fileName, true);
 
@@ -174,27 +203,37 @@ void BLOCKEDITOR::merge()
 
 bool BLOCKEDITOR::save()
 {
-    if (curFile.isEmpty()) {
-        return saveAs();
-    } else {
-        return saveFile(curFile);
-    }
+	if (curFile.isEmpty()) {
+		return saveAs();
+	} else {
+		return saveFile(curFile);
+	}
 }
 
 bool BLOCKEDITOR::saveAs()
 {
 	QFileDialog dialog(this);
-    dialog.setWindowModality(Qt::WindowModal);
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-	dialog.setNameFilter(".gph");
-	dialog.selectFile((graph.GetName() + ".gph").c_str());
-    QStringList files;
-    if (dialog.exec())
-        files = dialog.selectedFiles();
-    else
-        return false;
+	dialog.setWindowModality(Qt::WindowModal);
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
+	dialog.setNameFilter("BLOCKEDITOR Files (*.gph)");
+	std::string saveName;
+	if (curFile.isEmpty()) {
+		if (graph.GetName().empty()){
+			saveName = "untitled.gph";
+		} else {
+			saveName = graph.GetName() + ".gph";
+		}
+	} else {
+		saveName = curFile.toStdString();
+	}
+	dialog.selectFile(saveName.c_str());
+	QStringList files;
+	if (dialog.exec())
+		files = dialog.selectedFiles();
+	else
+		return false;
 
-    return saveFile(files.at(0));
+	return saveFile(files.at(0));
 }
 
 void BLOCKEDITOR::compute() {
@@ -211,16 +250,21 @@ void BLOCKEDITOR::reset() {
 
 void BLOCKEDITOR::about()
 {
-    QMessageBox::about(this, "About Block Editor",
-                             "<h1>Block Editor</h1>"
-                             "<h2>ICP Project 2017/2018</h2>"
-                             "<p><b>Authors:</b> Tomáš Pazdiora, Michal Pospíšil</p>");
+	QMessageBox::about(this, "About Block Editor",
+							 "<h1>Block Editor</h1>"
+							 "<h2>ICP Project 2017/2018</h2>"
+							 "<p><b>Authors:</b> Tomáš Pazdiora, Michal Pospíšil</p>");
+}
+
+void BLOCKEDITOR::graphNameChange(const QString &name)
+{
+	graph.SetName(name.toStdString());
 }
 
 void BLOCKEDITOR::help()
 {
-    QMessageBox::about(this, "Help",
-                             "<h1>Block Editor Help</h1>"
+	QMessageBox::about(this, "Help",
+							 "<h1>Block Editor Help</h1>"
 							 "<h2>Blocks</h2>"
 							 "<p><b>Creating blocks: </b>Right-click and select the desired type.</p>"
 							 "<p><b>Deleting blocks: </b>Right-click on block and select 'Delete'.</p>"
@@ -231,45 +275,43 @@ void BLOCKEDITOR::help()
 
 }
 
-void BLOCKEDITOR::graphModified()
-{
-    //setWindowModified(textEdit->document()->isModified());
-}
-
 bool BLOCKEDITOR::maybeSave()
 {
-    QMessageBox::StandardButton ret;
-    ret = QMessageBox::warning(this, "BLOCKEDITOR",
-                                     "Do you want to save your changes?",
-                 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    if (ret == QMessageBox::Save) {
-        return save();
-    }
-    else {
-        if (ret == QMessageBox::Cancel) {
-        return false;
-        }
-    }
-    return true;
-}
+	if(this->isWindowModified()) {
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::warning(this, "BLOCKEDITOR",
+										 "The document has been modified.\n"
+										 "Do you want to save your changes?",
+					 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+		if (ret == QMessageBox::Save) {
+			return save();
+		}
+		else {
+			if (ret == QMessageBox::Cancel) {
+			return false;
+			}
+		}
+	}
+	return true;
 
+}
 
 void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
 {
-    QFile file(fileName);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+	QFile file(fileName);
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
 		QMessageBox::warning(this, "BLOCKEDITOR",
-                                   QString::fromStdString("Cannot read file %1:\n%2.")
-                             .arg(fileName)
-                             .arg(file.errorString()));
-        return;
-    }
+								   QString::fromStdString("Cannot read file %1:\n%2.")
+							 .arg(fileName)
+							 .arg(file.errorString()));
+		return;
+	}
 
-    QTextStream in(&file);
+	QTextStream in(&file);
 #ifndef QT_NO_CURSOR
-    QApplication::setOverrideCursor(Qt::WaitCursor);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
-    // FILE LOADING
+	// FILE LOADING
 	std::stringstream funcIn;
 	while(!in.atEnd()){
 		funcIn << in.read(1024).toStdString() << '\n';
@@ -280,30 +322,35 @@ void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
 								   QString::fromStdString("Error while reading the file."));
 	}
 #ifndef QT_NO_CURSOR
-    QApplication::restoreOverrideCursor();
+	QApplication::restoreOverrideCursor();
 #endif
 
-    setCurrentFile(fileName);
-    statusBar()->showMessage("File loaded", 2000);
+	graphName->setText(QString::fromStdString(graph.GetName()));
+	statusBar()->showMessage("File loaded", 2000);
+
+	if(!merge){
+		setCurrentFile(fileName);
+		setWindowModified(false);
+	}
 }
 
 
 bool BLOCKEDITOR::saveFile(const QString &fileName)
 {
-    QFile file(fileName);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::warning(this, "Application",
-                             QString::fromStdString("Cannot write file %1:\n%2.")
-                             .arg(fileName)
-                             .arg(file.errorString()));
-        return false;
-    }
+	QFile file(fileName);
+	if (!file.open(QFile::WriteOnly | QFile::Text)) {
+		QMessageBox::warning(this, "Application",
+							 QString::fromStdString("Cannot write file %1:\n%2.")
+							 .arg(fileName)
+							 .arg(file.errorString()));
+		return false;
+	}
 
-    QTextStream out(&file);
+	QTextStream out(&file);
 #ifndef QT_NO_CURSOR
-    QApplication::setOverrideCursor(Qt::WaitCursor);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
-    // FILE SAVING
+	// FILE SAVING
 	std::stringstream funcOut;
 	funcOut = graph.saveGraph();
 
@@ -317,22 +364,24 @@ bool BLOCKEDITOR::saveFile(const QString &fileName)
 								   QString::fromStdString("Error while writing the file."));
 	}
 #ifndef QT_NO_CURSOR
-    QApplication::restoreOverrideCursor();
+	QApplication::restoreOverrideCursor();
 #endif
 
-    setCurrentFile(fileName);
-    statusBar()->showMessage("File saved", 2000);
-    return true;
+	setCurrentFile(fileName);
+	statusBar()->showMessage("File saved", 2000);
+	return true;
 }
 
 void BLOCKEDITOR::setCurrentFile(const QString &fileName)
 {
-    curFile = fileName;
+	curFile = fileName;
 
-    setWindowModified(false);
+	setWindowModified(false);
 
-    QString shownName = curFile;
-    if (curFile.isEmpty())
-		shownName = "untitled";
-    setWindowFilePath(shownName);
+	QString shownName = curFile;
+	if (curFile.isEmpty()) {
+		shownName = "untitled.gph";
+	}
+
+	setWindowFilePath(shownName);
 }

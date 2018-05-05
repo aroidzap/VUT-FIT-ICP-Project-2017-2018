@@ -23,6 +23,9 @@ std::string Graph::GetName() const
 void Graph::SetName(const std::string name)
 {
 	this->name = name;
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 void Graph::onGraphChange(std::function<void ()> callback)
@@ -72,7 +75,11 @@ bool Graph::loadGraph(std::stringstream &graph, bool merge)
 			return false;
 		}
 		std::getline(graph, tmp, ']');
-		SetName(tmp);
+		if(merge){
+			SetName(GetName() + " + " + tmp);
+		} else {
+			SetName(tmp);
+		}
 
 		// Blocks
 		graph >> std::ws; // skip whitespaces
