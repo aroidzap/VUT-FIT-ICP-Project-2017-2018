@@ -37,8 +37,11 @@ ui_*.h
 CMakeLists.txt.user*
 
 # Archive for submitting
-xpazdi02_xpospi95.zip
-xpospi95_xpazdi02.zip
+xpazdi02-xpospi95.zip
+xpospi95-xpazdi02.zip
+xpazdi02-xpospi95-[0-9][0-9]-[0-9][0-9].zip
+xpospi95-xpazdi02-[0-9][0-9]-[0-9][0-9].zip
 
-doc/
+doc/*
+!doc/Doxyfile
 qMakefile
