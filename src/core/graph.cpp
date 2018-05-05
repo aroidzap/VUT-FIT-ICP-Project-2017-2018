@@ -20,6 +20,9 @@ std::string Graph::GetName() const
 void Graph::SetName(const std::string name)
 {
 	this->name = name;
+	if (graphChanged) {
+		graphChanged();
+	}
 }
 
 void Graph::onGraphChange(std::function<void ()> callback)

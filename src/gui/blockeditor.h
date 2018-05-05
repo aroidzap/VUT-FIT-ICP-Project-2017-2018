@@ -51,9 +51,9 @@ private slots:
 	void step();
 	void reset();
     void help();
-    void about();
-	void graphModified();
-	void graphNameModified(const QString &);
+	void about();
+
+	void graphNameChange(const QString & name);
 
 private:
 	Ui::BLOCKEDITOR *ui;
@@ -61,12 +61,12 @@ private:
 	void deleteActions();
     void createActions();
     void createMenus();
+	void deleteToolBars();
     void createToolBars();
     bool maybeSave();
 	void loadFile(const QString &fileName, bool merge);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
-	QString strippedName(const QString &fullFileName);
 
     QString curFile;
 
