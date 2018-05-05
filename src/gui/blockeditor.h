@@ -22,6 +22,8 @@
 QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
+class QLineEdit;
+class QLabel;
 QT_END_NAMESPACE
 
 namespace Ui {
@@ -51,6 +53,7 @@ private slots:
     void help();
     void about();
 	void graphModified();
+	void graphNameModified(const QString &);
 
 private:
 	Ui::BLOCKEDITOR *ui;
@@ -69,10 +72,19 @@ private:
 
     QMenu *fileMenu;
     QMenu *helpMenu;
-    QToolBar *fileToolBar;
+
+	QToolBar *fileToolBar;
     QToolBar *actionToolBar;
     QToolBar *helpToolBar;
-    QAction *openAct;
+	QToolBar *nameToolBar;
+
+	QWidget *spacerWidget;
+
+	QLabel *graphNameHint;
+
+	QLineEdit *graphName;
+
+	QAction *openAct;
 	QAction *mergeAct;
     QAction *saveAct;
     QAction *saveAsAct;
@@ -80,9 +92,10 @@ private:
     QAction *computeAct;
     QAction *stepAct;
     QAction *resetAct;
-	QAction* deleteAct;
+	QAction *deleteAct;
     QAction *helpAct;
     QAction *aboutAct;
+
 };
 
 #endif // BLOCKEDITOR_H

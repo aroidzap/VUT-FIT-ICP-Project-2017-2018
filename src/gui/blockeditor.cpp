@@ -13,6 +13,7 @@
  * @author Michal Pospíšil
  */
 #include <QtWidgets>
+#include <QString>
 
 #include "blockeditor.h"
 #include "ui_blockeditor.h"
@@ -32,6 +33,7 @@ BLOCKEDITOR::BLOCKEDITOR(GraphUI &g, QWidget *parent) :
 	setCentralWidget(&graph);
 	show();
 
+	connect(graphName, SIGNAL(textEdited(const QString &)), this, SLOT(graphNameModified(const QString &)));
 	graph.onGraphChange([this](){this->graphModified();});
 }
 
@@ -66,7 +68,7 @@ void BLOCKEDITOR::createActions()
     connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
 	mergeAct = new QAction("&Merge", this);
-	mergeAct->setStatusTip("Merge file into currently opened schema");
+	mergeAct->setStatusTip("Merge file into currently opened scheme");
 	connect(mergeAct, SIGNAL(triggered()), this, SLOT(merge()));
 
 
@@ -82,7 +84,7 @@ void BLOCKEDITOR::createActions()
 
 	computeAct = new QAction(QIcon(":/icons/compute.png"), "&Compute (F3)", this);
     computeAct->setShortcut(QKeySequence::fromString("F3", QKeySequence::NativeText));
-    computeAct->setStatusTip("Computes the whole schema");
+	computeAct->setStatusTip("Computes the whole scheme");
 	connect(computeAct, SIGNAL(triggered()), this, SLOT(compute()));
 
 	stepAct = new QAction(QIcon(":/icons/step.png"), "&Step (F4)", this);
@@ -141,6 +143,20 @@ void BLOCKEDITOR::createToolBars()
 
 	helpToolBar = addToolBar("Help");
 	helpToolBar->addAction(helpAct);
+
+
+	spacerWidget = new QWidget();
+	spacerWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+
+	graphNameHint = new QLabel("Scheme name: ");
+
+	graphName = new QLineEdit();
+	graphName->setMaximumWidth(200);
+
+	nameToolBar = addToolBar("Graph Name");
+	nameToolBar->addWidget(spacerWidget);
+	nameToolBar->addWidget(graphNameHint);
+	nameToolBar->addWidget(graphName);
 }
 
 void BLOCKEDITOR::closeEvent(QCloseEvent *event)
@@ -236,6 +252,10 @@ void BLOCKEDITOR::graphModified()
 	setWindowModified(true);
 }
 
+void BLOCKEDITOR::graphNameModified(const QString &) {
+	setWindowModified(true);
+}
+
 bool BLOCKEDITOR::maybeSave()
 {
 	if(this->isWindowModified()) {
@@ -288,6 +308,7 @@ void BLOCKEDITOR::loadFile(const QString &fileName, bool merge)
 #endif
 
     setCurrentFile(fileName);
+	graphName->setText(QString::fromStdString(graph.GetName()));
     statusBar()->showMessage("File loaded", 2000);
 }
 
@@ -308,6 +329,7 @@ bool BLOCKEDITOR::saveFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
     // FILE SAVING
+	graph.SetName(graphName->text().toStdString());
 	std::stringstream funcOut;
 	funcOut = graph.saveGraph();
 
