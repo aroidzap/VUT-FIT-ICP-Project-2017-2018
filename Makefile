@@ -23,5 +23,5 @@ doxygen:
 clean:
 	rm -f blockeditor *.o ui_blockeditor.h moc_blockeditor.cpp qMakefile
 
-pack: update
+pack:
 	zip -r xpazdi02-xpospi95.zip src res examples ICP_Project.pro Makefile README.txt doc/Doxyfile
