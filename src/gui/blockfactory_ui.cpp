@@ -19,6 +19,7 @@
 #include "../core/blocks/scalarmulblock.h"
 #include "../core/blocks/matrixaddblock.h"
 #include "../core/blocks/matrixmulblock.h"
+#include "../core/blocks/matmulvecblock.h"
 
 BlockBase *BlockFactoryUI::AllocBlock(BlockType t)
 {
@@ -64,6 +65,9 @@ BlockBase *BlockFactoryUI::AllocBlock(BlockType t)
     case MAT_MUL:
         b = new BlockUI<MatrixMulBlock>(MatrixMulBlock(g), static_cast<GraphUI*>(&g));
         break;
+	case MAT_MUL_VEC:
+		b = new BlockUI<MatMulVecBlock>(MatMulVecBlock(g), gp);
+		break;
 	default:
 		return nullptr;
 	}

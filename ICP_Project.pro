@@ -49,7 +49,8 @@ SOURCES += \
     src/core/blocks/scalar_io.cpp \
     src/core/blocks/matrix_io.cpp \
     src/gui/alert.cpp \
-    src/gui/blockmenu.cpp
+    src/gui/blockmenu.cpp \
+    src/core/blocks/matmulvecblock.cpp
 
 HEADERS += \
     src/gui/style.h \
@@ -78,7 +79,8 @@ HEADERS += \
     src/core/blocks/scalar_io.h \
     src/core/blocks/matrix_io.h \
     src/gui/alert.h \
-    src/gui/blockmenu.h
+    src/gui/blockmenu.h \
+    src/core/blocks/matmulvecblock.h
 
 FORMS += \
     src/gui/blockeditor.ui

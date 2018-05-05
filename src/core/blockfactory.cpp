@@ -16,6 +16,7 @@
 #include "blocks/scalarmulblock.h"
 #include "blocks/matrixaddblock.h"
 #include "blocks/matrixmulblock.h"
+#include "blocks/matmulvecblock.h"
 
 BlockBase *BlockFactory::AllocBlock(BlockType t)
 {
@@ -60,6 +61,9 @@ BlockBase *BlockFactory::AllocBlock(BlockType t)
     case MAT_MUL:
         b = new MatrixMulBlock(g);
         break;
+	case MAT_MUL_VEC:
+		b = new MatMulVecBlock(g);
+		break;
 	default:
 		return nullptr;
 	}

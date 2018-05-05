@@ -30,7 +30,8 @@ enum BlockType {
     SCALAR_MUL = 15,
 	// Matrix
 	MAT_ADD = 16,
-    MAT_MUL = 17
+	MAT_MUL = 17,
+	MAT_MUL_VEC = 18
 };
 
 const std::map<BlockType, std::string> BLOCK_NAME = {
@@ -53,7 +54,8 @@ const std::map<BlockType, std::string> BLOCK_NAME = {
 	{ SCALAR_MUL,  "Scalar Multiply"},
 	// Matrix
 	{ MAT_ADD, "Matrix Add"},
-	{ MAT_MUL,  "Matrix Multiply"}
+	{ MAT_MUL,  "Matrix Multiply"},
+	{ MAT_MUL_VEC,  "Matrix Vector Product"}
 };
 
 #endif // BLOCKS_H
