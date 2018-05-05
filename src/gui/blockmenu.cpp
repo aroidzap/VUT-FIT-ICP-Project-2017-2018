@@ -5,9 +5,25 @@
 
 BlockMenu::BlockMenu(GraphUI &g) : graph(g)
 {
-	for (auto el : BLOCK_NAME) {
-		menu.addAction(new BlockMenuAction(el.first));
-	}
+	auto scalar = menu.addMenu("Scalar");
+	auto vector = menu.addMenu("Vector");
+	auto matrix = menu.addMenu("Matrix");
+
+	scalar->addAction(new BlockMenuAction(SCAL_INPUT, QIcon()));
+	scalar->addAction(new BlockMenuAction(SCAL_OUTPUT, QIcon()));
+	scalar->addAction(new BlockMenuAction(SCALAR_ADD, QIcon()));
+	scalar->addAction(new BlockMenuAction(SCALAR_SUB, QIcon()));
+	scalar->addAction(new BlockMenuAction(SCALAR_MUL, QIcon()));
+
+	vector->addAction(new BlockMenuAction(VECTOR_INPUT, QIcon()));
+	vector->addAction(new BlockMenuAction(VECTOR_OUTPUT, QIcon()));
+	vector->addAction(new BlockMenuAction(VECTOR_ADD, QIcon()));
+	vector->addAction(new BlockMenuAction(VECTOR_DOTPRODUCT, QIcon()));
+
+	matrix->addAction(new BlockMenuAction(MAT2_INPUT, QIcon()));
+	matrix->addAction(new BlockMenuAction(MAT2_OUTPUT, QIcon()));
+	matrix->addAction(new BlockMenuAction(MAT_ADD, QIcon()));
+	matrix->addAction(new BlockMenuAction(MAT_MUL, QIcon()));
 }
 
 void BlockMenu::ShowMenu()
@@ -25,8 +41,8 @@ void BlockMenu::ShowMenu()
 	}
 }
 
-BlockMenuAction::BlockMenuAction(BlockType t)
-	: QAction(QString(BLOCK_NAME.at(t).c_str()), nullptr), t(t) { }
+BlockMenuAction::BlockMenuAction(BlockType t, const QIcon &icon)
+	: QAction(icon, QString(BLOCK_NAME.at(t).c_str()), nullptr), t(t) { }
 
 BlockMenuAction::operator BlockType()
 {

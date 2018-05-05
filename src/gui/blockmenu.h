@@ -13,7 +13,7 @@ class BlockMenuAction : public QAction
 private:
 	BlockType t;
 public:
-	BlockMenuAction(BlockType t);
+	BlockMenuAction(BlockType t, const QIcon &icon);
 	operator BlockType();
 };
 
