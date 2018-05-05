@@ -13,7 +13,7 @@
 #include "graph_ui.h"
 
 PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
-	: QWidget(parent), label(name.c_str(), parent), p(parent)
+	: QWidget(parent), p(parent), label(name.c_str(), parent)
 {
 	resize(Style::PortSize + 2, Style::PortSize + 2);
 
@@ -26,7 +26,7 @@ PortBaseUI::PortBaseUI(const std::string name, QWidget *parent)
 InPortUI::InPortUI(const InPortUI &other) : InPortUI(other, other.p) { }
 
 InPortUI::InPortUI(const InPort &p, QWidget *parent)
-	: InPort(p), PortBaseUI(p.name, parent) {
+	: PortBaseUI(p.name, parent), InPort(p) {
 	Move(0, 0);
 }
 
@@ -36,9 +36,8 @@ void InPortUI::mouseMoveEvent(QMouseEvent *event)
 	PortBaseUI::mouseMoveEvent(event);
 }
 
-void InPortUI::mousePressEvent(QMouseEvent *event)
+void InPortUI::mousePressEvent(QMouseEvent *)
 {
-	(event);
 	setFocus();
 	GraphUI& g = dynamic_cast<GraphUI&>(block.graph);
 	g.hideHoverConnectionUI();
@@ -57,7 +56,7 @@ void InPortUI::mousePressEvent(QMouseEvent *event)
 OutPortUI::OutPortUI(const OutPortUI &other) : OutPortUI(other, other.p) { }
 
 OutPortUI::OutPortUI(const OutPort &p, QWidget *parent)
-	: OutPort(p), PortBaseUI(p.name, parent) {
+	: PortBaseUI(p.name, parent), OutPort(p) {
 	Move(0, 0);
 }
 
@@ -67,9 +66,8 @@ void OutPortUI::mouseMoveEvent(QMouseEvent *event)
 	PortBaseUI::mouseMoveEvent(event);
 }
 
-void OutPortUI::mousePressEvent(QMouseEvent *event)
+void OutPortUI::mousePressEvent(QMouseEvent *)
 {
-	(event);
 	setFocus();
 	GraphUI& g = static_cast<GraphUI&>(block.graph);
 	g.hideHoverConnectionUI();
@@ -101,9 +99,8 @@ void OutPortUI::Move(int x, int y)
 	g.updateConnectionUI(*this);
 }
 
-void PortBaseUI::paintEvent(QPaintEvent *event)
+void PortBaseUI::paintEvent(QPaintEvent *)
 {
-	(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
@@ -125,9 +122,8 @@ void PortBaseUI::mouseMoveEvent(QMouseEvent *event)
 	update();
 }
 
-void PortBaseUI::leaveEvent(QEvent *event)
+void PortBaseUI::leaveEvent(QEvent *)
 {
-	(event);
 	hover = false;
 	update();
 }

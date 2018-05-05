@@ -14,8 +14,8 @@ BlockFactory &GraphUI::GetBlockFactory()
 	return bf;
 }
 
-GraphUI::GraphUI() : bf(*this), in_click(nullptr), out_click(nullptr),
-	tc(&in_click, &out_click, this), block_menu(*this), block_context_menu(*this) {
+GraphUI::GraphUI() : in_click(nullptr), out_click(nullptr),
+	tc(&in_click, &out_click, this), bf(*this), block_menu(*this), block_context_menu(*this) {
 	setMouseTracking(true);
 }
 
@@ -81,8 +81,7 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 			it++;
 		}
 	}
-	catch (const std::invalid_argument &e) {
-		(e);
+	catch (const std::invalid_argument &) {
 		return false;
 	}
 	return true;
@@ -292,9 +291,8 @@ bool GraphUI::computeAll()
 	}
 }
 
-void GraphUI::leaveEvent(QEvent *event)
+void GraphUI::leaveEvent(QEvent *)
 {
-	(event);
 	hideHoverConnectionUI();
 }
 
@@ -313,8 +311,7 @@ void GraphUI::mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void GraphUI::mouseReleaseEvent(QMouseEvent *event)
+void GraphUI::mouseReleaseEvent(QMouseEvent *)
 {
-	(event);
 	drag = false;
 }

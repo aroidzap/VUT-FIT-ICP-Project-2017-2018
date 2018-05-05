@@ -12,7 +12,7 @@ BlockBase::BlockBase(Graph &g, BlockType type, std::string name)
 BlockBase::BlockBase(Graph &g, BlockType type, std::string name,
 					 std::initializer_list<InPort> inputs,
 					 std::initializer_list<OutPort> outputs)
-	: graph(g), type(type), name(name), inputs(inputs), outputs(outputs) { }
+	: inputs(inputs), outputs(outputs), graph(g), type(type), name(name) { }
 
 int BlockBase::getID() const
 {

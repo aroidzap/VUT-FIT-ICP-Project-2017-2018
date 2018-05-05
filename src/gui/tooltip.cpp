@@ -45,10 +45,8 @@ void Tooltip::Text(std::string text){
 	this->text = text;
 }
 
-void Tooltip::paintEvent(QPaintEvent *event)
+void Tooltip::paintEvent(QPaintEvent *)
 {
-	(event);
-
 	int w, h;
 	auto lines = TextLines(text,w , h);
 

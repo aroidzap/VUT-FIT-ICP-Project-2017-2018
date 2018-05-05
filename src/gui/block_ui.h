@@ -41,7 +41,7 @@ protected:
 	int width_;
 public:
 	explicit BlockUI(const BlockBaseT &b, QWidget *parent = nullptr)
-		: BlockBaseT(b), QWidget(parent), label(b.name.c_str(), this)
+		: QWidget(parent), BlockBaseT(b), label(b.name.c_str(), this)
 	{
 		setMouseTracking(true);
 		for(size_t i = 0; i < BlockBaseT::InputCount(); i++) {
@@ -160,9 +160,8 @@ public:
 	}
 
 protected:
-	void paintEvent(QPaintEvent *event) override
+	void paintEvent(QPaintEvent *) override
 	{
-		(event);
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);
 
@@ -202,14 +201,12 @@ protected:
 			static_cast<GraphUI&>(this->graph).blockContextMenu(this);
 		}
 	}
-	void mouseReleaseEvent(QMouseEvent *event) override
+	void mouseReleaseEvent(QMouseEvent *) override
 	{
-		(event);
 		drag = false;
 	}
-	void enterEvent(QEvent *event) override
+	void enterEvent(QEvent *) override
 	{
-		(event);
 		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
 	}
 };
@@ -302,7 +299,7 @@ protected:
 		int cnt = static_cast<int>(text_in.size()) - 1;
 		this->height_ = this->height_ + Style::NodeFieldOffset * (cnt < 0 ? 0 : cnt);
 		this->resize(this->width_ + 1, this->height_ + 1);
-		Move(Pos().x(), Pos().y());
+		this->Move(this->Pos().x(), this->Pos().y());
 		BlockUI<BlockBaseT>::paintEvent(event);
 		this->width_ = orig_w; this->height_ = orig_h;
 
@@ -338,7 +335,7 @@ protected:
 		this->width_ = std::max(this->width_, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
 		this->width_ = std::max(this->width_, Style::NodeMinWidth);
 		this->resize(this->width_ + 1, this->height_ + 1);
-		Move(Pos().x(), Pos().y());
+		this->Move(this->Pos().x(), this->Pos().y());
 		BlockUI<BlockBaseT>::paintEvent(event);
 		this->width_ = orig_w; this->height_ = orig_h;
 

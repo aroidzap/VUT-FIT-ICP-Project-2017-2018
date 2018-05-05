@@ -56,8 +56,8 @@ public:
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void leaveEvent(QEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *) override;
+	void leaveEvent(QEvent *) override;
 };
 
 #endif // GRAPH_UI_H

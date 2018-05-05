@@ -33,8 +33,6 @@ class BLOCKEDITOR;
 class BLOCKEDITOR : public QMainWindow
 {
     Q_OBJECT
-private:
-	GraphUI &graph;
 public:
 	explicit BLOCKEDITOR(GraphUI &g, QWidget *parent = 0);
 	~BLOCKEDITOR();
@@ -57,6 +55,7 @@ private slots:
 
 private:
 	Ui::BLOCKEDITOR *ui;
+	GraphUI &graph;
 
 	void deleteActions();
     void createActions();

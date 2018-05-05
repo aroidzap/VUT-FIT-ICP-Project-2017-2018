@@ -20,7 +20,7 @@
 #include "graph_ui.h"
 
 BLOCKEDITOR::BLOCKEDITOR(GraphUI &g, QWidget *parent) :
-	QMainWindow(parent), ui(new Ui::BLOCKEDITOR), graph(g)
+	QMainWindow(parent),  ui(new Ui::BLOCKEDITOR), graph(g)
 {
 	ui->setupUi(this);
 

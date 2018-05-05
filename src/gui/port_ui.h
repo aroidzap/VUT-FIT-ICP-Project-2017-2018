@@ -23,9 +23,9 @@ protected:
 	QLabel label;
 	PortBaseUI(const std::string name, QWidget *parent = nullptr);
 
-	void paintEvent(QPaintEvent *event) override;
+	void paintEvent(QPaintEvent *) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
-	void leaveEvent(QEvent *event) override;
+	void leaveEvent(QEvent *) override;
 public:
 	QPoint Pos();
 	virtual void Move(int x, int y) = 0;
@@ -40,7 +40,7 @@ public:
 	void Move(int x, int y) override;
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
-	void mousePressEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *) override;
 };
 
 class OutPortUI : public PortBaseUI, public OutPort
@@ -51,7 +51,7 @@ public:
 	void Move(int x, int y) override;
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
-	void mousePressEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *) override;
 };
 
 #endif // PORT_UI_H

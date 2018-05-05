@@ -48,7 +48,7 @@ private:
 protected:
 	QPoint getLeft() override;
 	QPoint getRight() override;
-	void paintEvent(QPaintEvent *event) override;
+	void paintEvent(QPaintEvent *) override;
 public:
 	TempConnectionUI(InPort **in, OutPort **out, QWidget *parent = nullptr);
 };

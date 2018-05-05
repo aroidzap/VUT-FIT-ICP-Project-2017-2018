@@ -13,7 +13,7 @@
 #include <set>
 #include <algorithm>
 
-Graph::Graph() : bf(*this), last_computed(nullptr), to_compute(), c_it(to_compute.begin()) { }
+Graph::Graph() : bf(*this), to_compute(), c_it(to_compute.begin()), last_computed(nullptr) { }
 
 std::string Graph::GetName() const
 {
@@ -122,8 +122,7 @@ bool Graph::loadGraph(std::stringstream &graph, bool merge)
 			addConnection(a, b);
 		}
 	}
-	catch (const std::invalid_argument &e) {
-		(e);
+	catch (const std::invalid_argument &) {
 		return false;
 	}
 	return true;

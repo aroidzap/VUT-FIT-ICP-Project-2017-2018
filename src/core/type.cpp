@@ -101,7 +101,7 @@ bool operator==(const Type &a, const Type &b)
 	return true;
 }
 
-TypeValue::TypeValue(Type &type, double value) : type(type), data(value) { }
+TypeValue::TypeValue(Type &type, double value) : data(value), type(type) { }
 
 TypeValue::operator const double &() const
 {

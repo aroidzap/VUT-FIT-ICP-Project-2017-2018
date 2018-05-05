@@ -66,9 +66,8 @@ void ConnectionUI::hideValue(){
 	t.hide();
 }
 
-void ConnectionUI::paintEvent(QPaintEvent *event)
+void ConnectionUI::paintEvent(QPaintEvent *)
 {
-	(event);
 	resize(parentWidget()->size());
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);

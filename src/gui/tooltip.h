@@ -20,7 +20,7 @@ public:
 	void Text(std::string text);
 	void Move(int x, int y);
 protected:
-	void paintEvent(QPaintEvent *event) override;
+	void paintEvent(QPaintEvent *) override;
 };
 
 #endif // TOOLTIP_H

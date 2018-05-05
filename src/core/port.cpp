@@ -8,7 +8,7 @@
 #include "blockbase.h"
 
 Port::Port(const BlockBase &b, const Type &t, std::string name)
-	: block(b), data(t), name(name) { }
+	: data(t), block(b), name(name) { }
 
 void Port::eventConnectionChange() {
 	if (connUpdate) {
