@@ -85,4 +85,4 @@ FORMS += \
 
 RESOURCES += res/icons.qrc
 
-QMAKE_CXXFLAGS += -std=c++14
+CONFIG += c++14
