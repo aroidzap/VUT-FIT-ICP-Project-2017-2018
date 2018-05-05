@@ -48,22 +48,22 @@ BlockBase *BlockFactoryUI::AllocBlock(BlockType t)
 		b = new BlockUI<VectorAddBlock>(VectorAddBlock(g), gp);
 		break;
     case VECTOR_DOTPRODUCT:
-        b = new BlockUI<VectorDotProductBlock>(VectorDotProductBlock(g), static_cast<GraphUI*>(&g));
+		b = new BlockUI<VectorDotProductBlock>(VectorDotProductBlock(g), gp);
         break;
     case SCALAR_ADD:
-        b = new BlockUI<ScalarAddBlock>(ScalarAddBlock(g), static_cast<GraphUI*>(&g));
+		b = new BlockUI<ScalarAddBlock>(ScalarAddBlock(g), gp);
         break;
     case SCALAR_SUB:
-        b = new BlockUI<ScalarSubBlock>(ScalarSubBlock(g), static_cast<GraphUI*>(&g));
+		b = new BlockUI<ScalarSubBlock>(ScalarSubBlock(g), gp);
         break;
     case SCALAR_MUL:
-        b = new BlockUI<ScalarMulBlock>(ScalarMulBlock(g), static_cast<GraphUI*>(&g));
+		b = new BlockUI<ScalarMulBlock>(ScalarMulBlock(g), gp);
         break;
     case MAT_ADD:
-        b = new BlockUI<MatrixAddBlock>(MatrixAddBlock(g), static_cast<GraphUI*>(&g));
+		b = new BlockUI<MatrixAddBlock>(MatrixAddBlock(g), gp);
         break;
     case MAT_MUL:
-        b = new BlockUI<MatrixMulBlock>(MatrixMulBlock(g), static_cast<GraphUI*>(&g));
+		b = new BlockUI<MatrixMulBlock>(MatrixMulBlock(g), gp);
         break;
 	case MAT_MUL_VEC:
 		b = new BlockUI<MatMulVecBlock>(MatMulVecBlock(g), gp);

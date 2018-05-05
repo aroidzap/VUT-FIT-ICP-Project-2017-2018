@@ -104,6 +104,8 @@ void GraphUI::blockContextMenu(BlockBase *b)
 void GraphUI::removeBlock(BlockBase *b)
 {
 	Graph::removeBlock(b);
+	this->in_click = nullptr;
+	this->out_click = nullptr;
 }
 
 bool GraphUI::addConnection(OutPort &a, InPort &b)
