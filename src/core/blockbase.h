@@ -1,6 +1,6 @@
 /** ICP Project 2017/2018: BlockEditor
  * @file blockbase.h
- * @brief Block parent class header
+ * @brief Base class for blocks header
  * @author Tomáš Pazdiora (xpazdi02)
  * @author Michal Pospíšil (xpospi95)
  */

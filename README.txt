@@ -5,7 +5,7 @@ Authors: Tomáš Pazdiora (xpazdi02)
 		 
 FEAUTURES OF THIS IMPLEMENTATION:
 - Design patterns usage
--- Abstract Factories to generate specific block and port types
+-- Abstract Factories to generate specific blocks
 -- Decorator pattern to bond GUI and core functionality and more
 -- Observer to update block values (using callbacks for specific computations) and more
 
@@ -18,16 +18,11 @@ FEAUTURES OF THIS IMPLEMENTATION:
 -- Merging is a feature that opens a file and merges it into the currently opened file.
 
 - File format
--- We used the gph file format to avoid confusion with other file formats and ensuring
-   that our app will not crash after attempting to open other filetypes.
+-- We used own '.gph' file format to avoid confusion with other file formats.
+-- Saved is only the graph structure without input values
    
 - Help dialog
 -- We created a help dialog to let the user know how to use the app.
-   
-DEFICIENCES OF THIS IMPLEMENTATION
-- Saving values is not supported
--- Values in input and output blocks are not saved. Files will need to be filled with values 
-   and recomputed again.
    
 EXAMPLES
 - sin(x) approximation.gph
