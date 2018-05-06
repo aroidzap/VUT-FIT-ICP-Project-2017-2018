@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: vectordotproductblock.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file vectordotproduct.cpp
+ * @brief Vector dot product block's operation and ports definition
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "vectordotproductblock.h"
 #include "../types/types.h"

@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: port_ui.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file port_ui.cpp
+ * @brief Port related actions
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "port_ui.h"
 #include "style.h"

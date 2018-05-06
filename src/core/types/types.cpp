@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: types_h
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file types.cpp
+ * @brief Custom data types used in schemes
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "types.h"
 

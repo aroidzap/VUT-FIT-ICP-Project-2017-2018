@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: block_ui.h
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file block_ui.h
+ * @brief Block appearance
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #ifndef BLOCK_UI_H
 #define BLOCK_UI_H
@@ -26,19 +27,33 @@
 
 #include "../core/blockbase.h"
 
+/**
+ * @brief Block GUI representation
+ */
 template <typename BlockBaseT>
 class BlockUI : public QWidget, public BlockBaseT
 {
 private:
+	//! Vector of GUI input ports
 	std::vector<InPortUI> inputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
+	//! Vector of GUI output ports
 	std::vector<OutPortUI> outputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
 	QLabel label;
+	//! Block's dragging status
 	bool drag = false;
+	//! Block's highlight status
 	bool highlight = false;
+	//! Block's position
 	QPoint drag_p, offset;
 protected:
+	//! Block's height and width
 	int width_, height_;
 public:
+	/**
+	 * @brief BlockUI constructor
+	 * @param b Block derived from BlockBase
+	 * @param parent Widget where the block is rendered
+	 */
 	explicit BlockUI(const BlockBaseT &b, QWidget *parent = nullptr)
 		: QWidget(parent), BlockBaseT(b), label(b.name.c_str(), this)
 	{
@@ -76,10 +91,19 @@ public:
 		this->label.show();
 	}
 
+	/**
+	 * @brief Position where block is placed
+	 * @return Top left adjusted block's position
+	 */
 	QPoint Pos() const {
 		return (pos() - offset);
 	}
 
+	/**
+	 * @brief Generate ID for a port
+	 * @param port Input port
+	 * @return ID on success, -1 otherwise
+	 */
 	int getPortID(const InPort &port) const override
 	{
 		int idx = 0;
@@ -92,6 +116,11 @@ public:
 		return -1;
 	}
 
+	/**
+	 * @brief Generate ID for a port
+	 * @param port Output port
+	 * @return ID on success, -1 otherwise
+	 */
 	int getPortID(const OutPort &port) const override
 	{
 		int idx = 0;
@@ -104,32 +133,50 @@ public:
 		return -1;
 	}
 
+	/**
+	 * @brief Returns reference to an input port specified by ID
+	 * @param id Port's ID
+	 * @return Address of a port
+	 */
 	InPort & Input(std::size_t id) override
 	{
 		return inputs[id];
 	}
 
+	//! Returns number of block's inputs
 	std::size_t InputCount() override
 	{
 		return inputs.size();
 	}
 
+	/**
+	 * @brief Returns reference to an output port specified by ID
+	 * @param id Port's ID
+	 * @return Address of a port
+	 */
 	OutPort & Output(std::size_t id) override
 	{
 		return outputs[id];
 	}
 
+	//! Returns number of block's outputs
 	std::size_t OutputCount() override
 	{
 		return outputs.size();
 	}
 
+	//! Move block to the specified offset in addition to it's position
 	void updateOffset(QPoint offset){
 		auto p = Pos();
 		this->offset = offset;
 		Move(p.x(), p.y());
 	}
 
+	/**
+	 * @brief Moves block to a specified location
+	 * @param x X-axis position
+	 * @param y Y-axis position
+	 */
 	virtual void Move(int x, int y)
 	{
 		x += this->offset.x();
@@ -152,6 +199,8 @@ public:
 			offset += Style::PortMarginV;
 		}
 	}
+
+	//! Change block's highlight status
 	void Highlight(bool enable)
 	{
 		this->highlight = enable;
@@ -159,6 +208,7 @@ public:
 	}
 
 protected:
+	//! Rendering the block
 	void paintEvent(QPaintEvent *) override
 	{
 		QPainter painter(this);
@@ -181,6 +231,8 @@ protected:
 
 		painter.strokePath(path, QPen(Style::NodeOutlineCol));
 	}
+
+	//! Moving block by dragging
 	void mouseMoveEvent(QMouseEvent *event) override
 	{
 		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
@@ -189,6 +241,7 @@ protected:
 			Move(tmp.x(), tmp.y());
 		}
 	}
+	//! Begin drag on left click, open context menu on right click
 	void mousePressEvent(QMouseEvent *event) override
 	{
 		setFocus();
@@ -200,18 +253,26 @@ protected:
 			static_cast<GraphUI&>(this->graph).blockContextMenu(this);
 		}
 	}
+
+	//! End drag
 	void mouseReleaseEvent(QMouseEvent *) override
 	{
 		drag = false;
 	}
+
+	//! Hide connection tooltip when hovering over the block
 	void enterEvent(QEvent *) override
 	{
 		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();
 	}
 };
 
+/**
+ * @brief Input block text edit box
+ */
 class TextEdit : public QLineEdit{
 private:
+
 	std::function<void(void)> callback;
 	bool err = false;
 	QString prev;
@@ -242,6 +303,9 @@ protected:
 	}
 };
 
+/**
+ * @brief Input Block GUI representation
+ */
 template <typename BlockBaseT>
 class InputBlockUI : public BlockUI<BlockBaseT> {
 private:
@@ -316,6 +380,9 @@ protected:
 	}
 };
 
+/**
+ * @brief Output Block GUI representation
+ */
 template <typename BlockBaseT>
 class OutputBlockUI : public BlockUI<BlockBaseT> {
 private:

@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: style.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file style.cpp
+ * @brief All custom defined styles in app
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "style.h"
 

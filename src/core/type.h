@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: type.h
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file type.h
+ * @brief Blocks' data types header file
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #ifndef TYPE_H
 #define TYPE_H
@@ -16,6 +17,7 @@
 class Port;
 class Type;
 
+//! @brief TypeValue is a single component of Type
 class TypeValue {
 	friend class Type;
 private:
@@ -28,6 +30,7 @@ public:
 	friend bool operator== (const TypeValue &a, const TypeValue &b);
 };
 
+//! @brief Type Class is not polymorphic! Derived classes are used only as predefined Types with assigned name!
 class Type
 {
 	friend class TypeValue;
@@ -45,8 +48,10 @@ public:
 	const std::map<std::string, TypeValue> Data();
 	bool isNull() const;
 	void setNull();
-	bool type_of(const Type &other) const; // type comparison
-	friend bool operator== (const Type &a, const Type &b); // value comparison
+	//! Type comparison
+	bool type_of(const Type &other) const;
+	//! Value comparison
+	friend bool operator== (const Type &a, const Type &b);
 	operator std::string();
 };
 

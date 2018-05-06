@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: matrixaddblock.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file matrixaddblock.cpp
+ * @brief Matrix addition block's operation and ports definition
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "matrixaddblock.h"
 #include "../types/types.h"

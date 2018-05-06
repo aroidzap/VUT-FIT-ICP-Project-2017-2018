@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: vector_io.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file vector_io.cpp
+ * @brief Vector IO block's operation and ports definition
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "vector_io.h"
 #include "../types/types.h"

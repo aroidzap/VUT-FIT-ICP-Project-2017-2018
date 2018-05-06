@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: scalarsubblock.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file scalarsubblock.cpp
+ * @brief Scalar subtraction block's operation and ports definition
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "scalarsubblock.h"
 #include "../types/types.h"

@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: graph.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file graph.cpp
+ * @brief Core graph functionality
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "graph.h"
 #include <utility>
@@ -336,12 +337,12 @@ bool Graph::computeFinished()
 {
 	return (to_compute.size() == 0);
 }
-
+/**
+ * Directed Acyclic Graph Check
+ * Reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+ */
 bool Graph::isAcyclic(OutPort &a, InPort &b)
 {
-	// Directed Acyclic Graph Check
-	// reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
-
 	// std::map<output, inputs> edges
 	std::map<const BlockBase*, std::set<const BlockBase*>> dag;
 
