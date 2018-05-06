@@ -41,7 +41,8 @@ protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-    void open();
+	void newFile();
+	void open();
 	void merge();
     bool save();
     bool saveAs();
@@ -83,6 +84,7 @@ private:
 
 	QLineEdit *graphName;
 
+	QAction *newAct;
 	QAction *openAct;
 	QAction *mergeAct;
     QAction *saveAct;

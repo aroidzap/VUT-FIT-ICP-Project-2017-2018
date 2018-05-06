@@ -54,6 +54,7 @@ BLOCKEDITOR::~BLOCKEDITOR()
 
 void BLOCKEDITOR::deleteActions()
 {
+	delete newAct;
 	delete openAct;
 	delete mergeAct;
 	delete saveAct;
@@ -68,6 +69,11 @@ void BLOCKEDITOR::deleteActions()
 
 void BLOCKEDITOR::createActions()
 {
+	newAct = new QAction(QIcon(":/icons/new.png"), "&New...", this);
+	newAct->setShortcuts(QKeySequence::New);
+	newAct->setStatusTip("Create a new schema");
+	connect(newAct, SIGNAL(triggered()), this, SLOT(newFile()));
+
 	openAct = new QAction(QIcon(":/icons/open.png"), "&Open...", this);
 	openAct->setShortcuts(QKeySequence::Open);
 	openAct->setStatusTip("Open an existing file");
@@ -122,6 +128,8 @@ void BLOCKEDITOR::createActions()
 void BLOCKEDITOR::createMenus()
 {
 	fileMenu = menuBar()->addMenu("&File");
+	fileMenu->addAction(newAct);
+	fileMenu->addSeparator();
 	fileMenu->addAction(openAct);
 	fileMenu->addAction(mergeAct);
 	fileMenu->addSeparator();
@@ -146,6 +154,7 @@ void BLOCKEDITOR::deleteToolBars()
 void BLOCKEDITOR::createToolBars()
 {
 	fileToolBar = addToolBar("File");
+	fileToolBar->addAction(newAct);
 	fileToolBar->addAction(openAct);
 	fileToolBar->addAction(saveAct);
 
@@ -156,7 +165,6 @@ void BLOCKEDITOR::createToolBars()
 
 	helpToolBar = addToolBar("Help");
 	helpToolBar->addAction(helpAct);
-
 
 	spacerWidget = new QWidget();
 	spacerWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
@@ -178,6 +186,16 @@ void BLOCKEDITOR::closeEvent(QCloseEvent *event)
 		event->accept();
 	} else {
 		event->ignore();
+	}
+}
+
+void BLOCKEDITOR::newFile()
+{
+	if(maybeSave())
+	{
+		graph.clearGraph();
+		graphNameChange(QString::fromStdString(""));
+		setCurrentFile(QString::fromStdString(""));
 	}
 }
 
