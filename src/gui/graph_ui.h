@@ -26,18 +26,22 @@ class ConnectionUI;
 class GraphUI : public QWidget, public Graph
 {
 public:
+	//! Temporary value used while creating a connection - port's address after one click
 	InPort *in_click;
+	//! Temporary value used while creating a connection - port's address after one click
 	OutPort *out_click;
 private:
+	//! Temporary connection held between mouse and the first port while connecting to the other port
 	TempConnectionUI tc;
 	//! GUI Block factory
 	BlockFactoryUI bf;
+	//! Getting block factory address (core)
 	BlockFactory & GetBlockFactory() override;
 	//! Dragging state
 	bool drag = false;
-	//!
+	//! Current dragging coordinates
 	QPoint drag_p;
-	//! Rightclick dropdown menu for choosing a new block to add to the scheme
+	//! Right click dropdown menu for choosing a new block to add to the scheme
 	BlockMenu block_menu;
 	//! Right click dropdown menu for block options
 	BlockDelete block_context_menu;
@@ -49,7 +53,7 @@ public:
 	GraphUI();
 	//! Get block's position offset
 	QPoint getOffset() const;
-	//! Delete the current scheme, get ready for new scheme
+	//! Delete the current scheme, get ready for a new scheme
 	void clearGraph() override;
 	/**
 	 * @brief Load scheme from a file
@@ -92,21 +96,30 @@ public:
 	 */
 	void updateConnectionUI(Port &p);
 	/**
-	 * @brief Show tooltip when connection is hovered
+	 * @brief Show tooltip when connection is hovered while other connection is being attached to the second port
 	 * @param mouse QPoint coordinates
 	 */
 	void hoverConnectionUI(QPoint mouse);
-	//!
+	//! Hides all connection tooltips
 	void hideHoverConnectionUI();
+	//! Checks that all inputs in the scheme are connected
 	bool allInputsConnected() override;
+	//! Sets the first block as next in compute queue
 	void computeReset() override;
+	//! Computes one next block in compute queue
 	bool computeStep() override;
+	//! Computes the whole scheme
 	bool computeAll() override;
+	//! Graph GUI widget destructor
 	~GraphUI();
 protected:
+	//! Invokes actions triggered by mouse movement
 	void mouseMoveEvent(QMouseEvent *event) override;
+	//! Invokes actions triggered by mouse clicks
 	void mousePressEvent(QMouseEvent *event) override;
+	//! Invokes actions triggered by releasing the mouse button
 	void mouseReleaseEvent(QMouseEvent *) override;
+	//! Invokes actions triggered by mouse leaving a connection
 	void leaveEvent(QEvent *) override;
 };
 
