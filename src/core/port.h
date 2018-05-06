@@ -16,10 +16,12 @@ class Port
 {
 protected:
 	Type data;
-	std::function<void(Port &)> connUpdate;
+	std::function<void(Port &)> connUpdate, valUpdate;
 public:
 	void eventConnectionChange();
+	void eventValueChange();
 	void onConnectionChange(std::function<void(Port &)> connUpdate);
+	void onValueChange(std::function<void(Port &)> valUpdate);
 	const BlockBase &block;
 	const std::string name;
 	Port(const BlockBase & b, const Type &t, std::string name);

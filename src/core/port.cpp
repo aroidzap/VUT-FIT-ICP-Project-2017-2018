@@ -16,9 +16,20 @@ void Port::eventConnectionChange() {
 	}
 }
 
+void Port::eventValueChange() {
+	if (valUpdate) {
+		valUpdate(*this);
+	}
+}
+
 void Port::onConnectionChange(std::function<void (Port &)> connUpdate)
 {
 	this->connUpdate = connUpdate;
+}
+
+void Port::onValueChange(std::function<void (Port &)> valUpdate)
+{
+	this->valUpdate = valUpdate;
 }
 
 TypeValue &Port::operator[](const std::string &s)
