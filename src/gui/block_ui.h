@@ -329,7 +329,8 @@ public:
 	bool Computable() override {
 		return false;
 	}
-	void Move(int x, int y) override {
+	void updateBlockSize()
+	{
 		int w, h;
 		auto lines = Tooltip::TextLines(static_cast<std::string>(this->Input(0).Value()), w, h);
 		int cnt = static_cast<int>(lines.size()) - 1;
@@ -338,10 +339,15 @@ public:
 		this->width_ = std::max(this->width_, Style::NodeNamePadding * 2 + QApplication::fontMetrics().width(this->name.c_str()));
 		this->width_ = std::max(this->width_, Style::NodeMinWidth);
 		this->resize(this->width_ + 1, this->height_ + 1);
+	}
+	void Move(int x, int y) override {
+		updateBlockSize();
 		BlockUI<BlockBaseT>::Move(x, y);
 	}
 protected:
-	void paintEvent(QPaintEvent *event) override {
+	void paintEvent(QPaintEvent *event) override
+	{
+		updateBlockSize();
 		BlockUI<BlockBaseT>::paintEvent(event);
 
 		int w, h;
