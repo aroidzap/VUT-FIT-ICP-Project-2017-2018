@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: main.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file main.cpp
+ * @brief Application execution point
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "gui/blockeditor.h"
 #include <QApplication>

@@ -1,8 +1,10 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: blockfactory_ui.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file blockfactory_ui.cpp
+ * @brief Block type specific creation
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
+
 
 #include "blockfactory_ui.h"
 #include "port_ui.h"

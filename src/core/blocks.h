@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: blocks.h
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file blocks.h
+ * @brief Block types definition and helper structures
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #ifndef BLOCKS_H
 #define BLOCKS_H
@@ -10,6 +11,7 @@
 #include <string>
 #include <map>
 
+//! Used to denote block type to enhance readability when calling functions
 enum BlockType {
 	// Input
 	SCAL_INPUT = 0,
@@ -34,6 +36,7 @@ enum BlockType {
 	MAT_MUL_VEC = 18
 };
 
+//! Maps huma readable block names to BlockType
 const std::map<BlockType, std::string> BLOCK_NAME = {
 	// Input
 	{ SCAL_INPUT, "Scalar Input" },

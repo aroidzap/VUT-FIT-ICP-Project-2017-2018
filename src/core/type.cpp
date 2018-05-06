@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: type.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file type.cpp
+ * @brief Implementation of type-related operations
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "type.h"
 #include <utility>

@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: blockfactory.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file blockfactory.cpp
+ * @brief (De)Allocation of blocks
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "blockfactory.h"
 

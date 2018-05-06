@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: tooltip.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file tooltip.cpp
+ * @brief Tooltips for viewing values at connections
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "tooltip.h"
 #include "style.h"

@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: scalar_io.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file scalar_io.cpp
+ * @brief Scalar IO block's operation and ports definition
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "scalar_io.h"
 #include "../types/types.h"

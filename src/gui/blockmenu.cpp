@@ -1,3 +1,13 @@
+/** ICP Project 2017/2018: BlockEditor
+ * @file blockmenu.cpp
+ * @brief Class for block type selection drop-down and block actions drop-down
+ * @details Class contains methods for drop-down menus that call creation of new blocks
+ * and menus created when right-clicking blocks
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
+
+
 #include "blockmenu.h"
 #include <QCursor>
 #include "../core/blocks.h"

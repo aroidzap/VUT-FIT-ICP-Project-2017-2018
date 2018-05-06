@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: matmulvecblock.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file matmulvecblock.cpp
+ * @brief Matrix and vector multiplication block's operation and ports definition
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "matmulvecblock.h"
 #include "../types/types.h"

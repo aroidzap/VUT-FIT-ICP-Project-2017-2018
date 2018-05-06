@@ -1,8 +1,10 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: graph_ui.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file graph_ui.cpp
+ * @brief Actions performed on the whole scheme
+ * @details GraphUI is a central widget, all new blocks and connections are created here
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "graph_ui.h"
 #include "block_ui.h"

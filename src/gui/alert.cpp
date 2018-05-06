@@ -1,8 +1,10 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: alert.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file alert.cpp
+ * @brief Creating alert windows
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
+
 
 #include "alert.h"
 

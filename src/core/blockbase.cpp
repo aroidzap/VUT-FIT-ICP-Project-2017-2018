@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: blockbase.cpp
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file blockbase.cpp
+ * @brief Block operations
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #include "blockbase.h"
 
