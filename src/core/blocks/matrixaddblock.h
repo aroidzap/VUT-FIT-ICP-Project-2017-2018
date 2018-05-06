@@ -23,9 +23,8 @@ public:
 
 	//! @param g Graph object - parent scheme
 	MatrixAddBlock(Graph &g);
+	
 	//! Performs the matrix addition
-
-	//! @pre Input ports must point to valid values
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~MatrixAddBlock() = default;

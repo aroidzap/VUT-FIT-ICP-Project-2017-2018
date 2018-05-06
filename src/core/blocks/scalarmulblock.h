@@ -23,9 +23,8 @@ public:
 
 	//! @param g Graph object - parent scheme
 	ScalarMulBlock(Graph &g);
+	
 	//! Performs the scalar multiplication
-
-	//! @pre Input ports must point to valid values
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~ScalarMulBlock() = default;

@@ -17,12 +17,12 @@
 #include "../core/port.h"
 
 /**
- * @brief The plain port (no data type) GUI representation
+ * @brief The base abstract class of port GUI representation
  */
 class PortBaseUI : public QWidget
 {
 protected:
-	//! Port widget
+	//! Parent widget
 	QWidget *p;
 	//! Port hover state
 	bool hover = false;
@@ -44,9 +44,9 @@ protected:
 public:
 	//! Block's position - coordinates
 	QPoint Pos();
-	//! Function moves the block inside the parent widget
+	//! Move to coordinates
 	virtual void Move(int x, int y) = 0;
-	//! Get width required by block's content
+	//! Get width of Port GUI widget
 	int getWidth() const;
 };
 
@@ -58,9 +58,9 @@ class InPortUI : public PortBaseUI, public InPort
 public:
 	//! Copy constructor
 	InPortUI(const InPortUI &other);
-	//! Input port constructor
+	//! Input port constructor (decorator pattern)
 	explicit InPortUI(const InPort &p, QWidget *parent = nullptr);
-	//! Function for moving position of input port
+	//! Move to coordinates
 	void Move(int x, int y) override;
 protected:
 	//! Event that invokes actions triggered by mouse movement
@@ -77,9 +77,9 @@ class OutPortUI : public PortBaseUI, public OutPort
 public:
 	//! Copy constructor
 	OutPortUI(const OutPortUI &other);
-	//! Input port constructor
+	//! Output port constructor (decorator pattern)
 	explicit OutPortUI(const OutPort &p, QWidget *parent = nullptr);
-	//! Function for moving position of input port
+	//! Move to coordinates
 	void Move(int x, int y) override;
 protected:
 	//! Event that invokes actions triggered by mouse movement

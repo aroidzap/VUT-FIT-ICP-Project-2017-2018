@@ -15,7 +15,7 @@
 
 class GraphUI;
 
-//! Action factory for block creation
+//! BlockType decorator for QAction
 class BlockMenuAction : public QAction
 {
 private:
@@ -31,14 +31,14 @@ public:
 class BlockMenu
 {
 private:
-	//! Parent widget
+	//! Parent GraphUI
 	GraphUI &graph;
 	//! Dropdown menu object
 	QMenu menu;
 public:
 	//! Menu constructor
 	BlockMenu(GraphUI &g);
-	//! Function for showing the menu after a right click outside of a block
+	//! Function for showing the menu after a right click if free space
 	void ShowMenu();
 };
 

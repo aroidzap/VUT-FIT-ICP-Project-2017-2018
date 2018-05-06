@@ -10,9 +10,9 @@
 
 #include <string>
 
-//! Functions that creates a warning window
+//! Functions that creates a warning/error window
 
-//! @param message Warning message
+//! @param message Warning/Error message
 void ErrorAlert(std::string message);
 
 #endif // ALERT_H

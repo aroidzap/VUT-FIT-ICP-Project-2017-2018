@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-//! Used to denote block type to enhance readability when calling functions
+//! BlockTypes used for adding blocks, block factories, etc. with assigned numbers for file saves
 enum BlockType {
 	// Input
 	SCAL_INPUT = 0,

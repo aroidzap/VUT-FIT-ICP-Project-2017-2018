@@ -23,9 +23,8 @@ public:
 
 	//! @param g Graph object - parent scheme
 	VectorDotProductBlock(Graph &g);
+	
 	//! Computes the vectors' dot product
-
-	//! @pre Input ports must point to valid values
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~VectorDotProductBlock() = default;

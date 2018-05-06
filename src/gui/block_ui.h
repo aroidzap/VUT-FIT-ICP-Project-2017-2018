@@ -34,14 +34,14 @@ template <typename BlockBaseT>
 class BlockUI : public QWidget, public BlockBaseT
 {
 private:
-	//! Vector of input ports
+	//! Vector of GUI input ports
 	std::vector<InPortUI> inputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
-	//! Vector of output ports
+	//! Vector of GUI output ports
 	std::vector<OutPortUI> outputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
 	QLabel label;
 	//! Block's dragging status
 	bool drag = false;
-	//! True when block should be highlighted - typically during its computation
+	//! Block's highlight status
 	bool highlight = false;
 	//! Block's position
 	QPoint drag_p, offset;
@@ -50,8 +50,8 @@ protected:
 	int width_, height_;
 public:
 	/**
-	 * @brief Block graphics constructor
-	 * @param b Block template
+	 * @brief BlockUI constructor
+	 * @param b Block derived from BlockBase
 	 * @param parent Widget where the block is rendered
 	 */
 	explicit BlockUI(const BlockBaseT &b, QWidget *parent = nullptr)
@@ -165,7 +165,7 @@ public:
 		return outputs.size();
 	}
 
-	//! Move block to the specified offset
+	//! Move block to the specified offset in addition to it's position
 	void updateOffset(QPoint offset){
 		auto p = Pos();
 		this->offset = offset;
@@ -200,7 +200,7 @@ public:
 		}
 	}
 
-	//! Set if the block is highlighted
+	//! Change block's highlight status
 	void Highlight(bool enable)
 	{
 		this->highlight = enable;
@@ -241,7 +241,7 @@ protected:
 			Move(tmp.x(), tmp.y());
 		}
 	}
-	//! Enabling the dragging status
+	//! Begin drag on left click, open context menu on right click
 	void mousePressEvent(QMouseEvent *event) override
 	{
 		if(event->button() != Qt::RightButton) {
@@ -254,13 +254,13 @@ protected:
 		}
 	}
 
-	//! Disable dragging status
+	//! End drag
 	void mouseReleaseEvent(QMouseEvent *) override
 	{
 		drag = false;
 	}
 
-	//! Disable connection tooltip upon hovering the block
+	//! Hide connection tooltip when hovering over the block
 	void enterEvent(QEvent *) override
 	{
 		static_cast<GraphUI&>(this->graph).hideHoverConnectionUI();

@@ -16,9 +16,9 @@
 class Style
 {
 public:
-	//! Port radius
+	//! Port connect diameter
 	static const int PortSize;
-	//! Port size
+	//! Port draw diameter
 	static const int PortDrawSize;
 	//! Port margin
 	static const int PortMarginV;

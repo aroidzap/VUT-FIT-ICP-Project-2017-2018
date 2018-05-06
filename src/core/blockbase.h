@@ -91,21 +91,26 @@ public:
 	 */
 	virtual std::size_t OutputCount();
 
+	/**
+	 * @brief Checks if all inputs are non-null values
+	 * @return True when all inputs are non-null, false otherwise
+	 */
 	bool HasAllValues();
 	/**
 	 * @brief Checks that all inputs are connected with some blocks
-	 * @return True when all inputs are connected, else false
+	 * @return True when all inputs are connected, false otherwise
 	 */
 	bool InputsAreConnected();
 	virtual bool Computable();
 	/**
-	 * @brief Detaches all connections from output ports
+	 * @brief Sets all output port's values to Null
 	 */
 	void Reset();
 	/**
-	 * @brief Virtual method that is reimplemented by every block type
+	 * @brief Virtual method that is implemented by every block type
 	 */
 	virtual void Compute() = 0;
+
 	//! Virtual destructor to prevent leaks
 	virtual ~BlockBase() = default;
 };

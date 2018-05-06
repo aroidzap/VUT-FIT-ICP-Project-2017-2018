@@ -23,9 +23,8 @@ public:
 
 	//! @param g Graph object - parent scheme
 	ScalarSubBlock(Graph &g);
+	
 	//! Performs the scalar subtraction
-
-	//! @pre Input ports must point to valid values
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~ScalarSubBlock() = default;

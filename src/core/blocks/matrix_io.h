@@ -23,7 +23,7 @@ public:
 
 	//! @param g Graph object - parent scheme
 	MatrixInput(Graph &g);
-	//! Propagates values from text fields to an out port
+	//! Not used for Input Blocks
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~MatrixInput() = default;
@@ -41,7 +41,7 @@ public:
 
 	//! @param g Graph object - parent scheme
 	MatrixOutput(Graph &g);
-	//! Shows values from in ports
+	//! Not used for Output Blocks
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~MatrixOutput() = default;

@@ -23,9 +23,8 @@ public:
 
 	//! @param g Graph object - parent scheme
 	MatrixMulBlock(Graph &g);
+	
 	//! Performs the matrix multiplication
-
-	//! @pre Input ports must point to valid values
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~MatrixMulBlock() = default;

@@ -62,7 +62,7 @@ private slots:
 	//! Button slot called when opening about box
 	void about();
 
-	//! Text edit slot called to show scheme name from opened file
+	//! Function called on scheme name text edit field change
 	void graphNameChange(const QString & name);
 
 private:

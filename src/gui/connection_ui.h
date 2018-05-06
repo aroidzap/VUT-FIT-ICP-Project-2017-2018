@@ -19,6 +19,7 @@
 class ConnectionUI : public QWidget
 {
 protected:
+	//! Parent widget
 	QWidget *p;
 	//! Tooltip shown after hovering a connection
 	Tooltip t;
@@ -26,7 +27,7 @@ protected:
 	InPortUI *in;
 	//! Connection starts here
 	OutPortUI *out;
-	//! Adjests the line shape and position
+	//! Adjusts the line shape and position
 	QPainterPath computePath();
 	//! Mouse hover state
 	bool hover = false;
@@ -34,9 +35,9 @@ protected:
 	void showValue();
 	//! Hiding the tooltip
 	void hideValue();
-	//! Coordinates where the line starts
+	//! Provides start point for path compution
 	virtual QPoint getLeft();
-	//! Coordinates where the line ends
+	//! Provides end point for path compution
 	virtual QPoint getRight();
 public:
 	/**
@@ -54,9 +55,9 @@ public:
 	bool operator==(const InPort &p);
 	//! Overloading operator == for output port comparison
 	bool operator==(const OutPort &p);
-	//! Overloading operator == for port comparison
+	//! Overloading operator == for any port comparison
 	bool operator==(const Port &p);
-	//! Overloading operator == for connection comparison
+	//! Overloading operator == for connection comparison (based on input ports)
 	friend bool operator==(const ConnectionUI &a, const ConnectionUI &b);
 	//! Activating hover state by mouse
 	bool mouseHover(QPoint mouse);
@@ -66,7 +67,7 @@ protected:
 	void paintEvent(QPaintEvent *event) override;
 };
 
-//! Temporary connection while deciding that making the connection is allowed
+//! Temporary connection for visualising unfinished connection
 class TempConnectionUI : public ConnectionUI
 {
 private:

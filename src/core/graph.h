@@ -30,15 +30,16 @@ class Graph
 private:
 	//! Function called with every graph change
 	std::function<void(void)> graphChanged;
-	//! Abstract factory block generator
+	//! Block abstract factory
 	BlockFactory bf;
 protected:
 	//! Scheme name
 	std::string name;
+	//! Get block abstract factory
 	virtual BlockFactory & GetBlockFactory();
 	//! List of not yet computed blocks for computeStep()
 	std::list<BlockBase*> to_compute;
-	//! Block iterator
+	//! Block compute iterator
 	std::list<BlockBase*>::iterator c_it;
 	//! Reference to a last computed block
 	BlockBase *last_computed;
@@ -53,14 +54,17 @@ public:
 
 	//! Returns name of the scheme
 	std::string GetName() const;
+	
 	//! @brief Sets a new name of the scheme
 	//! @param name New name
 	void SetName(const std::string name);
 
+	//! Sets callback called on graph change
 	void onGraphChange(std::function<void(void)> callback);
 
-	//! Returns ID of ablock from its address
+	//! Returns ID of a block in graph's block list
 	int getBlockID(const BlockBase &block) const;
+
 	//! Delete all blocks and connections - clear the scheme
 	virtual void clearGraph();
 	/**
@@ -85,16 +89,16 @@ public:
 	 */
 	virtual void removeBlock(BlockBase *b);
 	/**
-	 * @brief Gets input port on the other side of a connection
-	 * @param p Output port where the connection starts
-	 * @return Input port where the connection ends
+	 * @brief Gets port on the other side of a connection
+	 * @param p Input port of the connection
+	 * @return Output port of the connection
 	 */
 	OutPort * getConnectedOutPort(InPort &p);
 	/**
 	 * @brief Add a connection between the blocks
 	 * @param a Output port where the connection starts
 	 * @param b Input port where the connection ends
-	 * @return True if data type matched and connection didn't form a cycle, else false
+	 * @return True if data type matched and connection didn't form a cycle, false otherwise
 	 */
 	virtual bool addConnection(OutPort &a, InPort &b);
 	/**
@@ -108,22 +112,22 @@ public:
 	 */
 	virtual void removeConnection(OutPort &p);
 	/**
-	 * @brief Checks that all inputs are connected to some blocks
+	 * @brief Checks if all inputs of all blocks are connected
 	 * @return True when all inputs are connected, else false
 	 */
 	virtual bool allInputsConnected();
 	/**
-	 * @brief Sets first block as next in compute queue
+	 * @brief Resets the copution
 	 */
 	virtual void computeReset();
 	/**
 	 * @brief Computes one block in compute queue
-	 * @return False when not every input is connected, else true
+	 * @return False when failed, else true
 	 */
 	virtual bool computeStep();
 	/**
 	 * @brief Computes the whole compute queue
-	 * @return False when not every input is connected, else true
+	 * @return False when failed, else true
 	 */
 	virtual bool computeAll();
 	/**
@@ -135,7 +139,7 @@ public:
 	 * @brief Checks that attempted connection doesn't forme a cycle
 	 * @param a Output port where the connection starts
 	 * @param b Input port where the connection ends
-	 * @return True when connection doesn't form a cycle, else false
+	 * @return True when connection doesn't form a cycle, false otherwise
 	 */
 	bool isAcyclic(OutPort &a, InPort &b);
 };

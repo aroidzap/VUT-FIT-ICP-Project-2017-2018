@@ -17,7 +17,7 @@ class BlockBase;
 /**
  * @brief Abstract factory for creating blocks
  *
- * Blocks are created using abstract factory design patern. Factories are located in blocks folder.
+ * Blocks are created using abstract factory design patern.
  */
 class BlockFactory {
 protected:
@@ -35,6 +35,7 @@ public:
 	//! @brief Factory constructor
 	//! @param g Parent scheme object
 	BlockFactory(Graph &g);
+	
 	//! Factory destructor
 	virtual ~BlockFactory();
 };

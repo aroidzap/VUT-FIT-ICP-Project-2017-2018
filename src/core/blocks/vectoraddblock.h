@@ -23,9 +23,8 @@ public:
 
 	//! @param g Graph object - parent scheme
 	VectorAddBlock(Graph &g);
+	
 	//! Performs the vector addition
-
-	//! @pre Input ports must point to valid values
 	void Compute() override;
 	//! Virtual destructor to prevent leaks
 	virtual ~VectorAddBlock() = default;

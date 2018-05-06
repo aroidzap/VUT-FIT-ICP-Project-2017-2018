@@ -35,7 +35,7 @@ private:
 	TempConnectionUI tc;
 	//! GUI Block factory
 	BlockFactoryUI bf;
-	//! Getting block factory address (core)
+	//! Getting block factory (core)
 	BlockFactory & GetBlockFactory() override;
 	//! Dragging state
 	bool drag = false;
@@ -46,12 +46,12 @@ private:
 	//! Right click dropdown menu for block options
 	BlockDelete block_context_menu;
 public:
-	//! Offset to apply to new block's position
+	//! Current offset of graph against main window
 	QPoint pos_offset;
 	//! List of graphical connections in GUI
 	std::list<ConnectionUI*> ui_connections;
 	GraphUI();
-	//! Get block's position offset
+	//! Get offset of graph against main window
 	QPoint getOffset() const;
 	//! Delete the current scheme, get ready for a new scheme
 	void clearGraph() override;
@@ -112,7 +112,7 @@ public:
 	bool computeStep() override;
 	//! Computes the whole scheme
 	bool computeAll() override;
-	//! Graph GUI widget destructor
+	//! Graph GUI destructor
 	~GraphUI();
 protected:
 	//! Invokes actions triggered by mouse movement

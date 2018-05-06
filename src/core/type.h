@@ -29,6 +29,7 @@ public:
 	friend bool operator== (const TypeValue &a, const TypeValue &b);
 };
 
+//! Type Class is not polymorphic! Derived classes are used only as predefined Types with assigned name!
 class Type
 {
 	friend class TypeValue;

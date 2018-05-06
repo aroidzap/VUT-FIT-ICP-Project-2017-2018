@@ -22,12 +22,12 @@ public:
 	static std::vector<std::string> TextLines(const std::string &text, int &width, int &height);
 	/**
 	 * @brief Tooltip constructor
-	 * @param parent Parent connection widget
+	 * @param parent The top-most widget (GraphUI)
 	 */
 	explicit Tooltip(QWidget *parent = nullptr);
 	/**
-	 * @brief Value caption
-	 * @param text Caption
+	 * @brief Text of the tooltip
+	 * @param text Inner text
 	 */
 	void Text(std::string text);
 	/**
@@ -37,7 +37,7 @@ public:
 	 */
 	void Move(int x, int y);
 protected:
-	//! Rendering the block
+	//! Rendering the tooltip
 	void paintEvent(QPaintEvent *) override;
 };
 
