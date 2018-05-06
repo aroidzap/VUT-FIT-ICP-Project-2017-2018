@@ -17,6 +17,7 @@
 class Port;
 class Type;
 
+//! TypeValue is a single component of Type
 class TypeValue {
 	friend class Type;
 private:

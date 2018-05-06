@@ -1,6 +1,6 @@
 /** ICP Project 2017/2018: BlockEditor
  * @file blockbase.cpp
- * @brief Block operations
+ * @brief Base class for blocks
  * @author Tomáš Pazdiora (xpazdi02)
  * @author Michal Pospíšil (xpospi95)
  */

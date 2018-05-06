@@ -1,6 +1,6 @@
 /** ICP Project 2017/2018: BlockEditor
  * @file port.cpp
- * @brief Port related functions
+ * @brief Ports for blocks
  * and menus created when right-clicking blocks
  * @author Tomáš Pazdiora (xpazdi02)
  * @author Michal Pospíšil (xpospi95)

@@ -304,7 +304,7 @@ protected:
 };
 
 /**
- *
+ * @brief Input Block GUI representation
  */
 template <typename BlockBaseT>
 class InputBlockUI : public BlockUI<BlockBaseT> {
@@ -380,6 +380,9 @@ protected:
 	}
 };
 
+/**
+ * @brief Output Block GUI representation
+ */
 template <typename BlockBaseT>
 class OutputBlockUI : public BlockUI<BlockBaseT> {
 private:
