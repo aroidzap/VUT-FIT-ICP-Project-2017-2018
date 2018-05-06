@@ -36,7 +36,7 @@ enum BlockType {
 	MAT_MUL_VEC = 18
 };
 
-//! Maps huma readable block names to BlockType
+//! Maps human readable block names to BlockType
 const std::map<BlockType, std::string> BLOCK_NAME = {
 	// Input
 	{ SCAL_INPUT, "Scalar Input" },

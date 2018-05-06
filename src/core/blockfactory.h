@@ -21,19 +21,18 @@ class BlockBase;
  */
 class BlockFactory {
 protected:
+	//! Main widget that contains the scheme
 	Graph &g;
+	//! List of all blocks
 	std::list<BlockBase*> blocks;
 public:
-	//! Block constructor
-
+	//! @brief Block constructor
 	//! @param t Type of block to construct
 	virtual BlockBase* AllocBlock(BlockType t);
-	//! Block destructor
-
+	//! @brief Block destructor
 	//! @param b Address of the block to destruct
 	virtual void FreeBlock(BlockBase *b);
-	//! Factory constructor
-
+	//! @brief Factory constructor
 	//! @param g Parent scheme object
 	BlockFactory(Graph &g);
 	//! Factory destructor

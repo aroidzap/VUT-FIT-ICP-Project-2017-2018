@@ -18,8 +18,7 @@
 class Graph;
 
 /**
- * @brief Base block definition
- *
+ * @brief Base block definition.
  * Every block inherits basic functions from this class
  * and implements its computation method over it.
  */
@@ -45,57 +44,49 @@ public:
 	Graph &graph;
 	/**
 	 * @brief Type of the block.
-	 *
 	 * See BlockType.
 	 */
 	const BlockType type;
 	/**
-	 * @brief Human readable name
+	 * @brief Human readable name of a block type
 	 */
 	const std::string name;
 	/**
 	 * @brief Gets unique ID of a block
-	 *
 	 * @return ID of a block
 	 */
 	int getID() const;
 	/**
 	 * @brief Gets unique ID of a port
-	 *
 	 * @param port Input port
 	 * @return ID of a port
 	 */
 	virtual int getPortID(const InPort &port) const;
 	/**
 	 * @brief Gets unique ID of a port
-	 *
 	 * @param port Output port
 	 * @return ID of a port
 	 */
 	virtual int getPortID(const OutPort &port) const;
 	/**
 	 * @brief Gets address of a port
-	 *
 	 * @param port ID of an input port
 	 * @return Address of an input port
 	 */
 	virtual InPort & Input(std::size_t id);
 	/**
 	 * @brief Returns number of inputs
-	 *
 	 * @return Number of inputs
 	 */
 	virtual std::size_t InputCount();
 	/**
 	 * @brief Gets address of a port
-	 *
 	 * @param port ID of an output port
 	 * @return Address of an output port
 	 */
 	virtual OutPort & Output(std::size_t id);
 	/**
 	 * @brief Returns number of outputs
-	 *
 	 * @return Number of inputs
 	 */
 	virtual std::size_t OutputCount();
