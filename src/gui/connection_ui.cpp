@@ -113,7 +113,10 @@ bool ConnectionUI::mouseHover(bool hover){
 
 TempConnectionUI::TempConnectionUI(InPort **in, OutPort **out, QWidget *parent)
 	: ConnectionUI(static_cast<InPortUI*>(*in), static_cast<OutPortUI*>(*out), parent),
-	  in_c(in), out_c(out) { }
+	  in_c(in), out_c(out) {
+	hover = false;
+	t.hide();
+}
 
 QPoint TempConnectionUI::getLeft()
 {
