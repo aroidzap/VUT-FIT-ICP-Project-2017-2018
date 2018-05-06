@@ -30,6 +30,7 @@ BLOCKEDITOR::BLOCKEDITOR(GraphUI &g, QWidget *parent) :
 	setCentralWidget(&graph);
 	show();
 
+	// Signalling changes in scheme name
 	connect(graphName, SIGNAL(textChanged(const QString &)), this,
 		SLOT(graphNameChange(const QString &))
 	);
@@ -266,7 +267,9 @@ void BLOCKEDITOR::about()
 	QMessageBox::about(this, "About Block Editor",
 							 "<h1>Block Editor</h1>"
 							 "<h2>ICP Project 2017/2018</h2>"
-							 "<p><b>Authors:</b> Tomáš Pazdiora, Michal Pospíšil</p>");
+							 "<p><b>Authors:</b> Tomáš Pazdiora, Michal Pospíšil</p>"
+							 "<p>Icons used under GNU/GPL license from <a href=\"https://sourceforge.net/projects/openiconlibrary/files/\">Open Icon Library</a></p>"
+							 );
 }
 
 void BLOCKEDITOR::graphNameChange(const QString &name)

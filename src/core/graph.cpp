@@ -337,12 +337,12 @@ bool Graph::computeFinished()
 {
 	return (to_compute.size() == 0);
 }
-
+/**
+ * Directed Acyclic Graph Check
+ * Reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+ */
 bool Graph::isAcyclic(OutPort &a, InPort &b)
 {
-	// Directed Acyclic Graph Check
-	// reference: https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
-
 	// std::map<output, inputs> edges
 	std::map<const BlockBase*, std::set<const BlockBase*>> dag;
 

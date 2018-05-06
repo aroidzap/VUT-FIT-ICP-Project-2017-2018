@@ -17,7 +17,7 @@
 class Port;
 class Type;
 
-//! TypeValue is a single component of Type
+//! @brief TypeValue is a single component of Type
 class TypeValue {
 	friend class Type;
 private:
@@ -30,7 +30,7 @@ public:
 	friend bool operator== (const TypeValue &a, const TypeValue &b);
 };
 
-//! Type Class is not polymorphic! Derived classes are used only as predefined Types with assigned name!
+//! @brief Type Class is not polymorphic! Derived classes are used only as predefined Types with assigned name!
 class Type
 {
 	friend class TypeValue;
