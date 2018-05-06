@@ -5,9 +5,9 @@
 FEAUTURES OF THIS IMPLEMENTATION:
 
 ### Design patterns usage
-- Abstract Factories to generate specific blocks
-- Decorator pattern to bond GUI and core functionality and more
-- Observer to update block values (using callbacks for specific computations) and more
+- Abstract Factories to generate specific blocks.
+- Decorator pattern to bond GUI and core functionality and more.
+- Observer to update block values (using callbacks for specific computations) and more.
 
 ### Intuitive user interface
 - We created an easy-to-use user interface with toolbars. We also support keyboard shortcuts
@@ -19,16 +19,17 @@ FEAUTURES OF THIS IMPLEMENTATION:
 
 ### File format
 - We used own '.gph' file format to avoid confusion with other file formats.
-- Saved is only the graph structure without input values
+- Saved is only the graph structure without input values.
    
-- Help dialog
--- We created a help dialog to let the user know how to use the app.
+### Help dialog
+- We created a help dialog to let the user know how to use the app.
 
 ------------------------------------------------
 
 ## BUILDING
 
 [Qt](https://www.qt.io/) framework is required for build (tested with Qt 5.6.2).
+
 Easiest way to build is to install [Qt Creator](https://www.qt.io/download) and open `ICP_Project.pro` file.
 
 Makefile:
