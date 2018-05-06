@@ -79,7 +79,7 @@ public:
 	virtual std::stringstream saveGraph();
 
 	//! Adds new block specified by BlockType
-	void addBlock(BlockType);
+	virtual BlockBase *addBlock(BlockType);
 	/**
 	 * @brief Removes a block form the scheme
 	 * @param b Reference to a block to remove
