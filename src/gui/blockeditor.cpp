@@ -284,6 +284,10 @@ void BLOCKEDITOR::help()
 							 "<h2>Connections</h2>"
 							 "<p><b>Creating connections: </b>Click on one port, then on other to make connection. Click elsewhere to discard connection.</p>"
 							 "<p><b>Detaching connection: </b>Click on input port to detach connection. Click elsewhere to discard connection or click on any input port to reconnect.</p>"
+							 "<h2>Computing</h2>"
+							 "<p><b>Step: </b> With every button press claculates the next block one by one.</p>"
+							 "<p><b>Compute all: </b>Computes the whole scheme at once. Click again to update results after making changes.</p>"
+							 "<p><b>Reset: </b>Marks the first block as next to compute when you hit 'Step' button again.</p>"
 					   );
 
 }
