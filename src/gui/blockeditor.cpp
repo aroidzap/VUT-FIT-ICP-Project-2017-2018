@@ -194,7 +194,7 @@ void BLOCKEDITOR::newFile()
 	if(maybeSave())
 	{
 		graph.clearGraph();
-		graphNameChange(QString::fromStdString(""));
+		graphName->setText(QString::fromStdString(graph.GetName()));
 		setCurrentFile(QString::fromStdString(""));
 	}
 }
