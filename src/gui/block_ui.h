@@ -244,8 +244,8 @@ protected:
 	//! Begin drag on left click, open context menu on right click
 	void mousePressEvent(QMouseEvent *event) override
 	{
+		setFocus();
 		if(event->button() != Qt::RightButton) {
-			setFocus();
 			drag = true;
 			drag_p = event->pos();
 		}
