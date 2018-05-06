@@ -41,7 +41,6 @@ public:
 	virtual bool Computable();
 	void Reset();
 	virtual void Compute() = 0;
-	void computeFinishedEvent();
 	virtual ~BlockBase() = default;
 };
 

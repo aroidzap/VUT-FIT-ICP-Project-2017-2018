@@ -70,17 +70,6 @@ void BlockBase::Reset()
 	}
 }
 
-void BlockBase::computeFinishedEvent()
-{
-	for(size_t i = 0; i < OutputCount(); i++) {
-		for (auto &c : graph.connections) {
-			if (&Output(i) == c.second) {
-				c.first->eventValueChange();
-			}
-		}
-	}
-}
-
 bool BlockBase::HasAllValues()
 {
 	for(size_t i = 0; i < InputCount(); i++) {

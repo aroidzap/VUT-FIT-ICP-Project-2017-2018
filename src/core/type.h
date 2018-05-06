@@ -33,7 +33,9 @@ class Type
 private:
 	bool null_data;
 	std::map<std::string, TypeValue> data;
+	std::function<void(void)> valueChanged;
 public:
+	void onValueChange(std::function<void(void)> callback);
 	Type(std::initializer_list<std::string> components);
 	Type(const Type &other);
 	Type & operator=(const Type &other);

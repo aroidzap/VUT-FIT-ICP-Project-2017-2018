@@ -9,6 +9,11 @@
 #include <sstream>
 #include <stdexcept>
 
+void Type::onValueChange(std::function<void ()> callback)
+{
+	valueChanged = callback;
+}
+
 Type::Type(std::initializer_list<std::string> components) : null_data(true)
 {
 	for (const auto &component : components) {
@@ -116,6 +121,9 @@ TypeValue &TypeValue::operator=(const double &value)
 {
 	this->data = value;
 	this->type.null_data = false;
+	if(this->type.valueChanged){
+		this->type.valueChanged();
+	}
 	return *this;
 }
 

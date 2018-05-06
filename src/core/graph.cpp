@@ -296,7 +296,6 @@ bool Graph::computeStep()
 			if ((*c_it)->HasAllValues())
 			{
 				(*c_it)->Compute();
-				(*c_it)->computeFinishedEvent();
 				last_computed = *c_it;
 				to_compute.erase(c_it++);
 				break; // block is computed, continue

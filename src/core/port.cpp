@@ -8,7 +8,9 @@
 #include "blockbase.h"
 
 Port::Port(const BlockBase &b, const Type &t, std::string name)
-	: data(t), block(b), name(name) { }
+	: data(t), block(b), name(name) {
+	data.onValueChange([this](){eventValueChange();});
+}
 
 void Port::eventConnectionChange() {
 	if (connUpdate) {
@@ -22,14 +24,14 @@ void Port::eventValueChange() {
 	}
 }
 
-void Port::onConnectionChange(std::function<void (Port &)> connUpdate)
+void Port::onConnectionChange(std::function<void (Port &)> callback)
 {
-	this->connUpdate = connUpdate;
+	this->connUpdate = callback;
 }
 
-void Port::onValueChange(std::function<void (Port &)> valUpdate)
+void Port::onValueChange(std::function<void (Port &)> callback)
 {
-	this->valUpdate = valUpdate;
+	this->valUpdate = callback;
 }
 
 TypeValue &Port::operator[](const std::string &s)
@@ -56,6 +58,16 @@ Type &InPort::Value()
 		}
 	}
 	return this->data;
+}
+
+void OutPort::eventValueChange()
+{
+	Port::eventValueChange();
+	for (auto &c : this->block.graph.connections) {
+		if (this == c.second) {
+			c.first->eventValueChange();
+		}
+	}
 }
 
 int OutPort::getID() const
