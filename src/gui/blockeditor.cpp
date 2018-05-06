@@ -89,7 +89,7 @@ void BLOCKEDITOR::createActions()
 	saveAct->setStatusTip("Save the document to disk");
 	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
-	saveAsAct = new QAction("Save &As...", this);
+	saveAsAct = new QAction(QIcon(":/icons/save-as.png"), "Save &As...", this);
 	saveAsAct->setShortcuts(QKeySequence::SaveAs);
 	saveAsAct->setStatusTip("Save the document with a new name");
 	connect(saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
