@@ -26,6 +26,13 @@ FEAUTURES OF THIS IMPLEMENTATION:
 
 ------------------------------------------------
 
+## BUILDING
+
+[Qt](https://www.qt.io/) framework is required for build (tested with Qt 5.6.2).
+Easiest way to build is to install [Qt Creator](https://www.qt.io/download) and open `ICP_Project.pro` file.
+
+------------------------------------------------
+
 ## EXAMPLES
 ### sin(x) approximation.gph
 - Approxiamtion of sin(x) where x is in <0, pi>. First upper value is x and second bottom 
