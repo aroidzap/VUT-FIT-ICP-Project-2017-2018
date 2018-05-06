@@ -212,7 +212,7 @@ void GraphUI::updateConnectionUI(Port &p)
 {
 	for(ConnectionUI *c : ui_connections){
 		if((*c) == p){
-			c->update();
+			c->Redraw();
 		}
 	}
 }
@@ -229,13 +229,13 @@ void GraphUI::hoverConnectionUI(QPoint mouse)
 	for(ConnectionUI *c : ui_connections){
 		c->mouseHover(mouse);
 	}
-	tc.update();
+	tc.Redraw();
 }
 
 void GraphUI::mouseMoveEvent(QMouseEvent *event)
 {
 	hoverConnectionUI(event->pos());
-	tc.update();
+	tc.Redraw();
 	if(drag){
 		pos_offset += event->pos() - drag_p;
 		drag_p = event->pos();
@@ -250,7 +250,7 @@ void GraphUI::hideHoverConnectionUI()
 	for(ConnectionUI *c : ui_connections){
 		c->mouseHover(false);
 	}
-	tc.update();
+	tc.Redraw();
 }
 
 bool GraphUI::allInputsConnected()
@@ -298,11 +298,12 @@ void GraphUI::leaveEvent(QEvent *)
 
 void GraphUI::mousePressEvent(QMouseEvent *event)
 {
+	setFocus();
+	in_click = nullptr;
+	out_click = nullptr;
+	tc.Redraw();
+
 	if(event->button() != Qt::RightButton) {
-		setFocus();
-		in_click = nullptr;
-		out_click = nullptr;
-		tc.update();
 		drag = true;
 		drag_p = event->pos();
 	}

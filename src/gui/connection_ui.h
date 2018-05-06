@@ -30,6 +30,7 @@ protected:
 public:
 	explicit ConnectionUI(InPortUI *in, OutPortUI *out, QWidget *parent = nullptr);
 	ConnectionUI(const ConnectionUI &other);
+	void Redraw();
 	bool operator==(const InPort &p);
 	bool operator==(const OutPort &p);
 	bool operator==(const Port &p);

@@ -72,7 +72,6 @@ void ConnectionUI::paintEvent(QPaintEvent *)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	QPen p(Style::ConnectionCol);
-	raise();
 	if(hover){
 		p.setWidth(2);
 		showValue();
@@ -81,6 +80,12 @@ void ConnectionUI::paintEvent(QPaintEvent *)
 	}
 	painter.setPen(p);
 	painter.drawPath(computePath());
+}
+
+void ConnectionUI::Redraw()
+{
+	raise();
+	update();
 }
 
 QPoint ConnectionUI::getLeft()
@@ -127,7 +132,6 @@ QPoint TempConnectionUI::getLeft()
 
 QPoint TempConnectionUI::getRight()
 {
-	//return mapFromGlobal(cursor().pos());
 	if (*in_c == nullptr && *out_c == nullptr){
 		//hide();
 		return QPoint(0, 0);
