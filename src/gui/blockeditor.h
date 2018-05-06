@@ -36,6 +36,7 @@ protected:
 	void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
+	void newFile();
 	//! Button slot to call when opening a file
 	void open();
 	//! Button slot to call when merging a file into existing scheme
@@ -107,6 +108,7 @@ private:
 	//! Text edit where user can see and change name of the scheme
 	QLineEdit *graphName;
 
+	QAction *newAct;
 	//! Action for opening a file
 	QAction *openAct;
 	//! Action for merging a file into the currently edited scheme
