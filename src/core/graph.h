@@ -53,8 +53,7 @@ public:
 
 	//! Returns name of the scheme
 	std::string GetName() const;
-	//! Sets a new name of the scheme
-
+	//! @brief Sets a new name of the scheme
 	//! @param name New name
 	void SetName(const std::string name);
 
