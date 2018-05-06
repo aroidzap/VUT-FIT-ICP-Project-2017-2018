@@ -32,21 +32,21 @@ public:
 	 * @brief Constructor
 	 * @param b Block where to create the new port
 	 * @param t Type of the port
-	 * @param name Name of the port's data type
+	 * @param name Name of the port's label
 	 */
 	Port(const BlockBase & b, const Type &t, std::string name);
-	//! Value of the block
+	//! Returns port's value
 	virtual Type & Value() = 0;
-	//! Operator [] overloading for using data type specific strings to access values of the block
+	//! Operator [] overloading for using data type specific strings to access values of the port
 	TypeValue & operator[](const std::string &s);
 
-	//! Updates value of the block when the underlying data are changed
+	//! Fires onValueChange callback for this port
 	virtual void eventValueChange();
-	//! Updates the connection when they are changed
+	//! Fires onConnectionChange callback
 	void eventConnectionChange();
-	//! Calls block's compute function when connections change
+	//! Sets what to do on connection change
 	void onConnectionChange(std::function<void(Port &)> callback);
-	//! Calls block's compute functions when values change
+	//! Sets what to do on value change
 	void onValueChange(std::function<void(Port &)> callback);
 };
 
@@ -63,10 +63,10 @@ public:
 	 * @brief Input port constructor
 	 * @param b Block where the port is created
 	 * @param t Type of the port
-	 * @param name Name of the data type
+	 * @param name Name of the port's label
 	 */
 	InPort(const BlockBase & b, const Type &t, std::string name);
-	//! Returns data type of block's value
+	//! Returns port's value
 	Type & Value() override;
 };
 
@@ -74,7 +74,7 @@ public:
 class OutPort : public Port
 {
 public:
-	//! Update block's value when other values change
+	//! Fires onValueChange callback for this port and all connected ports
 	void eventValueChange() override;
 	//! Get output port ID
 	//! @return ID of the port
@@ -85,10 +85,10 @@ public:
 	 * @brief Input port constructor
 	 * @param b Block where the port is created
 	 * @param t Type of the port
-	 * @param name Name of the data type
+	 * @param name Name of the port's label
 	 */
 	OutPort(const BlockBase & b, const Type &t, std::string name);
-	//! Returns data type of block's value
+	//! Returns port's value
 	Type & Value() override;
 };
 
