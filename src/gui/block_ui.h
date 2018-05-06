@@ -34,7 +34,9 @@ template <typename BlockBaseT>
 class BlockUI : public QWidget, public BlockBaseT
 {
 private:
+	//! Vector of input ports
 	std::vector<InPortUI> inputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
+	//! Vector of output ports
 	std::vector<OutPortUI> outputs; // Should be const vector of non const elements, but this requires custom implementation of vector!
 	QLabel label;
 	//! Block's dragging status
@@ -163,7 +165,7 @@ public:
 		return outputs.size();
 	}
 
-
+	//! Move block to the specified offset
 	void updateOffset(QPoint offset){
 		auto p = Pos();
 		this->offset = offset;
@@ -239,6 +241,7 @@ protected:
 			Move(tmp.x(), tmp.y());
 		}
 	}
+	//! Enabling the dragging status
 	void mousePressEvent(QMouseEvent *event) override
 	{
 		if(event->button() != Qt::RightButton) {
@@ -269,6 +272,7 @@ protected:
  */
 class TextEdit : public QLineEdit{
 private:
+
 	std::function<void(void)> callback;
 	bool err = false;
 	QString prev;
@@ -299,6 +303,9 @@ protected:
 	}
 };
 
+/**
+ *
+ */
 template <typename BlockBaseT>
 class InputBlockUI : public BlockUI<BlockBaseT> {
 private:

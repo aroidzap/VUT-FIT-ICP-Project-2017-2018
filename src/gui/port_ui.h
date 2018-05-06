@@ -1,5 +1,5 @@
 /** ICP Project 2017/2018: BlockEditor
- * @file graph_ui.h
+ * @file port_ui.h
  * @brief Port GUI representation
  * @author Tomáš Pazdiora (xpazdi02)
  * @author Michal Pospíšil (xpospi95)
@@ -56,23 +56,35 @@ public:
 class InPortUI : public PortBaseUI, public InPort
 {
 public:
-	//! Constructor
+	//! Copy constructor
 	InPortUI(const InPortUI &other);
+	//! Input port constructor
 	explicit InPortUI(const InPort &p, QWidget *parent = nullptr);
+	//! Function for moving position of input port
 	void Move(int x, int y) override;
 protected:
+	//! Event that invokes actions triggered by mouse movement
 	void mouseMoveEvent(QMouseEvent *event) override;
+	//! Event that invokes actions triggered by mouse clicks
 	void mousePressEvent(QMouseEvent *) override;
 };
 
+/**
+ * @brief Output ports GUI representation
+ */
 class OutPortUI : public PortBaseUI, public OutPort
 {
 public:
+	//! Copy constructor
 	OutPortUI(const OutPortUI &other);
+	//! Input port constructor
 	explicit OutPortUI(const OutPort &p, QWidget *parent = nullptr);
+	//! Function for moving position of input port
 	void Move(int x, int y) override;
 protected:
+	//! Event that invokes actions triggered by mouse movement
 	void mouseMoveEvent(QMouseEvent *event) override;
+	//! Event that invokes actions triggered by mouse clicks
 	void mousePressEvent(QMouseEvent *) override;
 };
 
