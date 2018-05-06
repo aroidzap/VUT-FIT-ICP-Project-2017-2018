@@ -18,15 +18,18 @@ protected:
 	Type data;
 	std::function<void(Port &)> connUpdate, valUpdate;
 public:
+	const BlockBase &block;
+	const std::string name;
+
+	Port(const Port &other);
+	Port(const BlockBase & b, const Type &t, std::string name);
+	virtual Type & Value() = 0;
+	TypeValue & operator[](const std::string &s);
+
 	virtual void eventValueChange();
 	void eventConnectionChange();
 	void onConnectionChange(std::function<void(Port &)> callback);
 	void onValueChange(std::function<void(Port &)> callback);
-	const BlockBase &block;
-	const std::string name;
-	Port(const BlockBase & b, const Type &t, std::string name);
-	virtual Type & Value() = 0;
-	TypeValue & operator[](const std::string &s);
 };
 
 class InPort : public Port

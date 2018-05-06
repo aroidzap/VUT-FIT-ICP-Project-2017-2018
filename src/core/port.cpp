@@ -7,20 +7,22 @@
 #include "port.h"
 #include "blockbase.h"
 
+Port::Port(const Port &other) : data(other.data, this),
+	connUpdate(other.connUpdate), valUpdate(other.valUpdate),
+	block(other.block), name(other.name) { }
+
 Port::Port(const BlockBase &b, const Type &t, std::string name)
-	: data(t), block(b), name(name) {
-	data.onValueChange([this](){eventValueChange();});
+	: data(t, this), block(b), name(name) { }
+
+void Port::eventValueChange() {
+	if (valUpdate) {
+		valUpdate(*this);
+	}
 }
 
 void Port::eventConnectionChange() {
 	if (connUpdate) {
 		connUpdate(*this);
-	}
-}
-
-void Port::eventValueChange() {
-	if (valUpdate) {
-		valUpdate(*this);
 	}
 }
 

@@ -13,6 +13,7 @@
 #include <iostream>
 #include <functional>
 
+class Port;
 class Type;
 
 class TypeValue {
@@ -33,11 +34,11 @@ class Type
 private:
 	bool null_data;
 	std::map<std::string, TypeValue> data;
-	std::function<void(void)> valueChanged;
+	Port *port;
 public:
-	void onValueChange(std::function<void(void)> callback);
 	Type(std::initializer_list<std::string> components);
 	Type(const Type &other);
+	Type(const Type &other, Port *port);
 	Type & operator=(const Type &other);
 	Type(Type &&other) = delete;
 	TypeValue & operator[](const std::string &s);

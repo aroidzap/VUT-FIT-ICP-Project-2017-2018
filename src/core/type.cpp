@@ -5,23 +5,25 @@
 */
 
 #include "type.h"
+#include "port.h"
 #include <utility>
 #include <sstream>
 #include <stdexcept>
 
-void Type::onValueChange(std::function<void ()> callback)
-{
-	valueChanged = callback;
-}
-
-Type::Type(std::initializer_list<std::string> components) : null_data(true)
+Type::Type(std::initializer_list<std::string> components) : null_data(true), port(nullptr)
 {
 	for (const auto &component : components) {
 		this->data.insert(std::pair<std::string, TypeValue>(component, TypeValue(*this)));
 	}
 }
 
-Type::Type(const Type &other) : null_data(other.null_data) {
+Type::Type(const Type &other) : null_data(other.null_data), port(other.port) {
+	for (const auto &elem : other.data) {
+		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second.data)));
+	}
+}
+
+Type::Type(const Type &other, Port *port) : null_data(other.null_data), port(port) {
 	for (const auto &elem : other.data) {
 		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second.data)));
 	}
@@ -33,6 +35,9 @@ Type &Type::operator=(const Type &other)
 	this->data.clear();
 	for (const auto &elem : other.data) {
 		this->data.insert(std::pair<std::string, TypeValue>(elem.first, TypeValue(*this, elem.second.data)));
+	}
+	if (this->port != nullptr) {
+		this->port->eventValueChange();
 	}
 	return *this;
 }
@@ -56,6 +61,9 @@ bool Type::isNull() const
 void Type::setNull()
 {
 	null_data = true;
+	if (this->port != nullptr) {
+		this->port->eventValueChange();
+	}
 }
 
 // check type compatibility
@@ -121,8 +129,8 @@ TypeValue &TypeValue::operator=(const double &value)
 {
 	this->data = value;
 	this->type.null_data = false;
-	if(this->type.valueChanged){
-		this->type.valueChanged();
+	if (this->type.port != nullptr) {
+		this->type.port->eventValueChange();
 	}
 	return *this;
 }
