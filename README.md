@@ -1,5 +1,7 @@
 # ICP 2017/2018 Project - BLOCKEDITOR
 
+![Screenshot](BLOCKEDITOR.png)
+
 ### Authors: [Tomáš Pazdiora](https://github.com/Aroidzap), [Michal Pospíšil](https://github.com/xpospi95)
 		 
 FEAUTURES OF THIS IMPLEMENTATION:
