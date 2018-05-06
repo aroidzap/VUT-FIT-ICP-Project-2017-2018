@@ -41,7 +41,7 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 	// block id offset
 	int b_id_off = static_cast<int>(blocks.size());
 
-	int x_off, y_off;
+	int x_off = 0, y_off = 0;
 	bool first_ = true;
 	if (merge) {
 		for (BlockBase *b : blocks) {
@@ -103,7 +103,7 @@ std::stringstream GraphUI::saveGraph()
 	std::stringstream ss = Graph::saveGraph();
 
 	// get offset
-	int x_off, y_off;
+	int x_off = 0, y_off = 0;
 	bool first_ = true;
 	for (BlockBase *b : blocks) {
 		auto p = static_cast<BlockUI<BlockBase>*>(b)->Pos();

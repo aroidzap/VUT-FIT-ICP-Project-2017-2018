@@ -264,7 +264,7 @@ private:
 	}
 public:
 	explicit InputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
-		: BlockUI<BlockBaseT>(b, parent), orig_w(width_), orig_h(height_){
+		: BlockUI<BlockBaseT>(b, parent), orig_w(this->width_), orig_h(this->height_){
 		auto data = this->Output(0).Value().Data();
 		text_in_off = 0;
 		for(auto &el : data){
@@ -322,7 +322,7 @@ private:
 	int orig_w, orig_h;
 public:
 	explicit OutputBlockUI(const BlockUI<BlockBaseT> &b, QWidget *parent = nullptr)
-		: BlockUI<BlockBaseT>(b, parent), orig_w(width_), orig_h(height_) {
+		: BlockUI<BlockBaseT>(b, parent), orig_w(this->width_), orig_h(this->height_) {
 		this->Input(0).onConnectionChange([this](Port &){this->update();});
 		this->Input(0).onValueChange([this](Port &){this->update();});
 	}
