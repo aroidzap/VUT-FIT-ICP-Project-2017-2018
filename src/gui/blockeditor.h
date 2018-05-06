@@ -22,6 +22,11 @@ namespace Ui {
 class BLOCKEDITOR;
 }
 
+/**
+ * @brief Main window class
+ * This class is a QWidget that is parent to all graphic elements within the window.
+ * All other control widgets (except the dropdown menus for adding/removing blocks) are declared here.
+ */
 class BLOCKEDITOR : public QMainWindow
 {
     Q_OBJECT
@@ -36,6 +41,7 @@ protected:
 	void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
+	//! Button slot to call when creating a new scheme
 	void newFile();
 	//! Button slot to call when opening a file
 	void open();
@@ -108,6 +114,7 @@ private:
 	//! Text edit where user can see and change name of the scheme
 	QLineEdit *graphName;
 
+	//! Action for creating a new file
 	QAction *newAct;
 	//! Action for opening a file
 	QAction *openAct;
