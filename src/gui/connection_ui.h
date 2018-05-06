@@ -48,6 +48,8 @@ public:
 	explicit ConnectionUI(InPortUI *in, OutPortUI *out, QWidget *parent = nullptr);
 	//! Connection constructor
 	ConnectionUI(const ConnectionUI &other);
+	//! Redraw connection above other elements
+	void Redraw();
 	//! Overloading operator == for input port comparison
 	bool operator==(const InPort &p);
 	//! Overloading operator == for output port comparison

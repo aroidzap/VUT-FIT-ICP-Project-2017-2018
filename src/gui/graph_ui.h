@@ -69,6 +69,8 @@ public:
 	std::stringstream saveGraph() override;
 	//! Block's context menu
 	void blockContextMenu(BlockBase *b);
+	
+	BlockBase *addBlock(BlockType t) override;
 	//! Removes a block from the scheme
 	void removeBlock(BlockBase *b) override;
 	/**

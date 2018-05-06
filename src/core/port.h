@@ -17,15 +17,20 @@ class Port
 {
 protected:
 	Type data;
-	std::function<void(Port &)> connUpdate;
+	std::function<void(Port &)> connUpdate, valUpdate;
 public:
-	void eventConnectionChange();
-	void onConnectionChange(std::function<void(Port &)> connUpdate);
 	const BlockBase &block;
 	const std::string name;
+
+	Port(const Port &other);
 	Port(const BlockBase & b, const Type &t, std::string name);
 	virtual Type & Value() = 0;
 	TypeValue & operator[](const std::string &s);
+
+	virtual void eventValueChange();
+	void eventConnectionChange();
+	void onConnectionChange(std::function<void(Port &)> callback);
+	void onValueChange(std::function<void(Port &)> callback);
 };
 
 class InPort : public Port
@@ -40,6 +45,7 @@ public:
 class OutPort : public Port
 {
 public:
+	void eventValueChange() override;
 	int getID() const;
 	OutPort(const OutPort & other, const BlockBase & b);
 	OutPort(const BlockBase & b, const Type &t, std::string name);
