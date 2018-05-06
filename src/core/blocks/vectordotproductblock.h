@@ -1,5 +1,5 @@
 /** ICP Project 2017/2018: BlockEditor
- * @file vectordotproduct.h
+ * @file vectordotproductblock.h
  * @brief Vector dot product block header
  * @author Tomáš Pazdiora (xpazdi02)
  * @author Michal Pospíšil (xpospi95)

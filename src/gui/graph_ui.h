@@ -1,8 +1,9 @@
-/*
-*	ICP Project: BlockEditor
-*	Authors: Tomáš Pazdiora (xpazdi02), Michal Pospíšil (xpospi95)
-*	File: graph_ui.h
-*/
+/** ICP Project 2017/2018: BlockEditor
+ * @file graph_ui.h
+ * @brief Scheme GUI representation
+ * @author Tomáš Pazdiora (xpazdi02)
+ * @author Michal Pospíšil (xpospi95)
+ */
 
 #ifndef GRAPH_UI_H
 #define GRAPH_UI_H
