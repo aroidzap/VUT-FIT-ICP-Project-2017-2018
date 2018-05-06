@@ -31,6 +31,12 @@ FEAUTURES OF THIS IMPLEMENTATION:
 [Qt](https://www.qt.io/) framework is required for build (tested with Qt 5.6.2).
 Easiest way to build is to install [Qt Creator](https://www.qt.io/download) and open `ICP_Project.pro` file.
 
+Makefile:
+- `make` builds the application ([Qt](https://www.qt.io/) required)
+- `make run` will start the application
+- `make doxygen` will generate documentation in 'doc/' folder ([doxygen](http://www.stack.nl/~dimitri/doxygen/) required)
+- `make clean` will remove build files
+
 ------------------------------------------------
 
 ## EXAMPLES
