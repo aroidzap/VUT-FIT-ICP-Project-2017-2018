@@ -41,12 +41,24 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 	// block id offset
 	int b_id_off = static_cast<int>(blocks.size());
 
-	int y_off = 0;
+	int x_off, y_off;
+	bool first_ = true;
 	if (merge) {
 		for (BlockBase *b : blocks) {
 			auto block = static_cast<BlockUI<BlockBase>*>(b);
+			if(first_){
+				x_off = block->Pos().x();
+				y_off = block->Pos().y() + block->height();
+				first_ = false;
+			}
+			x_off = std::min(x_off, block->Pos().x());
 			y_off = std::max(y_off, block->Pos().y() + block->height());
 		}
+		y_off += Style::GraphLoadPadding;
+	} else {
+		pos_offset = QPoint(0, 0); // reset drag offset
+		x_off = Style::GraphLoadPadding;
+		y_off = Style::GraphLoadPadding;
 	}
 
 	if (!Graph::loadGraph(graph, merge)){
@@ -74,9 +86,8 @@ bool GraphUI::loadGraph(std::stringstream &graph, bool merge)
 			std::string xs, ys;
 			std::getline(xy, xs, ':');
 			std::getline(xy, ys, ':');
-			int x = std::stoi(xs) + Style::GraphLoadPadding;
-			int y = std::stoi(ys) + Style::GraphLoadPadding + y_off;
-			static_cast<BlockUI<BlockBase>*>(*it)->updateOffset(pos_offset);
+			int x = std::stoi(xs) + x_off;
+			int y = std::stoi(ys) + y_off;
 			static_cast<BlockUI<BlockBase>*>(*it)->Move(x, y);
 			it++;
 		}
@@ -92,8 +103,7 @@ std::stringstream GraphUI::saveGraph()
 	std::stringstream ss = Graph::saveGraph();
 
 	// get offset
-	int x_off = 0;
-	int y_off = 0;
+	int x_off, y_off;
 	bool first_ = true;
 	for (BlockBase *b : blocks) {
 		auto p = static_cast<BlockUI<BlockBase>*>(b)->Pos();
@@ -127,6 +137,13 @@ std::stringstream GraphUI::saveGraph()
 void GraphUI::blockContextMenu(BlockBase *b)
 {
 	block_context_menu.ShowMenu(b);
+}
+
+BlockBase *GraphUI::addBlock(BlockType t)
+{
+	BlockBase *b = Graph::addBlock(t);
+	static_cast<BlockUI<BlockBase>*>(b)->updateOffset(pos_offset);
+	return b;
 }
 
 void GraphUI::removeBlock(BlockBase *b)

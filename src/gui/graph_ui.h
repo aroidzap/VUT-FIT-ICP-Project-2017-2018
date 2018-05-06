@@ -41,6 +41,7 @@ public:
 	bool loadGraph(std::stringstream &graph, bool merge = false) override;
 	std::stringstream saveGraph() override;
 	void blockContextMenu(BlockBase *b);
+	BlockBase *addBlock(BlockType t) override;
 	void removeBlock(BlockBase *b) override;
 	bool addConnection(OutPort &a, InPort &b) override;
 	void removeConnection(InPort &p) override;

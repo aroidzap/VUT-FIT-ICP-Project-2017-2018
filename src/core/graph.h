@@ -45,7 +45,7 @@ public:
 	virtual bool loadGraph(std::stringstream &graph, bool merge = false);
 	virtual std::stringstream saveGraph();
 
-	void addBlock(BlockType);
+	virtual BlockBase *addBlock(BlockType);
 	virtual void removeBlock(BlockBase *b);
 	OutPort * getConnectedOutPort(InPort &p);
 	virtual bool addConnection(OutPort &a, InPort &b);

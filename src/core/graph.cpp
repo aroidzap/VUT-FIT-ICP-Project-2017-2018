@@ -176,7 +176,7 @@ BlockFactory &Graph::GetBlockFactory()
 	return bf;
 }
 
-void Graph::addBlock(BlockType t)
+BlockBase *Graph::addBlock(BlockType t)
 {
 	BlockBase *b = GetBlockFactory().AllocBlock(t);
 	if (b != nullptr) {
@@ -186,6 +186,7 @@ void Graph::addBlock(BlockType t)
 			graphChanged();
 		}
 	}
+	return b;
 }
 
 void Graph::removeBlock(BlockBase *b)
